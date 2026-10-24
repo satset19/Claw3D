@@ -11,3 +11,6 @@ coverage
 .env.local
 .env.development
 .env.production
+data
+.env.hermes
+.env*
