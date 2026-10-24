@@ -16,6 +16,8 @@ import {
   AvatarLegClothing,
   AvatarSkirt,
 } from "@/features/agents/components/avatar3d/AvatarGenderParts";
+import { AvatarMaleModel } from "@/features/agents/components/avatar3d/AvatarMaleModel";
+import { hasAvatarModel } from "@/lib/avatars/avatarModel";
 
 const PreviewFigure = ({
   profile,
@@ -50,6 +52,18 @@ const PreviewFigure = ({
   const cuffColor = profile.clothing.topStyle === "hoodie" ? "#d1d5db" : sleeveColor;
   const shape = getAvatarBodyShape(profile.body.gender);
   const bottomStyle = profile.clothing.bottomStyle;
+
+  if (hasAvatarModel(profile.body.gender)) {
+    return (
+      <group ref={groupRef} position={[0, -0.72, 0]} scale={[1.45, 1.45, 1.45]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+          <circleGeometry args={[0.22, 24]} />
+          <meshBasicMaterial color="#000000" transparent opacity={0.16} />
+        </mesh>
+        <AvatarMaleModel targetHeight={0.9} rotationY={Math.PI} />
+      </group>
+    );
+  }
 
   return (
     <group ref={groupRef} position={[0, -0.72, 0]} scale={[1.45, 1.45, 1.45]}>

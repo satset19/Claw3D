@@ -1,0 +1,29 @@
+services:
+  claw3d:
+    image: claw3d:local
+    build:
+      context: .
+      dockerfile: Dockerfile.source
+    container_name: claw3d
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - .env
+    environment:
+      - PORT=8113
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    volumes:
+      - ./server/access-gate.js:/app/server/access-gate.js:ro
+      - ./data/openclaw:/root/.openclaw
+
+  hermes-adapter:
+    image: claw3d:local
+    container_name: claw3d-hermes-adapter
+    restart: unless-stopped
+    network_mode: host
+    command: ["node", "server/hermes-gateway-adapter.js"]
+    env_file:
+      - .env.hermes
+    volumes:
+      - ./data:/root/.hermes

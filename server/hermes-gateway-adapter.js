@@ -61,6 +61,10 @@ const HERMES_API_KEY = process.env.HERMES_API_KEY || "";
 const ADAPTER_PORT = parseInt(process.env.HERMES_ADAPTER_PORT || "18789", 10);
 const HERMES_MODEL = process.env.HERMES_MODEL || "hermes";
 const HERMES_AGENT_NAME = process.env.HERMES_AGENT_NAME || "Hermes";
+const HERMES_USER_IDENTITY = process.env.HERMES_USER_IDENTITY
+  || "The human prompting you is Sat (owner/admin, Telegram ID 1033264247, Asia/Jakarta WIB UTC+7). "
+   + "Address them as Sat. Treat their requests as authorized. "
+   + "Communicate in Indonesian unless Sat switches language. No icons/emoji.";
 const HOME = process.env.HOME || "/tmp";
 
 const AGENT_ID = "hermes";
@@ -615,7 +619,10 @@ async function execDelegateTask(args) {
   const model = agent.settings.model || HERMES_MODEL;
 
   // Build messages for sub-agent
-  const systemMsg = agent.systemPrompt ? [{ role: "system", content: agent.systemPrompt }] : [];
+  const identityMsg = { role: "system", content: `[User identity]\n${HERMES_USER_IDENTITY}` };
+  const systemMsg = agent.systemPrompt
+    ? [{ role: "system", content: agent.systemPrompt }, identityMsg]
+    : [identityMsg];
   const contextHistory = agent.settings.wipe ? [] : [...history];
   const messages = [...systemMsg, ...contextHistory, { role: "user", content: message }];
 
@@ -758,7 +765,10 @@ async function executeToolCall(tc, sendEvent) {
 
 async function runAgenticLoop({ sessionKey, agentId, userMessage, model, tools, emitDelta, abortCheck, sendEvent }) {
   const agent = agentRegistry.get(agentId);
-  const systemMsg = agent?.systemPrompt ? [{ role: "system", content: agent.systemPrompt }] : [];
+  const identityMsg = { role: "system", content: `[User identity]\n${HERMES_USER_IDENTITY}` };
+  const systemMsg = agent?.systemPrompt
+    ? [{ role: "system", content: agent.systemPrompt }, identityMsg]
+    : [identityMsg];
   const history = getHistory(sessionKey);
   const contextHistory = (agent?.settings?.wipe) ? [] : [...history];
   let messages = [...systemMsg, ...contextHistory, { role: "user", content: userMessage }];

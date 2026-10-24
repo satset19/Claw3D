@@ -1,0 +1,3 @@
+FROM ghcr.io/iamlukethedev/claw3d:main
+RUN rm -f /app/next.config.ts
+COPY next.config.mjs /app/next.config.mjs

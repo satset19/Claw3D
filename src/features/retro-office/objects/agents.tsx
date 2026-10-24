@@ -10,6 +10,8 @@ import {
   AvatarLegClothing,
   AvatarSkirt,
 } from "@/features/agents/components/avatar3d/AvatarGenderParts";
+import { AvatarMaleModel } from "@/features/agents/components/avatar3d/AvatarMaleModel";
+import { hasAvatarModel } from "@/lib/avatars/avatarModel";
 import {
   AGENT_SCALE,
   WALK_ANIM_SPEED,
@@ -706,6 +708,10 @@ export const AgentModel = memo(function AgentModel({
         <circleGeometry args={[0.12, 12]} />
         <meshBasicMaterial color="#000" transparent opacity={0.2} />
       </mesh>
+      {hasAvatarModel(resolvedAppearance.body.gender) ? (
+        <AvatarMaleModel targetHeight={0.95} rotationY={Math.PI} />
+      ) : (
+        <>
       <group ref={rightLegRef} position={[-0.045, 0.1, 0]}>
         <AvatarLegClothing bottomStyle={bottomStyle} bottomColor={trouserColor} skin={skin} />
         <mesh position={[0, -0.09, 0]}>
@@ -948,6 +954,8 @@ export const AgentModel = memo(function AgentModel({
         </>
       ) : null}
       <AvatarFeminineHair style={hairStyle} color={hairColor} headY={0.47} headSize={0.16} />
+        </>
+      )}
       {hatStyle === "cap" ? (
         <>
           <mesh position={[0, 0.59, 0]}>
