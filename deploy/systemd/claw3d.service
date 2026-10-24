@@ -1,0 +1,17 @@
+[Unit]
+Description=Claw3D Studio UI (Next.js) on 127.0.0.1:8113 for kerja.besoksenin.web.id
+After=network-online.target claw3d-hermes-adapter.service
+Wants=network-online.target claw3d-hermes-adapter.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/claw3d
+EnvironmentFile=%h/claw3d/.env
+Environment=PATH=/usr/bin:/bin
+Environment=OPENCLAW_STATE_DIR=%h/claw3d/data/openclaw
+ExecStart=/usr/bin/node server/index.js
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

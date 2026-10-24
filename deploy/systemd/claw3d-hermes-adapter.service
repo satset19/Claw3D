@@ -1,0 +1,17 @@
+[Unit]
+Description=Claw3D Hermes gateway adapter (ws 127.0.0.1:18789 -> Hermes API :8642)
+After=network-online.target hermes-gateway.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/claw3d
+EnvironmentFile=%h/claw3d/.env.hermes
+Environment=PATH=/usr/bin:/bin
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node server/hermes-gateway-adapter.js
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
