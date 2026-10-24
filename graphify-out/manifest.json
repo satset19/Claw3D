@@ -354,9 +354,9 @@
     "semantic_hash": ""
   },
   "src/app/layout.tsx": {
-    "mtime": 1792856529.0388224,
-    "seen": 1792862681.5878181,
-    "ast_hash": "d11f52bc67c0b0ef521738adb4dc56e5",
+    "mtime": 1792869775.83217,
+    "seen": 1792870173.544111,
+    "ast_hash": "f74d2b606d488e45e8b4734dcd2ce7b6",
     "semantic_hash": ""
   },
   "src/app/office/builder/page.tsx": {
@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792866683.6487641,
-    "seen": 1792866754.4709263,
-    "ast_hash": "900c44a1efd2bf23eb2e2754e739d5e7",
+    "mtime": 1792871286.021218,
+    "seen": 1792873084.516268,
+    "ast_hash": "d3c2a8f2994c45ffdcb13bdecceb3095",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1254,9 +1254,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792856529.0688229,
-    "seen": 1792862681.588318,
-    "ast_hash": "69452c6a27f80510b3efb71a9e2479a9",
+    "mtime": 1792872675.2695148,
+    "seen": 1792873084.5173264,
+    "ast_hash": "68963191e0352e82585b7813a8a27bb6",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -1350,15 +1350,15 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792866683.6497643,
-    "seen": 1792866754.4716449,
-    "ast_hash": "eb713ee9cb693aff90649de82557da6b",
+    "mtime": 1792871286.022218,
+    "seen": 1792873084.5176356,
+    "ast_hash": "2000250b919a7f35c54758ecc88f4fbe",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
-    "mtime": 1792856529.071823,
-    "seen": 1792862681.5884116,
-    "ast_hash": "e08b8053065778847d87d7a0d871d553",
+    "mtime": 1792872152.0403697,
+    "seen": 1792873084.5176437,
+    "ast_hash": "9ac958cb6ebff5d9d76d422009a6d338",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/kitchen.tsx": {
@@ -3527,30 +3527,6 @@
     "ast_hash": "2b419e9fc5faf3d235f936cdf70c158b",
     "semantic_hash": ""
   },
-  "scripts/avatars/export_blend_to_glb.py": {
-    "mtime": 1792865572.9836485,
-    "seen": 1792866754.4706883,
-    "ast_hash": "f1b51205e087b3980b407e67f35aa25d",
-    "semantic_hash": ""
-  },
-  "src/features/agents/components/avatar3d/AvatarMaleModel.tsx": {
-    "mtime": 1792866683.6707647,
-    "seen": 1792866754.471049,
-    "ast_hash": "5a5d7ae38c770fa30b0060e229d82cc3",
-    "semantic_hash": ""
-  },
-  "src/lib/avatars/avatarModel.ts": {
-    "mtime": 1792866683.6717646,
-    "seen": 1792866754.4717877,
-    "ast_hash": "da30f5b74c816e271210353d7024a008",
-    "semantic_hash": ""
-  },
-  "tests/unit/avatarModel.test.ts": {
-    "mtime": 1792866683.6717646,
-    "seen": 1792866754.472568,
-    "ast_hash": "f7dda91c72797ed53c0925ee46444d77",
-    "semantic_hash": ""
-  },
   "wsclient.mjs": {
     "mtime": 1792865691.5125031,
     "seen": 1792866754.4736457,
@@ -3567,6 +3543,12 @@
     "mtime": 1792865189.820567,
     "seen": 1792866754.4736843,
     "ast_hash": "63dcd5c8e63ecdcaeb42c6ca7eceb119",
+    "semantic_hash": ""
+  },
+  "src/app/_SuspenseStreamGuard.tsx": {
+    "mtime": 1792869762.9238675,
+    "seen": 1792870173.5438867,
+    "ast_hash": "695a6720e7df6b81436f5c2f297dc5bd",
     "semantic_hash": ""
   }
 }
