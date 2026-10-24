@@ -45,12 +45,12 @@ const PreviewFigure = ({
   const presetModelUrl = findAnimePresetModelUrl(profile.imageUrl);
   if (presetModelUrl) {
     return (
-      <group ref={groupRef} position={[0, -0.9, 0]} scale={[0.95, 0.95, 0.95]}>
+      <group ref={groupRef} position={[0, -0.72, 0]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
           <circleGeometry args={[0.32, 24]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.16} />
         </mesh>
-        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" />
+        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={1.6} />
       </group>
     );
   }

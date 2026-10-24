@@ -706,7 +706,7 @@ export const AgentModel = memo(function AgentModel({
       }}
     >
       {presetModelUrl ? (
-        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" />
+        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={0.9} />
       ) : (
         <>
       <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>

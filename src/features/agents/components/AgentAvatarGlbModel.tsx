@@ -1,7 +1,7 @@
 "use client";
 
 import { useGLTF, useAnimations } from "@react-three/drei";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { ANIME_AVATAR_PRESETS } from "@/lib/avatars/animePresets";
@@ -9,9 +9,14 @@ import { ANIME_AVATAR_PRESETS } from "@/lib/avatars/animePresets";
 type Props = {
   modelUrl: string;
   animationName?: "idle" | "attack" | "dead";
+  targetHeight?: number;
 };
 
-export const AgentAvatarGlbModel = ({ modelUrl, animationName = "idle" }: Props) => {
+export const AgentAvatarGlbModel = ({
+  modelUrl,
+  animationName = "idle",
+  targetHeight = 1.6,
+}: Props) => {
   const groupRef = useRef<THREE.Group>(null);
   const gltf = useGLTF(modelUrl);
   const clonedScene = useMemo(
@@ -19,6 +24,37 @@ export const AgentAvatarGlbModel = ({ modelUrl, animationName = "idle" }: Props)
     [gltf.scene],
   );
   const { actions, mixer } = useAnimations(gltf.animations, clonedScene);
+
+  useLayoutEffect(() => {
+    clonedScene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const m of mats) {
+        const std = m as THREE.MeshStandardMaterial;
+        if (std.map) {
+          std.map.colorSpace = THREE.SRGBColorSpace;
+          std.map.needsUpdate = true;
+        }
+        if ("roughness" in std) std.roughness = 0.85;
+        if ("metalness" in std) std.metalness = 0;
+        std.needsUpdate = true;
+      }
+    });
+
+    const box = new THREE.Box3().setFromObject(clonedScene);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    const scale = size.y > 0 ? targetHeight / size.y : 1;
+    clonedScene.scale.setScalar(scale);
+
+    const scaledBox = new THREE.Box3().setFromObject(clonedScene);
+    const center = new THREE.Vector3();
+    scaledBox.getCenter(center);
+    clonedScene.position.x = -center.x;
+    clonedScene.position.z = -center.z;
+    clonedScene.position.y = -scaledBox.min.y;
+  }, [clonedScene, targetHeight]);
 
   useEffect(() => {
     const clip =
