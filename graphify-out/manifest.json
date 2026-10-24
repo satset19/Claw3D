@@ -35,12 +35,6 @@
     "ast_hash": "d2d7be60c30fb863f722f28c5f639898",
     "semantic_hash": ""
   },
-  "docker-compose.yml": {
-    "mtime": 1792862210.4912498,
-    "seen": 1792862681.5876322,
-    "ast_hash": "4c8b7dffca88bf9c949b33d091f4d874",
-    "semantic_hash": ""
-  },
   "eslint.config.mjs": {
     "mtime": 1792856528.9918213,
     "seen": 1792862681.587638,
@@ -3561,6 +3555,30 @@
     "mtime": 1792874247.9539905,
     "seen": 1792874911.2426078,
     "ast_hash": "595fbd8fe2b7f4594b9b687e8479bbdf",
+    "semantic_hash": ""
+  },
+  "scripts/deploy-local.sh": {
+    "mtime": 1792876598.0622618,
+    "seen": 1792876856.3095486,
+    "ast_hash": "a75829be1edfdc8099742d9985160059",
+    "semantic_hash": ""
+  },
+  "scripts/verify-claw3d.sh": {
+    "mtime": 1792876488.5397353,
+    "seen": 1792876856.3095717,
+    "ast_hash": "c830f8d55404dba23e4e54648371da5b",
+    "semantic_hash": ""
+  },
+  "scripts/ws-probe.js": {
+    "mtime": 1792876468.8772817,
+    "seen": 1792876856.309577,
+    "ast_hash": "9e6d03c691d53c5fc9bc5fc958cf3886",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_040603-claw3d-local-no-docker.md": {
+    "mtime": 1792876205.80022,
+    "seen": 1792876856.312327,
+    "ast_hash": "b875090538701224252ab30907f1b804",
     "semantic_hash": ""
   }
 }
