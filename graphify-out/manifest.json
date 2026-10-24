@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792871286.021218,
-    "seen": 1792873084.516268,
-    "ast_hash": "d3c2a8f2994c45ffdcb13bdecceb3095",
+    "mtime": 1792879821.0974464,
+    "seen": 1792880212.6625938,
+    "ast_hash": "d66efb776e08931679dbafdfeb46f8fb",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792871286.022218,
-    "seen": 1792873084.5176356,
-    "ast_hash": "2000250b919a7f35c54758ecc88f4fbe",
+    "mtime": 1792879888.841033,
+    "seen": 1792880212.6637611,
+    "ast_hash": "e79b30120904ddbe6089d2bb5617085c",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -3588,9 +3588,9 @@
     "semantic_hash": ""
   },
   "src/lib/avatars/animePresets.ts": {
-    "mtime": 1792878539.8638916,
-    "seen": 1792878778.571245,
-    "ast_hash": "0d249883b25a81bd45ad8fe01c78230d",
+    "mtime": 1792879790.201722,
+    "seen": 1792880212.6639977,
+    "ast_hash": "8997fef530db419b89620054fc7e5ba8",
     "semantic_hash": ""
   },
   "tests/unit/AnimePresetPicker.test.tsx": {
@@ -3663,6 +3663,18 @@
     "mtime": 1792878539.8638916,
     "seen": 1792878778.5729358,
     "ast_hash": "352d87402f85c942616037f213f01dc5",
+    "semantic_hash": ""
+  },
+  "src/features/agents/components/AgentAvatarGlbModel.tsx": {
+    "mtime": 1792879934.1800935,
+    "seen": 1792880212.6625843,
+    "ast_hash": "3fbe747f8f8139ab6951dd07b6097784",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/manifest.txt": {
+    "mtime": 1792879756.4329293,
+    "seen": 1792880212.6666906,
+    "ast_hash": "ad0eafc314b079a37947c89d2ea198c8",
     "semantic_hash": ""
   }
 }

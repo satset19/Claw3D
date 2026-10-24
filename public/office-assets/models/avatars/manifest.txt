@@ -1,0 +1,8 @@
+aiko|https://gobkit.com/freebies/minion/minion-a01.glb|CC0-1.0|Gobkit (gobkit.com)
+haruto|https://gobkit.com/freebies/minion/minion-a02.glb|CC0-1.0|Gobkit (gobkit.com)
+yumi|https://gobkit.com/freebies/minion/minion-b01.glb|CC0-1.0|Gobkit (gobkit.com)
+kenji|https://gobkit.com/freebies/minion/minion-b02.glb|CC0-1.0|Gobkit (gobkit.com)
+sakura|https://gobkit.com/freebies/minion/minion-c01.glb|CC0-1.0|Gobkit (gobkit.com)
+ren|https://gobkit.com/freebies/minion/minion-c02.glb|CC0-1.0|Gobkit (gobkit.com)
+mina|https://gobkit.com/freebies/minion/minion-d01.glb|CC0-1.0|Gobkit (gobkit.com)
+takeshi|https://gobkit.com/freebies/minion/minion-d02.glb|CC0-1.0|Gobkit (gobkit.com)

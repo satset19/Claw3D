@@ -16,6 +16,8 @@ import {
   AvatarLegClothing,
   AvatarSkirt,
 } from "@/features/agents/components/avatar3d/AvatarGenderParts";
+import { AgentAvatarGlbModel } from "@/features/agents/components/AgentAvatarGlbModel";
+import { findAnimePresetModelUrl } from "@/lib/avatars/animePresets";
 
 const PreviewFigure = ({
   profile,
@@ -39,6 +41,19 @@ const PreviewFigure = ({
     if (!groupRef.current) return;
     groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.45) * 0.35 + 0.25;
   });
+
+  const presetModelUrl = findAnimePresetModelUrl(profile.imageUrl);
+  if (presetModelUrl) {
+    return (
+      <group ref={groupRef} position={[0, -0.9, 0]} scale={[0.95, 0.95, 0.95]}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
+          <circleGeometry args={[0.32, 24]} />
+          <meshBasicMaterial color="#000000" transparent opacity={0.16} />
+        </mesh>
+        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" />
+      </group>
+    );
+  }
 
   const skin = profile.body.skinTone;
   const topColor = profile.clothing.topColor;

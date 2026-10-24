@@ -10,6 +10,8 @@ import {
   AvatarLegClothing,
   AvatarSkirt,
 } from "@/features/agents/components/avatar3d/AvatarGenderParts";
+import { AgentAvatarGlbModel } from "@/features/agents/components/AgentAvatarGlbModel";
+import { findAnimePresetModelUrl } from "@/lib/avatars/animePresets";
 import {
   AGENT_SCALE,
   WALK_ANIM_SPEED,
@@ -589,6 +591,7 @@ export const AgentModel = memo(function AgentModel({
   const cuffColor = topStyle === "hoodie" ? "#d1d5db" : sleeveColor;
   const topAccentColor = topStyle === "jacket" ? "#1f2937" : cuffColor;
   const shape = getAvatarBodyShape(resolvedAppearance.body.gender);
+  const presetModelUrl = findAnimePresetModelUrl(resolvedAppearance.imageUrl);
 
   const faceTexture = useMemo(() => {
     const canvas = document.createElement("canvas");
@@ -702,6 +705,10 @@ export const AgentModel = memo(function AgentModel({
         onContextMenu?.(agentId, nativeEvent.clientX, nativeEvent.clientY);
       }}
     >
+      {presetModelUrl ? (
+        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" />
+      ) : (
+        <>
       <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.12, 12]} />
         <meshBasicMaterial color="#000" transparent opacity={0.2} />
@@ -1062,6 +1069,8 @@ export const AgentModel = memo(function AgentModel({
           depthWrite={false}
         />
       </mesh>
+        </>
+      )}
       {!activeSpeechBubble && nameplateText ? (
         <Billboard position={[0, 1.05, 0]}>
           <mesh position={[0, 0, -0.001]}>
