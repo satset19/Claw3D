@@ -6,10 +6,29 @@ import * as THREE from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { ANIME_AVATAR_PRESETS } from "@/lib/avatars/animePresets";
 
+export type AgentAvatarGlbAnimation =
+  | "idle"
+  | "walk"
+  | "run"
+  | "attack"
+  | "hit"
+  | "death"
+  | "special";
+
 type Props = {
   modelUrl: string;
-  animationName?: "idle" | "attack" | "dead";
+  animationName?: AgentAvatarGlbAnimation;
   targetHeight?: number;
+};
+
+const CANDIDATES: Record<AgentAvatarGlbAnimation, string[]> = {
+  idle: ["Idle", "idle"],
+  walk: ["Walk", "walk"],
+  run: ["Run", "run"],
+  attack: ["Attack", "attack"],
+  hit: ["Hit", "hit"],
+  death: ["Death", "death", "Dead", "dead"],
+  special: ["Special", "special"],
 };
 
 export const AgentAvatarGlbModel = ({
@@ -57,15 +76,25 @@ export const AgentAvatarGlbModel = ({
   }, [clonedScene, targetHeight]);
 
   useEffect(() => {
-    const clip =
-      actions[animationName] ??
-      actions.idle ??
-      Object.values(actions).find((a) => a !== null) ??
-      null;
-    if (!clip) return;
-    clip.reset().fadeIn(0.15).play();
+    const names = CANDIDATES[animationName] ?? [];
+    let action: THREE.AnimationAction | null = null;
+    for (const name of names) {
+      if (actions[name]) {
+        action = actions[name];
+        break;
+      }
+    }
+    if (!action) {
+      action =
+        actions.Idle ??
+        actions.idle ??
+        Object.values(actions).find((a): a is THREE.AnimationAction => Boolean(a)) ??
+        null;
+    }
+    if (!action) return;
+    action.reset().fadeIn(0.2).play();
     return () => {
-      clip.fadeOut(0.15);
+      action!.fadeOut(0.2);
     };
   }, [actions, animationName]);
 

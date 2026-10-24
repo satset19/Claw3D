@@ -1,6 +1,6 @@
 import { Billboard, Text } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { memo, useMemo, useRef } from "react";
+import { memo, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { createDefaultAgentAvatarProfile } from "@/lib/avatars/profile";
 import { getAvatarBodyShape } from "@/lib/avatars/bodyShape";
@@ -106,11 +106,16 @@ export const AgentModel = memo(function AgentModel({
     [agentId, appearance],
   );
 
+  const [agentStateLabel, setAgentStateLabel] = useState<string>("standing");
+
   useFrame(() => {
     const agent =
       agentLookupRef?.current?.get(agentId) ??
       agentsRef.current?.find((candidate) => candidate.id === agentId);
     if (!agent || !groupRef.current) return;
+    if (agent.state !== agentStateLabel) {
+      setAgentStateLabel(agent.state);
+    }
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
     pos.current.set(wx, 0, wz);
@@ -706,7 +711,19 @@ export const AgentModel = memo(function AgentModel({
       }}
     >
       {presetModelUrl ? (
-        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={0.9} />
+        <AgentAvatarGlbModel
+          modelUrl={presetModelUrl}
+          targetHeight={0.9}
+          animationName={
+            agentStateLabel === "walking"
+              ? "walk"
+              : agentStateLabel === "dancing"
+                ? "special"
+                : agentStateLabel === "working_out"
+                  ? "attack"
+                  : "idle"
+          }
+        />
       ) : (
         <>
       <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
