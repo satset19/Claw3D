@@ -162,9 +162,9 @@
     "semantic_hash": ""
   },
   "server/hermes-gateway-adapter.js": {
-    "mtime": 1792856529.029822,
-    "seen": 1792862681.5877051,
-    "ast_hash": "30f9cccc92ac2e69773daad59a438205",
+    "mtime": 1792865864.7266297,
+    "seen": 1792866754.4707322,
+    "ast_hash": "024d5b0dfe2940d1d47f1a206d64daca",
     "semantic_hash": ""
   },
   "server/index.js": {
@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792862193.5648453,
-    "seen": 1792862681.5878735,
-    "ast_hash": "d3c2a8f2994c45ffdcb13bdecceb3095",
+    "mtime": 1792866683.6487641,
+    "seen": 1792866754.4709263,
+    "ast_hash": "900c44a1efd2bf23eb2e2754e739d5e7",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1350,9 +1350,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792862193.5648453,
-    "seen": 1792862681.5884058,
-    "ast_hash": "2000250b919a7f35c54758ecc88f4fbe",
+    "mtime": 1792866683.6497643,
+    "seen": 1792866754.4716449,
+    "ast_hash": "eb713ee9cb693aff90649de82557da6b",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -3525,6 +3525,48 @@
     "mtime": 1792856529.027822,
     "seen": 1792862681.5895793,
     "ast_hash": "2b419e9fc5faf3d235f936cdf70c158b",
+    "semantic_hash": ""
+  },
+  "scripts/avatars/export_blend_to_glb.py": {
+    "mtime": 1792865572.9836485,
+    "seen": 1792866754.4706883,
+    "ast_hash": "f1b51205e087b3980b407e67f35aa25d",
+    "semantic_hash": ""
+  },
+  "src/features/agents/components/avatar3d/AvatarMaleModel.tsx": {
+    "mtime": 1792866683.6707647,
+    "seen": 1792866754.471049,
+    "ast_hash": "5a5d7ae38c770fa30b0060e229d82cc3",
+    "semantic_hash": ""
+  },
+  "src/lib/avatars/avatarModel.ts": {
+    "mtime": 1792866683.6717646,
+    "seen": 1792866754.4717877,
+    "ast_hash": "da30f5b74c816e271210353d7024a008",
+    "semantic_hash": ""
+  },
+  "tests/unit/avatarModel.test.ts": {
+    "mtime": 1792866683.6717646,
+    "seen": 1792866754.472568,
+    "ast_hash": "f7dda91c72797ed53c0925ee46444d77",
+    "semantic_hash": ""
+  },
+  "wsclient.mjs": {
+    "mtime": 1792865691.5125031,
+    "seen": 1792866754.4736457,
+    "ast_hash": "027a643d3fd30e6634378d3859187bc3",
+    "semantic_hash": ""
+  },
+  "wsset.mjs": {
+    "mtime": 1792865704.3558106,
+    "seen": 1792866754.4736555,
+    "ast_hash": "d1cc9da1493e6c6ab40d03f1f92c8cda",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_000000-claw3d-male-avatar-glb.md": {
+    "mtime": 1792865189.820567,
+    "seen": 1792866754.4736843,
+    "ast_hash": "63dcd5c8e63ecdcaeb42c6ca7eceb119",
     "semantic_hash": ""
   }
 }
