@@ -924,9 +924,9 @@
     "semantic_hash": ""
   },
   "src/features/office/components/OfficeFloorNav.tsx": {
-    "mtime": 1792856529.0548227,
-    "seen": 1792862681.5881085,
-    "ast_hash": "1226ec2e0ef6bc3631d307424f1288ed",
+    "mtime": 1792874666.6256979,
+    "seen": 1792874911.2409735,
+    "ast_hash": "fcc397cd1f3ff3c061c0045e6706f606",
     "semantic_hash": ""
   },
   "src/features/office/components/OfficePhaserCanvas.tsx": {
@@ -3180,9 +3180,9 @@
     "semantic_hash": ""
   },
   "vitest.config.ts": {
-    "mtime": 1792856529.1328242,
-    "seen": 1792862681.5893404,
-    "ast_hash": "555511c47faa5d6a475c7bda64f627ba",
+    "mtime": 1792874557.4341667,
+    "seen": 1792874911.2425792,
+    "ast_hash": "9befee032d9d60e7b3c0eef8726ae76b",
     "semantic_hash": ""
   },
   ".github/ISSUE_TEMPLATE/bug_report.md": {
@@ -3549,6 +3549,18 @@
     "mtime": 1792869762.9238675,
     "seen": 1792870173.5438867,
     "ast_hash": "695a6720e7df6b81436f5c2f297dc5bd",
+    "semantic_hash": ""
+  },
+  "tests/unit/officeFloorNavAutohide.test.tsx": {
+    "mtime": 1792874695.9813783,
+    "seen": 1792874911.242268,
+    "ast_hash": "249be5f2e1699cbaee0c67aaef77c355",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_033617-office-floor-nav-autohide.md": {
+    "mtime": 1792874247.9539905,
+    "seen": 1792874911.2426078,
+    "ast_hash": "595fbd8fe2b7f4594b9b687e8479bbdf",
     "semantic_hash": ""
   }
 }
