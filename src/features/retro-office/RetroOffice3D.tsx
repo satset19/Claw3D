@@ -789,14 +789,24 @@ const ReadOnlyFurnitureClone = memo(function ReadOnlyFurnitureClone({
   );
 });
 
-function AdaptiveDprController() {
+// Never render below 1.0x: sub-native DPR is upscaled by the browser and
+// reads as blur, most visibly when zoomed out (many small objects on screen).
+// The controller only trades between native and supersampled resolution.
+function AdaptiveDprController({
+  minDpr = 1,
+  maxDpr = 2,
+}: {
+  minDpr?: number;
+  maxDpr?: number;
+}) {
   const { gl, setDpr } = useThree();
   const currentDprRef = useRef(1.25);
   const frameCounterRef = useRef(0);
   const avgDeltaRef = useRef(1 / 60);
 
   useEffect(() => {
-    const initialDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const ceiling = Math.max(minDpr, Math.min(window.devicePixelRatio || 1, maxDpr));
+    const initialDpr = ceiling;
     currentDprRef.current = initialDpr;
     setDpr(initialDpr);
     const handleVisibilityChange = () => {
@@ -805,7 +815,7 @@ function AdaptiveDprController() {
         setDpr(0.85);
         return;
       }
-      const restoredDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const restoredDpr = ceiling;
       currentDprRef.current = restoredDpr;
       setDpr(restoredDpr);
     };
@@ -813,7 +823,7 @@ function AdaptiveDprController() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [setDpr]);
+  }, [setDpr, minDpr, maxDpr]);
 
   useFrame((_, delta) => {
     if (document.visibilityState !== "visible") return;
@@ -822,13 +832,12 @@ function AdaptiveDprController() {
     if (frameCounterRef.current < 45) return;
     frameCounterRef.current = 0;
 
-    const maxDpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    const minDpr = 0.85;
+    const ceiling = Math.max(minDpr, Math.min(window.devicePixelRatio || 1, maxDpr));
     let nextDpr = currentDprRef.current;
     if (avgDeltaRef.current > 1 / 42) {
       nextDpr = Math.max(minDpr, currentDprRef.current - 0.1);
     } else if (avgDeltaRef.current < 1 / 57) {
-      nextDpr = Math.min(maxDpr, currentDprRef.current + 0.05);
+      nextDpr = Math.min(ceiling, currentDprRef.current + 0.05);
     }
     if (Math.abs(nextDpr - currentDprRef.current) < 0.025) return;
     currentDprRef.current = nextDpr;
@@ -2557,6 +2566,42 @@ export function RetroOffice3D({
   } | null>(null);
   const [spaceDown, setSpaceDown] = useState(false);
   const [spaceDragging, setSpaceDragging] = useState(false);
+  // WebGL context-lost recovery: when the GPU drops our WebGL context (VRAM
+  // pressure, background tab throttling, driver reset) R3F cannot restore the
+  // scene graph on its own, all textures/geometries/shaders become invalid.
+  // We surface a banner so the user can trigger a clean reload instead of
+  // staring at a frozen loading screen.
+  const [webglContextLost, setWebglContextLost] = useState(false);
+  // Low quality mode: strip antialias/shadows/dpr headroom when we detect we
+  // are running on a software or weak GPU (e.g. SwiftShader inside a VM) or
+  // after repeated context-loss events. Flag persists via localStorage so the
+  // next reload stays degraded. One-way switch: once low, stays low until the
+  // user clears localStorage.
+  const [lowQualityMode] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      if (window.localStorage.getItem("claw3d:lowGpu:v2") === "1") return true;
+      if (new URLSearchParams(window.location.search).get("lowgpu") === "1") return true;
+    } catch { /* storage disabled */ }
+    // Probe renderer string via a throwaway canvas. SwiftShader / Mesa llvmpipe
+    // means we are on CPU; drop quality immediately to avoid first-paint stall.
+    try {
+      const probe = document.createElement("canvas");
+      const g = probe.getContext("webgl2") || probe.getContext("webgl");
+      if (g) {
+        const dbg = (g as WebGLRenderingContext).getExtension("WEBGL_debug_renderer_info");
+        if (dbg) {
+          const renderer = String((g as WebGLRenderingContext).getParameter(
+            (dbg as { UNMASKED_RENDERER_WEBGL: number }).UNMASKED_RENDERER_WEBGL,
+          ));
+          if (/SwiftShader|llvmpipe|Software|Microsoft Basic|ANGLE \(Google/i.test(renderer)) {
+            return true;
+          }
+        }
+      }
+    } catch { /* probe failed, assume ok */ }
+    return false;
+  });
   const [standupBoardOpen, setStandupBoardOpen] = useState(false);
   const [activeKanbanUid, setActiveKanbanUid] = useState<string | null>(null);
   const [agentRosterOpen, setAgentRosterOpen] = useState(false);
@@ -5185,23 +5230,66 @@ export function RetroOffice3D({
           <Canvas
             key={canvasResetKey}
             orthographic
-            dpr={[0.85, 1.5]}
+            dpr={lowQualityMode ? [1, 1.25] : [1, 2]}
             camera={{
               position: CAM_POS,
               zoom: cameraZoom,
               near: 0.1,
               far: 100,
             }}
-            shadows={{ type: THREE.PCFShadowMap }}
-            gl={{ antialias: true, powerPreference: "high-performance" }}
+            shadows={lowQualityMode ? false : { type: THREE.PCFShadowMap }}
+            gl={{
+              antialias: !lowQualityMode,
+              powerPreference: lowQualityMode ? "low-power" : "high-performance",
+            }}
             style={{ width: "100%", height: "100%" }}
+            onCreated={({ gl }) => {
+              const canvas = gl.domElement;
+              const handleLost = (event: Event) => {
+                // R3F calls gl.forceContextLoss() when it unmounts a Canvas
+                // (canvasResetKey changes on gateway status / agent count).
+                // That intentional teardown fires on a detached canvas; only a
+                // loss on a canvas still in the document is a real GPU drop.
+                if (!canvas.isConnected) return;
+                // preventDefault is REQUIRED for the browser to attempt
+                // webglcontextrestored later; without it the context stays dead.
+                event.preventDefault();
+                setWebglContextLost(true);
+                // Count recent losses. Two within 10 min means the current
+                // quality tier is unsustainable on this GPU; latch low-power
+                // mode so the next reload comes up degraded.
+                try {
+                  const now = Date.now();
+                  const raw = window.localStorage.getItem("claw3d:lostTimes:v2");
+                  const times: number[] = raw ? JSON.parse(raw) : [];
+                  const recent = times.filter((t) => now - t < 10 * 60 * 1000);
+                  recent.push(now);
+                  window.localStorage.setItem(
+                    "claw3d:lostTimes:v2",
+                    JSON.stringify(recent.slice(-5)),
+                  );
+                  if (recent.length >= 2 && !lowQualityMode) {
+                    window.localStorage.setItem("claw3d:lowGpu:v2", "1");
+                  }
+                } catch { /* storage disabled */ }
+              };
+              const handleRestored = () => {
+                // The context is back but R3F's GPU resource cache is now
+                // stale (dead texture/geometry/shader handles). The safe path
+                // is a full reload; the banner stays visible so the user
+                // triggers it explicitly instead of us reloading mid-session.
+                return;
+              };
+              canvas.addEventListener("webglcontextlost", handleLost, false);
+              canvas.addEventListener("webglcontextrestored", handleRestored, false);
+            }}
             onPointerUp={() => {
               if (drag.kind === "moving") setDrag({ kind: "idle" });
             }}
           >
             {/* Ensure camera looks at the active office target after mount. */}
             <CameraRig target={cameraTarget} />
-            <AdaptiveDprController />
+            <AdaptiveDprController minDpr={1} maxDpr={lowQualityMode ? 1.25 : 2} />
 
             {/* Orbit / pan / zoom controls — disabled while follow cam is active or while editing furniture. */}
             <OrbitControls
@@ -5830,6 +5918,64 @@ export function RetroOffice3D({
           </Canvas>
         ) : null}
       </div>
+
+      {webglContextLost ? (
+        <div
+          className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          role="alertdialog"
+          aria-label="WebGL context lost"
+        >
+          <div className="max-w-sm rounded-lg border border-amber-500/40 bg-neutral-900 p-5 text-center shadow-xl">
+            <div className="text-sm font-semibold text-amber-300">
+              GPU connection lost
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-neutral-300">
+              The browser dropped the 3D rendering context (usually VRAM
+              pressure, a backgrounded tab, or a driver reset).{" "}
+              {lowQualityMode
+                ? "Already running in low-quality mode. If this keeps happening, your GPU may be unable to run the office at all."
+                : "Reload to restore, or switch to low-quality mode (no shadows, no antialias) if this keeps happening."}
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="w-full rounded-md bg-amber-500 px-3 py-2 text-xs font-semibold text-black hover:bg-amber-400"
+              >
+                Reload office
+              </button>
+              {!lowQualityMode ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      window.localStorage.setItem("claw3d:lowGpu:v2", "1");
+                    } catch { /* storage disabled */ }
+                    window.location.reload();
+                  }}
+                  className="w-full rounded-md border border-amber-500/50 bg-transparent px-3 py-2 text-xs font-semibold text-amber-300 hover:bg-amber-500/10"
+                >
+                  Reload in low-quality mode
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      window.localStorage.removeItem("claw3d:lowGpu:v2");
+                      window.localStorage.removeItem("claw3d:lostTimes:v2");
+                    } catch { /* storage disabled */ }
+                    window.location.reload();
+                  }}
+                  className="w-full rounded-md border border-neutral-600 bg-transparent px-3 py-2 text-xs font-semibold text-neutral-300 hover:bg-neutral-800"
+                >
+                  Try full quality again
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {/* New Idea 2: Camera preset buttons — top left. */}
       {!readOnly && !immersiveOverlayActive ? (

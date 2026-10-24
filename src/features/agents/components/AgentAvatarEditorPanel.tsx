@@ -5,6 +5,7 @@ import { RefreshCcw, Shuffle } from "lucide-react";
 import {
   AGENT_AVATAR_BOTTOM_STYLE_OPTIONS,
   AGENT_AVATAR_CLOTHING_COLOR_OPTIONS,
+  AGENT_AVATAR_GENDER_OPTIONS,
   AGENT_AVATAR_HAIR_COLOR_OPTIONS,
   AGENT_AVATAR_HAIR_STYLE_OPTIONS,
   AGENT_AVATAR_HAT_STYLE_OPTIONS,
@@ -152,6 +153,37 @@ export const AgentAvatarEditorPanel = forwardRef<
           </div>
         ) : null}
         <div className="grid gap-6 xl:grid-cols-2">
+          <section className="space-y-3 xl:col-span-2">
+            <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
+              Gender
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {AGENT_AVATAR_GENDER_OPTIONS.map((option) => {
+                const selected = draft.body.gender === option.id;
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    aria-pressed={selected}
+                    className={`${pillClassName} ${
+                      selected
+                        ? "border-primary bg-primary/15 text-foreground"
+                        : "border-border/50 bg-muted/30 text-muted-foreground"
+                    }`}
+                    onClick={() =>
+                      setDraft((current) => ({
+                        ...current,
+                        body: { ...current.body, gender: option.id },
+                      }))
+                    }
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
           <section className="space-y-3">
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Skin tone

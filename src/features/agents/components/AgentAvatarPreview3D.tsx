@@ -9,6 +9,13 @@ import {
   createDefaultAgentAvatarProfile,
 } from "@/lib/avatars/profile";
 import { RunningAvatarLoader } from "@/features/agents/components/RunningAvatarLoader";
+import { getAvatarBodyShape } from "@/lib/avatars/bodyShape";
+import {
+  AvatarFeminineHair,
+  AvatarLashes,
+  AvatarLegClothing,
+  AvatarSkirt,
+} from "@/features/agents/components/avatar3d/AvatarGenderParts";
 
 const PreviewFigure = ({
   profile,
@@ -41,6 +48,8 @@ const PreviewFigure = ({
   const accessoryColor = topColor;
   const sleeveColor = profile.clothing.topStyle === "jacket" ? "#dbe4ff" : topColor;
   const cuffColor = profile.clothing.topStyle === "hoodie" ? "#d1d5db" : sleeveColor;
+  const shape = getAvatarBodyShape(profile.body.gender);
+  const bottomStyle = profile.clothing.bottomStyle;
 
   return (
     <group ref={groupRef} position={[0, -0.72, 0]} scale={[1.45, 1.45, 1.45]}>
@@ -59,60 +68,29 @@ const PreviewFigure = ({
       ) : null}
 
       <group position={[-0.05, 0.12, 0]}>
-        {profile.clothing.bottomStyle === "shorts" ? (
-          <>
-            <mesh position={[0, 0.03, 0]}>
-              <boxGeometry args={[0.07, 0.08, 0.08]} />
-              <meshLambertMaterial color={bottomColor} />
-            </mesh>
-            <mesh position={[0, -0.045, 0]}>
-              <boxGeometry args={[0.05, 0.06, 0.05]} />
-              <meshLambertMaterial color={skin} />
-            </mesh>
-          </>
-        ) : (
-          <mesh>
-            <boxGeometry args={[0.07, 0.14, 0.08]} />
-            <meshLambertMaterial color={bottomColor} />
-          </mesh>
-        )}
+        <AvatarLegClothing bottomStyle={bottomStyle} bottomColor={bottomColor} skin={skin} />
         <mesh position={[0, -0.09, 0]}>
           <boxGeometry args={[0.07, 0.05, 0.12]} />
           <meshLambertMaterial color={shoeColor} />
         </mesh>
       </group>
       <group position={[0.05, 0.12, 0]}>
-        {profile.clothing.bottomStyle === "shorts" ? (
-          <>
-            <mesh position={[0, 0.03, 0]}>
-              <boxGeometry args={[0.07, 0.08, 0.08]} />
-              <meshLambertMaterial color={bottomColor} />
-            </mesh>
-            <mesh position={[0, -0.045, 0]}>
-              <boxGeometry args={[0.05, 0.06, 0.05]} />
-              <meshLambertMaterial color={skin} />
-            </mesh>
-          </>
-        ) : (
-          <mesh>
-            <boxGeometry args={[0.07, 0.14, 0.08]} />
-            <meshLambertMaterial color={bottomColor} />
-          </mesh>
-        )}
+        <AvatarLegClothing bottomStyle={bottomStyle} bottomColor={bottomColor} skin={skin} />
         <mesh position={[0, -0.09, 0]}>
           <boxGeometry args={[0.07, 0.05, 0.12]} />
           <meshLambertMaterial color={shoeColor} />
         </mesh>
       </group>
+      {bottomStyle === "skirt" ? <AvatarSkirt color={bottomColor} y={0.15} /> : null}
 
       <mesh position={[0, 0.3, 0]}>
-        <boxGeometry args={[0.2, 0.22, 0.1]} />
+        <boxGeometry args={[0.2 * shape.torsoWidthScale, 0.22, 0.1 * shape.torsoDepthScale]} />
         <meshLambertMaterial color={topColor} />
       </mesh>
       {profile.clothing.topStyle === "hoodie" ? (
         <>
           <mesh position={[0, 0.37, -0.045]}>
-            <boxGeometry args={[0.18, 0.1, 0.03]} />
+            <boxGeometry args={[0.18 * shape.torsoWidthScale, 0.1, 0.03]} />
             <meshLambertMaterial color={topColor} />
           </mesh>
           <mesh position={[0, 0.23, 0.056]}>
@@ -124,7 +102,7 @@ const PreviewFigure = ({
       {profile.clothing.topStyle === "jacket" ? (
         <>
           <mesh position={[0, 0.3, 0.056]}>
-            <boxGeometry args={[0.202, 0.23, 0.012]} />
+            <boxGeometry args={[0.202 * shape.torsoWidthScale, 0.23, 0.012]} />
             <meshLambertMaterial color="#1f2937" />
           </mesh>
           <mesh position={[0, 0.3, 0.063]}>
@@ -134,7 +112,7 @@ const PreviewFigure = ({
         </>
       ) : null}
 
-      <group position={[-0.13, 0.3, 0]}>
+      <group position={[-0.13 * shape.armOffsetScale, 0.3, 0]}>
         <mesh position={[0, -0.08, 0]}>
           <boxGeometry args={[0.06, 0.16, 0.06]} />
           <meshLambertMaterial color={sleeveColor} />
@@ -150,7 +128,7 @@ const PreviewFigure = ({
           <meshLambertMaterial color={skin} />
         </mesh>
       </group>
-      <group position={[0.13, 0.3, 0]}>
+      <group position={[0.13 * shape.armOffsetScale, 0.3, 0]}>
         <mesh position={[0, -0.08, 0]}>
           <boxGeometry args={[0.06, 0.16, 0.06]} />
           <meshLambertMaterial color={sleeveColor} />
@@ -226,6 +204,12 @@ const PreviewFigure = ({
           </mesh>
         </>
       ) : null}
+      <AvatarFeminineHair
+        style={profile.hair.style}
+        color={hairColor}
+        headY={0.5}
+        headSize={0.17}
+      />
 
       {profile.accessories.hatStyle === "cap" ? (
         <>
@@ -287,9 +271,10 @@ const PreviewFigure = ({
           </mesh>
         </>
       ) : null}
+      {shape.showLashes ? <AvatarLashes eyeY={0.505} faceZ={0.078} /> : null}
       <mesh position={[0, 0.46, 0.079]}>
         <boxGeometry args={[0.05, 0.014, 0.01]} />
-        <meshBasicMaterial color="#9c4a4a" />
+        <meshBasicMaterial color={shape.mouthColor} />
       </mesh>
     </group>
   );

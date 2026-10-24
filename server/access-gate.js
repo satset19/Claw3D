@@ -105,6 +105,35 @@ function createAccessGate(options) {
 
   const handleHttp = (req, res) => {
     if (!enabled) return false;
+    let url;
+    try {
+      url = new URL(String(req.url || "/"), "http://localhost");
+    } catch {
+      url = null;
+    }
+    const queryToken = url?.searchParams.get(cookieName);
+    if (queryToken !== null && queryToken !== undefined) {
+      const ip = resolveClientIp(req);
+      if (rateLimiter.isLimited(ip)) {
+        res.statusCode = 429;
+        res.setHeader("Content-Type", "text/plain");
+        res.end("Too many failed studio access attempts. Wait a minute and retry.");
+        return true;
+      }
+      if (safeCompare(queryToken, token)) {
+        rateLimiter.reset(ip);
+        url.searchParams.delete(cookieName);
+        res.statusCode = 302;
+        res.setHeader(
+          "Set-Cookie",
+          `${cookieName}=${token}; Path=/; Max-Age=31536000; HttpOnly; Secure; SameSite=Lax`
+        );
+        res.setHeader("Location", `${url.pathname}${url.search}` || "/");
+        res.end();
+        return true;
+      }
+      rateLimiter.recordFailure(ip);
+    }
     const auth = getAuthState(req);
     if (!auth.authorized) {
       const statusCode = auth.limited ? 429 : 401;
