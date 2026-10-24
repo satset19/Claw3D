@@ -35,6 +35,7 @@ export type AgentAvatarProfile = {
     hatStyle: AgentAvatarHatStyle;
     backpack: boolean;
   };
+  imageUrl?: string | null;
 };
 
 type ColorOption = {
@@ -141,6 +142,13 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const coerceString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 
+const resolveImageUrl = (value: unknown): string | null => {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.startsWith("/avatars/") ? trimmed : null;
+};
+
 const hashSeed = (seed: string) => {
   let hash = 2166136261;
   for (let index = 0; index < seed.length; index += 1) {
@@ -209,6 +217,7 @@ export const createAgentAvatarProfileFromSeed = (seed: string): AgentAvatarProfi
       hatStyle,
       backpack: Boolean((hash >>> 21) % 2),
     },
+    imageUrl: null,
   };
 };
 
@@ -303,5 +312,6 @@ export const normalizeAgentAvatarProfile = (
           ? accessories.backpack
           : baseProfile.accessories.backpack,
     },
+    imageUrl: resolveImageUrl(value.imageUrl),
   };
 };

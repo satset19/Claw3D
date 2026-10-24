@@ -16,6 +16,7 @@ import {
   createDefaultAgentAvatarProfile,
 } from "@/lib/avatars/profile";
 import { AgentAvatarPreview3D } from "@/features/agents/components/AgentAvatarPreview3D";
+import { AnimePresetPicker } from "@/features/agents/components/AnimePresetPicker";
 import { randomUUID } from "@/lib/uuid";
 
 export type AgentAvatarEditorPanelProps = {
@@ -153,6 +154,20 @@ export const AgentAvatarEditorPanel = forwardRef<
           </div>
         ) : null}
         <div className="grid gap-6 xl:grid-cols-2">
+          <section className="space-y-3 xl:col-span-2">
+            <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
+              Preset Characters
+            </h3>
+            <AnimePresetPicker
+              selectedUrl={draft.imageUrl ?? null}
+              onSelect={(url) =>
+                setDraft((current) => ({ ...current, imageUrl: url }))
+              }
+            />
+            <p className="text-[10px] text-muted-foreground/80">
+              Anime presets by Lisa Wischofsky (DiceBear lorelei, CC0). Pick a preset or keep Procedural to use the sliders below.
+            </p>
+          </section>
           <section className="space-y-3 xl:col-span-2">
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Gender
