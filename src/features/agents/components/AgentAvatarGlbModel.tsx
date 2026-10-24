@@ -49,16 +49,26 @@ export const AgentAvatarGlbModel = ({
       const mesh = obj as THREE.Mesh;
       if (!mesh.isMesh) return;
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-      for (const m of mats) {
-        const std = m as THREE.MeshStandardMaterial;
-        if (std.map) {
-          std.map.colorSpace = THREE.SRGBColorSpace;
-          std.map.needsUpdate = true;
+      const converted = mats.map((m) => {
+        const src = m as THREE.MeshStandardMaterial;
+        const map = src.map ?? null;
+        if (map) {
+          map.colorSpace = THREE.SRGBColorSpace;
+          map.needsUpdate = true;
         }
-        if ("roughness" in std) std.roughness = 0.85;
-        if ("metalness" in std) std.metalness = 0;
-        std.needsUpdate = true;
-      }
+        const basic = new THREE.MeshBasicMaterial({
+          map,
+          color: map ? 0xffffff : (src.color ?? new THREE.Color(0xcccccc)),
+          side: src.side ?? THREE.FrontSide,
+          transparent: src.transparent,
+          opacity: src.opacity ?? 1,
+          alphaTest: src.alphaTest ?? 0,
+          skinning: true,
+          morphTargets: true,
+        } as THREE.MeshBasicMaterialParameters);
+        return basic;
+      });
+      mesh.material = Array.isArray(mesh.material) ? converted : converted[0];
     });
 
     const box = new THREE.Box3().setFromObject(clonedScene);
