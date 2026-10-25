@@ -21,22 +21,14 @@ import { findAnimePresetModelUrl } from "@/lib/avatars/animePresets";
 
 const PreviewFigure = ({
   profile,
-  onFirstFrame,
 }: {
   profile: AgentAvatarProfile;
-  onFirstFrame: () => void;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const reportedReadyRef = useRef(false);
-
-  useEffect(() => {
-    reportedReadyRef.current = false;
-  }, [profile]);
 
   useFrame((state) => {
-    if (!reportedReadyRef.current) {
-      reportedReadyRef.current = true;
-      onFirstFrame();
+    if (typeof window !== "undefined") {
+      (window as any).__previewState = { scene: state.scene, camera: state.camera };
     }
     if (!groupRef.current) return;
     groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.45) * 0.35 + 0.25;
@@ -45,23 +37,25 @@ const PreviewFigure = ({
   const presetModelUrl = findAnimePresetModelUrl(profile.imageUrl);
   if (presetModelUrl) {
     return (
-      <group ref={groupRef} position={[0, -0.72, 0]}>
+      <group ref={groupRef} position={[0, 0, 0]}>
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
-          <circleGeometry args={[0.32, 24]} />
+          <circleGeometry args={[0.28, 24]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.16} />
         </mesh>
-        <AgentAvatarGlbModel
-          modelUrl={presetModelUrl}
-          animationName="idle"
-          targetHeight={1.6}
-          colors={{
-            skin: profile.body.skinTone,
-            hair: profile.hair.color,
-            top: profile.clothing.topColor,
-            bottom: profile.clothing.bottomColor,
-            shoes: profile.clothing.shoesColor,
-          }}
-        />
+        <Suspense fallback={null}>
+          <AgentAvatarGlbModel
+            modelUrl={presetModelUrl}
+            animationName="idle"
+            targetHeight={1.2}
+            colors={{
+              skin: profile.body.skinTone,
+              hair: profile.hair.color,
+              top: profile.clothing.topColor,
+              bottom: profile.clothing.bottomColor,
+              shoes: profile.clothing.shoesColor,
+            }}
+          />
+        </Suspense>
       </group>
     );
   }
@@ -78,7 +72,7 @@ const PreviewFigure = ({
   const bottomStyle = profile.clothing.bottomStyle;
 
   return (
-    <group ref={groupRef} position={[0, -0.72, 0]} scale={[1.45, 1.45, 1.45]}>
+    <group ref={groupRef} position={[0, 0, 0]} scale={[1.4, 1.4, 1.4]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]}>
         <circleGeometry args={[0.22, 24]} />
         <meshBasicMaterial color="#000000" transparent opacity={0.16} />
@@ -317,32 +311,29 @@ export const AgentAvatarPreview3D = ({
     () => profile ?? createDefaultAgentAvatarProfile("preview"),
     [profile]
   );
-  const profileKey = useMemo(() => JSON.stringify(resolvedProfile), [resolvedProfile]);
-  const [readyProfileKey, setReadyProfileKey] = useState<string | null>(null);
-  const isReady = readyProfileKey === profileKey;
-
+  const avatarSwitchKey = useMemo(
+    () => `${resolvedProfile.imageUrl ?? "procedural"}_${resolvedProfile.body.gender}`,
+    [resolvedProfile.imageUrl, resolvedProfile.body.gender]
+  );
   return (
     <div className={`relative ${className}`}>
-      {!isReady ? (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#070b16] text-white/70">
-          <RunningAvatarLoader size={26} trackWidth={72} label="Loading avatar..." />
-        </div>
-      ) : null}
-      <Canvas camera={{ position: [0, 0.7, 2.5], fov: 34 }}>
+      <Canvas
+        key={avatarSwitchKey}
+        gl={{ preserveDrawingBuffer: true }}
+        camera={{ position: [0, 0.6, 3.2], fov: 34 }}
+      >
         <color attach="background" args={["#070b16"]} />
         <ambientLight intensity={1.4} />
         <directionalLight position={[3, 4, 5]} intensity={2.4} />
         <directionalLight position={[-4, 2, 3]} intensity={0.9} color="#89a6ff" />
-        <Suspense fallback={null}>
-          <PreviewFigure
-            profile={resolvedProfile}
-            onFirstFrame={() => {
-              setReadyProfileKey(profileKey);
-            }}
-          />
-        </Suspense>
-        <Environment preset="city" />
-        <OrbitControls enablePan={false} enableZoom={false} maxPolarAngle={1.8} minPolarAngle={1.1} />
+        <PreviewFigure profile={resolvedProfile} />
+        <OrbitControls
+          target={[0, 0.6, 0]}
+          enablePan={false}
+          enableZoom={false}
+          maxPolarAngle={1.8}
+          minPolarAngle={1.1}
+        />
       </Canvas>
     </div>
   );

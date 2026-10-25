@@ -127,14 +127,20 @@ export const AgentAvatarGlbModel = ({
     const size = new THREE.Vector3();
     box.getSize(size);
     const scale = size.y > 0 ? targetHeight / size.y : 1;
-    clonedScene.scale.setScalar(scale);
+    if (size.y > 0 && Number.isFinite(scale)) {
+      clonedScene.scale.setScalar(scale);
+      clonedScene.updateMatrixWorld(true);
 
-    const scaledBox = new THREE.Box3().setFromObject(clonedScene);
-    const center = new THREE.Vector3();
-    scaledBox.getCenter(center);
-    clonedScene.position.x = -center.x;
-    clonedScene.position.z = -center.z;
-    clonedScene.position.y = -scaledBox.min.y;
+      const scaledBox = new THREE.Box3().setFromObject(clonedScene);
+      const center = new THREE.Vector3();
+      scaledBox.getCenter(center);
+      if (Number.isFinite(center.x) && Number.isFinite(scaledBox.min.y)) {
+        clonedScene.position.x = -center.x;
+        clonedScene.position.z = -center.z;
+        clonedScene.position.y = -scaledBox.min.y;
+        clonedScene.updateMatrixWorld(true);
+      }
+    }
   }, [clonedScene, targetHeight]);
 
   useEffect(() => {

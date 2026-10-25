@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792932030.1817276,
-    "seen": 1792932754.0499957,
-    "ast_hash": "f136ed31f9e1de76003e38b2be913a4d",
+    "mtime": 1792940942.7243645,
+    "seen": 1792942424.681502,
+    "ast_hash": "6ebe3f36259c72647d6afe1f178e5628",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -3666,9 +3666,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarGlbModel.tsx": {
-    "mtime": 1792931994.0889096,
-    "seen": 1792932754.049991,
-    "ast_hash": "0dc1c56a800f167c5853665f1f3ad9d6",
+    "mtime": 1792937901.9641912,
+    "seen": 1792942424.6814938,
+    "ast_hash": "02da64cb314e5a9cda1828d1067b0834",
     "semantic_hash": ""
   },
   "public/office-assets/models/avatars/manifest.txt": {
