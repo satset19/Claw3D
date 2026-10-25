@@ -1,17 +1,17 @@
 # Graph Report - claw3d  (2026-10-25)
 
 ## Corpus Check
-- 609 files · ~453,733 words
+- 610 files · ~453,896 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 37 file(s) not represented in the graph (top: .glb 25, (none) 6, .service 2)
 
 ## Summary
-- 5283 nodes · 12374 edges · 193 communities (182 shown, 11 thin omitted)
+- 5286 nodes · 12377 edges · 204 communities (192 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 201 edges (avg confidence: 0.88)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5a6da05d`
+- Built from commit: `19df0f6c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -25,22 +25,22 @@
 - GatewayClient.ts
 - hermes-gateway-adapter.js
 - RetroOffice3D.tsx
-- message-extract.ts
+- gatewayRuntimeEventHandler.ts
 - next
 - useUsageAnalytics.ts
 - presentation.ts
 - agentConfig.ts
 - AgentAvatarGlbModel
-- district.ts
+- cameraLighting.tsx
 - runtime/types.ts
 - chatSendOperation.ts
 - Permissions, Sandboxing, and Workspaces (Studio -> Gateway -> PI)
 - furnitureDefaults.ts
 - agents.tsx
-- settings.ts
+- vitest
 - claw3doctor.mjs
 - agentPermissionsOperation.ts
-- AgentState
+- execApprovalLifecycleWorkflow.ts
 - GithubImmersiveScreen.tsx
 - remove-gateway.ts
 - standup/store.ts
@@ -73,7 +73,7 @@
 - three
 - shared-store.ts
 - profile.ts
-- cleanup-ux-artifacts.mjs
+- runtimeEventBridge.ts
 - constants.ts
 - triggers.ts
 - Hierarchy And Teams Spec
@@ -86,7 +86,7 @@
 - GatewayResponseError
 - schema.ts
 - normalizeCommandText
-- execApprovalRunControlOperation.ts
+- useAgentSettingsMutationController.ts
 - StudioSettingsCoordinator
 - models.ts
 - Claw3Doctor Spec
@@ -102,7 +102,7 @@
 - Office Systems Roadmap
 - OfficePhaserCanvas.tsx
 - Katalog Referensi Warna Avatar 3D GLB
-- AgentState
+- useRuntimeSyncController.ts
 - settingsRouteWorkflow.ts
 - CustomRuntimeProvider
 - Step-by-step tasks
@@ -112,18 +112,18 @@
 - SmsBoothImmersiveScreen.tsx
 - execApprovalControlLoopWorkflow.ts
 - agentFleetHydrationDerivation.ts
-- agent-state/route.ts
+- message-extract.ts
 - tasks/types.ts
 - PI + Chat Streaming (Studio Side)
-- AnalyticsPanel.tsx
+- agents/agentFiles.ts
 - agentMessaging.ts
 - Step-by-step tasks
-- remote-message/route.ts
+- presence.ts
 - Custom Runtime Provider Spec
 - AgentSettingsPanel.tsx
 - service.ts
 - README.md
-- coerceString
+- remove/route.ts
 - Universal Backend Plan
 - GatewayClient
 - pathfinding.ts
@@ -131,14 +131,14 @@
 - Custom Provider Reference
 - lucide-react
 - useOfficeBuilderStore.ts
-- nodeGatewayClient.ts
+- CompanyBuilderModal.tsx
 - Code Documentation
 - components.json
-- updateGatewayAgentOverrides
+- fleetLifecycleWorkflow.ts
 - Skills in OpenClaw + Claw3D
-- createAgentBootstrapOperation.ts
+- deskMonitor.ts
 - execApprovals.ts
-- task-store/route.ts
+- deleteAgentOperation.ts
 - compilerOptions
 - layout/route.ts
 - specialLatestUpdateOperation.ts
@@ -149,26 +149,26 @@
 - studioRoute.ts
 - ref_node_path
 - SkillsMarketplacePanel.tsx
-- vitest
+- createDefaultAgentAvatarProfile
 - Hermes Gateway Adapter
 - Agent Bus Integration
 - scripts
 - PR89.md
 - call/mock.ts
 - voiceReply/provider.ts
-- message-extract.ts
-- useConfigMutationQueue.ts
+- chatItems.ts
+- useRunLog.ts
 - taskBoardState.ts
 - animePresets.ts
 - Creating Skills
 - Runtime Profiles
 - useOfficeStandupController.ts
-- skills/types.ts
-- useStudioVoiceRepliesPreference.ts
+- install-gateway.ts
+- loadPullRequestDetail
 - RunningAvatarLoader
-- Code Of Conduct
+- useChatInteractionController.test.ts
 - Critical Fixes
-- approvals/types.ts
+- gateway.ts
 - AmbienceSystem.ts
 - Claw3D Vision
 - Task Manager
@@ -179,36 +179,46 @@
 - loadStudioSettings
 - GatewayBrowserClient
 - ws
-- 9) Troubleshooting
+- janitors.ts
 - gatewayClient.reconnect-recovery.test.ts
 - Cursor Cloud specific instructions
 - OpenClaw Gateway Skill Contract
 - Roadmap
-- smoke-dev-server.mjs
+- layout.tsx
 - pathfinding.ts
 - contact_links
 - shared-store-client.ts
-- GatewayBrowserClient
+- useVoiceRecorder.ts
 - Contributing
 - Step-by-step tasks
 - useChatInteractionController.ts
 - @testing-library/jest-dom
 - multiavatar.ts
+- dom/index.ts
 - custom/route.ts
 - multiavatar
 - .github/SECURITY.md
 - postcss.config.mjs
+- janitorReset.ts
+- useRuntimeSyncController.test.ts
+- useOnboardingState.ts
+- useStudioOfficePreference.ts
+- studioSettings.test.ts
+- rewriteMediaLinesToMarkdown
+- createGatewayAgent
 - index.js
 - deploy-local.sh
 - verify-claw3d.sh
 - Top-Level Code Map
+- useFinalizedAssistantReplyListener.ts
+- Support
 - StudioGatewayAdapterType
-- glbPaletteTexture.ts
+- livePatchQueue.ts
 - settings.ts
 - ref_node_https
 
 ## God Nodes (most connected - your core abstractions)
-1. `vitest` - 190 edges
+1. `vitest` - 191 edges
 2. `OfficeScreen()` - 117 edges
 3. `react` - 116 edges
 4. `AgentState` - 98 edges
@@ -222,107 +232,107 @@
 ## Surprising Connections (you probably didn't know these)
 - `Task 5 — Update Renderer 3D GLB dengan Palette Tinting & Tone Mapping` --references--> `AgentAvatarGlbModel()`  [INFERRED]
   .hermes/plans/2026-10-25_100000-claw3d-3d-avatar-glb-color-references.md → src/features/agents/components/AgentAvatarGlbModel.tsx
+- `Architecture / proposed approach` --references--> `AgentAvatarPreview3D()`  [INFERRED]
+  .hermes/plans/2026-10-25_000000-claw3d-male-avatar-glb.md → src/features/agents/components/AgentAvatarPreview3D.tsx
+- `Goal` --references--> `AgentAvatarPreview3D()`  [INFERRED]
+  .hermes/plans/2026-10-25_000000-claw3d-male-avatar-glb.md → src/features/agents/components/AgentAvatarPreview3D.tsx
 - `Task 6 — Hapus Reset `imageUrl: null` pada Kontrol Warna di `AgentAvatarEditorPanel.tsx`` --references--> `AnimePresetPicker()`  [INFERRED]
   .hermes/plans/2026-10-25_110500-claw3d-3d-avatar-custom-color.md → src/features/agents/components/AnimePresetPicker.tsx
-- `Task 9 — Hook ke `AgentModel` di scene (`agents.tsx`)` --references--> `AvatarFeminineHair()`  [INFERRED]
+- `Current context / assumptions` --references--> `AvatarFeminineHair()`  [INFERRED]
   .hermes/plans/2026-10-25_000000-claw3d-male-avatar-glb.md → src/features/agents/components/avatar3d/AvatarGenderParts.tsx
-- `Capabilities Permissions Updates` --references--> `updateAgentPermissionsViaStudio()`  [INFERRED]
-  docs/permissions-sandboxing.md → src/features/agents/operations/agentPermissionsOperation.ts
-- `History Sync (Recovery, Load More)` --references--> `buildHistoryLines()`  [INFERRED]
-  docs/pi-chat-streaming.md → src/features/agents/state/runtimeEventBridge.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (193 total, 11 thin omitted)
+## Communities (204 total, 12 thin omitted)
 
 ### Community 0 - "useTaskBoardController.ts"
-Cohesion: 0.16
-Nodes (30): RunRecord, buildActiveRunOptions(), buildCardFromExplicitEvent(), buildCardFromGatewayTask(), buildCardFromSharedTaskRecord(), buildPlaybookCards(), buildStandupSeedCards(), cardTextKey() (+22 more)
+Cohesion: 0.18
+Nodes (27): buildActiveRunOptions(), buildCardFromExplicitEvent(), buildCardFromGatewayTask(), buildCardFromSharedTaskRecord(), buildStandupSeedCards(), cardTextKey(), compareDuplicatePriority(), deriveChatRequestCard() (+19 more)
 
 ### Community 1 - "AgentsPageScreen.tsx"
-Cohesion: 0.10
-Nodes (29): planAwaitingUserInputPatches(), planPendingPruneDelay(), planPrunedPendingState(), runPauseRunForExecApprovalOperation(), runResolveExecApprovalOperation(), cn(), EmptyStatePanel(), EmptyStatePanelProps (+21 more)
+Cohesion: 0.06
+Nodes (45): planAwaitingUserInputPatches(), planPendingPruneDelay(), planPrunedPendingState(), runPauseRunForExecApprovalOperation(), runResolveExecApprovalOperation(), AgentCreateModal(), AgentCreateModalContent(), AgentCreateModalProps (+37 more)
 
 ### Community 2 - "useAgentSettingsMutationController.ts"
-Cohesion: 0.06
-Nodes (61): CRON_ACTION_BUSY_MESSAGE, CronBusyState, CronCreateDeps, isCronActionBusy(), performCronCreateFlow(), resolveCreateAgentId(), resolveCreateErrorMessage(), deleteAgentRecordViaStudio() (+53 more)
+Cohesion: 0.09
+Nodes (38): CRON_ACTION_BUSY_MESSAGE, CronBusyState, CronCreateDeps, isCronActionBusy(), performCronCreateFlow(), resolveCreateAgentId(), resolveCreateErrorMessage(), formatRelativeDateTime() (+30 more)
 
 ### Community 3 - "toWorld"
-Cohesion: 0.11
-Nodes (49): DOOR_THICKNESS, SCALE, WALL_THICKNESS, getItemBaseSize(), getItemRotationRadians(), resolveItemTypeKey(), toWorld(), buildFurnitureItemMatrix() (+41 more)
+Cohesion: 0.10
+Nodes (50): DOOR_LENGTH, DOOR_THICKNESS, SCALE, WALL_THICKNESS, getItemBaseSize(), getItemRotationRadians(), resolveItemTypeKey(), toWorld() (+42 more)
 
 ### Community 4 - "OfficeScreen.tsx"
-Cohesion: 0.04
-Nodes (81): buildGenerateCompanyPlanPrompt(), buildImproveCompanyBriefPrompt(), HQSidebar(), HQSidebarProps, HQSidebarTab, PRIMARY_TABS, TAB_LABELS, formatClockTime() (+73 more)
+Cohesion: 0.05
+Nodes (61): buildGenerateCompanyPlanPrompt(), buildImproveCompanyBriefPrompt(), HQSidebar(), HQSidebarProps, HQSidebarTab, PRIMARY_TABS, TAB_LABELS, formatRelativeTime() (+53 more)
 
 ### Community 5 - "navigation.ts"
-Cohesion: 0.05
-Nodes (59): CANVAS_H, CANVAS_W, DOOR_LENGTH, MIN_WALL_LENGTH, SNAP_GRID, createWallItem(), getItemBounds(), ITEM_FOOTPRINT (+51 more)
+Cohesion: 0.07
+Nodes (44): CANVAS_H, CANVAS_W, SNAP_GRID, getItemBounds(), ITEM_FOOTPRINT, ITEM_METADATA, astar(), buildNavGrid() (+36 more)
 
 ### Community 6 - "GatewayClient.ts"
-Cohesion: 0.07
-Nodes (38): Reconnects And Retries, Studio Settings (Where Gateway URL/Token Come From), GatewayErrorPayload, EventHandler, formatGatewayError(), GapHandler, gatewayDebugLog(), GatewayFrame (+30 more)
+Cohesion: 0.08
+Nodes (35): Reconnects And Retries, Studio Settings (Where Gateway URL/Token Come From), buildAgentMainSessionKey(), EventHandler, formatGatewayError(), GapHandler, gatewayDebugLog(), GatewayFrame (+27 more)
 
 ### Community 7 - "hermes-gateway-adapter.js"
 Cohesion: 0.06
 Nodes (60): activeRuns, activeSendEventFns, ADAPTER_PORT, agentListPayload(), agents, broadcastEvent(), buildDemoReply(), clearHistory() (+52 more)
 
 ### Community 8 - "RetroOffice3D.tsx"
-Cohesion: 0.06
-Nodes (51): SettingsPanel(), Bubble(), PhoneBoothImmersiveScreen(), PhoneCallStep, sourceTone(), StandupImmersiveScreen(), AGENT_RADIUS, BUMP_FREEZE_MS (+43 more)
+Cohesion: 0.05
+Nodes (61): SettingsPanel(), Bubble(), PhoneBoothImmersiveScreen(), PhoneCallStep, ATM_MIGRATION_KEY, GYM_ROOM_MIGRATION_KEY, PHONE_BOOTH_MIGRATION_KEY, PING_PONG_BALL_RADIUS (+53 more)
 
-### Community 9 - "message-extract.ts"
-Cohesion: 0.06
-Nodes (80): createGatewayRuntimeEventHandler(), findAgentByRunId(), GatewayRuntimeEventHandler, GatewayRuntimeEventHandlerDeps, resolveRole(), extractReasoningBody(), hasReasoningSignal(), hasUnclosedThinkingTag() (+72 more)
+### Community 9 - "gatewayRuntimeEventHandler.ts"
+Cohesion: 0.08
+Nodes (55): createGatewayRuntimeEventHandler(), findAgentByRunId(), findAgentBySessionKey(), GatewayRuntimeEventHandler, GatewayRuntimeEventHandlerDeps, resolveRole(), AgentEventPayload, classifyGatewayEventKind() (+47 more)
 
 ### Community 10 - "next"
-Cohesion: 0.13
-Nodes (4): nextConfig, securityHeaders, next, runtime
+Cohesion: 0.09
+Nodes (13): nextConfig, securityHeaders, next, runtime, GET(), isWithinHome(), listPathAutocompleteEntries(), normalizeQuery() (+5 more)
 
 ### Community 11 - "useUsageAnalytics.ts"
-Cohesion: 0.13
-Nodes (34): addTotals(), asArray(), asNumber(), asRecord(), asString(), calculateBudgetAlerts(), CostDailyRow, EMPTY_MESSAGE_COUNTS (+26 more)
+Cohesion: 0.07
+Nodes (62): AnalyticsPanel(), DatePickerField(), formatBudgetInput(), formatDuration(), formatPercent(), openNativeDatePicker(), parseBudgetInput(), StatCard() (+54 more)
 
 ### Community 12 - "presentation.ts"
 Cohesion: 0.08
-Nodes (47): AgentSkillsPanel(), AgentSkillsPanelProps, DISPLAY_CLASSES, DISPLAY_LABELS, FILTERS, resolveHint(), SkillRowFilter, AgentSkillsSetupModal() (+39 more)
+Nodes (46): AgentSkillsPanel(), AgentSkillsPanelProps, DISPLAY_CLASSES, DISPLAY_LABELS, FILTERS, resolveHint(), SkillRowFilter, AgentSkillsSetupModal() (+38 more)
 
 ### Community 13 - "agentConfig.ts"
-Cohesion: 0.07
-Nodes (38): How Studio Chooses the Default Workspace Path, Studio -> Gateway: “Create Agent” End-to-End, AgentHeartbeat, AgentHeartbeatActiveHours, AgentHeartbeatResult, AgentHeartbeatSummary, AgentHeartbeatUpdatePayload, AgentSkillsAccessMode (+30 more)
+Cohesion: 0.09
+Nodes (43): AgentHeartbeat, AgentHeartbeatActiveHours, AgentHeartbeatResult, AgentHeartbeatSummary, AgentHeartbeatUpdatePayload, AgentSkillsAccessMode, applyGatewayConfigPatch(), areStringArraysEqual() (+35 more)
 
 ### Community 14 - "AgentAvatarGlbModel"
-Cohesion: 0.08
-Nodes (26): Architecture / Proposed Approach, Current Context / Assumptions, Goal, Plan: Custom Color Support untuk Avatar 3D di Claw3D, Risks, Tradeoffs, and Open Questions, Step-by-Step Tasks, Task 1 — TDD: Unit Test untuk Glb Palette Texture Generator, Task 2 — Implementasi Modul `glbPaletteTexture.ts` (+18 more)
+Cohesion: 0.07
+Nodes (32): Architecture / Proposed Approach, Current Context / Assumptions, Goal, Plan: Custom Color Support untuk Avatar 3D di Claw3D, Risks, Tradeoffs, and Open Questions, Step-by-Step Tasks, Task 1 — TDD: Unit Test untuk Glb Palette Texture Generator, Task 2 — Implementasi Modul `glbPaletteTexture.ts` (+24 more)
 
-### Community 15 - "district.ts"
-Cohesion: 0.09
-Nodes (31): WORLD_H, WORLD_W, CITY_PATH_ZONE, clampPointToZone(), clampZoneValue(), DISTRICT_CAMERA_POSITION, DISTRICT_CAMERA_TARGET, DISTRICT_CAMERA_ZOOM (+23 more)
+### Community 15 - "cameraLighting.tsx"
+Cohesion: 0.16
+Nodes (14): WORLD_H, WORLD_W, DISTRICT_CAMERA_TARGET, DISTRICT_CAMERA_ZOOM, CAMERA_PRESETS, CameraAnimator(), CameraPreset, DAY_NIGHT_KEYFRAMES (+6 more)
 
 ### Community 16 - "runtime/types.ts"
-Cohesion: 0.06
-Nodes (28): GatewayConnectionState, GatewayConnectOptions, GatewayGapInfo, GatewayStatus, createRuntimeProvider(), DEMO_RUNTIME_CAPABILITIES, DemoRuntimeProvider, HERMES_RUNTIME_CAPABILITIES (+20 more)
+Cohesion: 0.07
+Nodes (20): GatewayClient, GatewayConnectionState, GatewayConnectOptions, GatewayGapInfo, GatewayStatus, parseConnectFailedCloseReason(), createRuntimeProvider(), DemoRuntimeProvider (+12 more)
 
 ### Community 17 - "chatSendOperation.ts"
-Cohesion: 0.09
-Nodes (25): Sending Messages (Browser -> PI via Gateway), extractImmediateAssistantText(), GatewayClientLike, resolveChatSendCompletionMode(), sendChatMessageViaStudio(), SendDispatch, SendDispatchAction, RuntimeAttachment (+17 more)
+Cohesion: 0.11
+Nodes (20): Sending Messages (Browser -> PI via Gateway), extractImmediateAssistantText(), GatewayClientLike, resolveChatSendCompletionMode(), sendChatMessageViaStudio(), SendDispatch, SendDispatchAction, ChatHistoryMessage (+12 more)
 
 ### Community 18 - "Permissions, Sandboxing, and Workspaces (Studio -> Gateway -> PI)"
 Cohesion: 0.11
-Nodes (19): Capabilities Permissions Updates, Debug Checklist (When Something Feels “Wrong”), Glossary, Hard Enforcement: Filesystem Tool Root Guard, Mental Model (First Principles), One-Shot Sandbox Tool Policy Repair, OpenClaw (Upstream): Sandbox Semantics, OpenClaw (Upstream): Tool Availability and `workspaceAccess=ro` (+11 more)
+Nodes (18): Capabilities Permissions Updates, Debug Checklist (When Something Feels “Wrong”), Glossary, Hard Enforcement: Filesystem Tool Root Guard, Mental Model (First Principles), One-Shot Sandbox Tool Policy Repair, OpenClaw (Upstream): Sandbox Semantics, OpenClaw (Upstream): Tool Availability and `workspaceAccess=ro` (+10 more)
 
 ### Community 19 - "furnitureDefaults.ts"
-Cohesion: 0.06
-Nodes (60): ATM_MIGRATION_KEY, GYM_ROOM_MIGRATION_KEY, PHONE_BOOTH_MIGRATION_KEY, QA_LAB_MIGRATION_KEY, SERVER_ROOM_MIGRATION_KEY, SMS_BOOTH_MIGRATION_KEY, STORAGE_KEY, createFurnitureSignature() (+52 more)
+Cohesion: 0.07
+Nodes (51): createFurnitureSignature(), DEFAULT_ART_ROOM_ITEMS, DEFAULT_ATM_MACHINE, DEFAULT_DINING_ITEMS, DEFAULT_FURNITURE, DEFAULT_GYM_ITEMS, DEFAULT_JUKEBOX, DEFAULT_KANBAN_BOARD (+43 more)
 
 ### Community 20 - "agents.tsx"
-Cohesion: 0.12
-Nodes (25): Architecture / proposed approach, Claw3D — Ganti geometri male procedural dengan model GLB dari Drive, Current context / assumptions, Goal, Risks, tradeoffs, open questions, Task 0 — Graphify preflight (read-only), Task 8 — Hook ke `AgentAvatarPreview3D` (editor preview), Tests / validation (+17 more)
+Cohesion: 0.18
+Nodes (19): Task 0 — Graphify preflight (read-only), Task 8 — Hook ke `AgentAvatarPreview3D` (editor preview), AgentAvatarPreview3D(), PreviewFigure(), AvatarFeminineHair(), AvatarLashes(), AvatarLegClothing(), AvatarSkirt() (+11 more)
 
-### Community 21 - "settings.ts"
-Cohesion: 0.13
-Nodes (32): defaultFocusedPreference(), defaultStudioStandupManualEntry(), isRecord(), mergeStudioSettings(), normalizeAnalytics(), normalizeAnalyticsPreference(), normalizeAvatars(), normalizeDeskAssignments() (+24 more)
+### Community 21 - "vitest"
+Cohesion: 0.06
+Nodes (23): react, @testing-library/react, vitest, AgentChatPanel(), HistorySyncCommand, Action, AgentState, AgentStoreContext (+15 more)
 
 ### Community 22 - "claw3doctor.mjs"
 Cohesion: 0.12
@@ -330,31 +340,31 @@ Nodes (44): checkFail(), checkPass(), checkWarn(), detectHermesModelHealth(), de
 
 ### Community 23 - "agentPermissionsOperation.ts"
 Cohesion: 0.16
-Nodes (25): AgentRuntimeConfigContext, coerceStringArray(), ExecutionRoleId, isPermissionsCustom(), isRecord(), resolveAgentPermissionsDraft(), resolveAgentRuntimeConfigContext(), resolveCommandModeFromRole() (+17 more)
+Nodes (27): Runtime Tool Groups Used By Capability Updates, Studio Note: Authority Is No Longer Compiled During Create, Studio: Where “Permissions” Are Chosen, AgentRuntimeConfigContext, coerceStringArray(), ExecutionRoleId, isPermissionsCustom(), isRecord() (+19 more)
 
-### Community 24 - "AgentState"
-Cohesion: 0.14
-Nodes (22): asNonEmptyString(), asOptionalString(), asPositiveTimestamp(), asRecord(), parseExecApprovalRequested(), parseExecApprovalResolved(), RequestedPayload, ResolvedPayload (+14 more)
+### Community 24 - "execApprovalLifecycleWorkflow.ts"
+Cohesion: 0.10
+Nodes (24): asNonEmptyString(), asOptionalString(), asPositiveTimestamp(), asRecord(), parseExecApprovalRequested(), parseExecApprovalResolved(), RequestedPayload, ResolvedPayload (+16 more)
 
 ### Community 25 - "GithubImmersiveScreen.tsx"
-Cohesion: 0.16
-Nodes (19): getDiffLineTone(), GitHubDiffFile, ParsedDiffLine, parseDiffPatch(), FileDiffModal(), FileDiffModalProps, BrowserPreviewState, useBrowserPreview() (+11 more)
+Cohesion: 0.17
+Nodes (18): getDiffLineTone(), GitHubDiffFile, ParsedDiffLine, parseDiffPatch(), FileDiffModal(), FileDiffModalProps, BrowserPreviewState, useBrowserPreview() (+10 more)
 
 ### Community 26 - "remove-gateway.ts"
-Cohesion: 0.28
-Nodes (11): buildSkillRemovalMessage(), escapeForJsonString(), normalizeRequired(), removeSkillViaGatewayAgent(), resolveAllowedRoot(), resolveMainKey(), resolveRemovalWorkspace(), resolveRunId() (+3 more)
+Cohesion: 0.12
+Nodes (24): buildSkillRemovalMessage(), escapeForJsonString(), normalizeRequired(), removeSkillViaGatewayAgent(), resolveAllowedRoot(), resolveMainKey(), resolveRemovalWorkspace(), resolveRunId() (+16 more)
 
 ### Community 27 - "standup/store.ts"
-Cohesion: 0.17
-Nodes (19): GET(), PUT(), runtime, advanceStandupMeeting(), startStandupSpeaker(), updateStandupArrivals(), defaultStore(), ensureDirectory() (+11 more)
+Cohesion: 0.22
+Nodes (14): GET(), defaultStore(), ensureDirectory(), isActiveMeetingStale(), isRecord(), loadActiveStandupMeeting(), loadStandupMeetingStore(), normalizeMeeting() (+6 more)
 
 ### Community 28 - "github.ts"
-Cohesion: 0.13
-Nodes (42): GET(), parsePullRequestNumber(), POST(), ReviewRequestBody, runtime, extractCommandMessage(), getGitHubAuthState(), GitHubAuthState (+34 more)
+Cohesion: 0.16
+Nodes (27): GET(), parsePullRequestNumber(), POST(), ReviewRequestBody, runtime, extractCommandMessage(), getGitHubAuthState(), GitHubAuthState (+19 more)
 
 ### Community 29 - "agents.tsx"
 Cohesion: 0.08
-Nodes (30): @react-three/drei, @react-three/fiber, WALK_ANIM_SPEED, FURNITURE_ROTATION, JanitorActor, OfficeAgent, RenderAgent, FURNITURE_GLB (+22 more)
+Nodes (29): @react-three/drei, @react-three/fiber, WALK_ANIM_SPEED, FURNITURE_ROTATION, OfficeAgent, RenderAgent, FURNITURE_GLB, FURNITURE_SCALE (+21 more)
 
 ### Community 30 - "QA Department Spec"
 Cohesion: 0.05
@@ -365,16 +375,16 @@ Cohesion: 0.05
 Nodes (40): Agent Interaction Model, Approval-Aware Review, Approvals, Approved, Blocked, Bug Triage, Bulletin Board, Changes Requested (+32 more)
 
 ### Community 32 - "mutationLifecycleWorkflow.ts"
-Cohesion: 0.07
-Nodes (40): AgentSettingsMutationContext, AgentSettingsMutationDecision, AgentSettingsMutationDenyReason, AgentSettingsMutationRequest, CronActionKind, GuardedActionKind, isCronActionBusy(), isGuardedAction() (+32 more)
+Cohesion: 0.05
+Nodes (51): AgentSettingsMutationContext, AgentSettingsMutationDecision, AgentSettingsMutationDenyReason, AgentSettingsMutationRequest, CronActionKind, GuardedActionKind, isCronActionBusy(), isGuardedAction() (+43 more)
 
 ### Community 33 - "eventTriggers.ts"
-Cohesion: 0.09
-Nodes (33): How Office Motion Works, applyHoldDirective(), BooleanByAgentId, buildOfficeAnimationState(), clearOfficeAnimationTriggerHold(), createOfficeAnimationTriggerState(), emptyObject(), isUserLikeChatRole() (+25 more)
+Cohesion: 0.08
+Nodes (37): How Office Motion Works, OfficeCallDirective, OfficeCallPhase, OfficeTextDirective, OfficeTextPhase, applyHoldDirective(), BooleanByAgentId, buildOfficeAnimationState() (+29 more)
 
 ### Community 34 - "floors.ts"
 Cohesion: 0.09
-Nodes (39): Floor Registry Slice, Immediate Implementation Checklist, Per-Floor Runtime State Slice, Phase 1: Floor Registry, Roster Slice, UI Shell Slice, OfficeFloorNav(), OfficeFloorNavProps (+31 more)
+Nodes (37): Floor Registry Slice, Immediate Implementation Checklist, Per-Floor Runtime State Slice, Phase 1: Floor Registry, Roster Slice, UI Shell Slice, OfficeFloorNav(), OfficeFloorNavProps (+29 more)
 
 ### Community 35 - "coordinator.ts"
 Cohesion: 0.07
@@ -397,12 +407,12 @@ Cohesion: 0.05
 Nodes (37): Agent Interaction Model, Bulletin Board / Whiteboard, Contractor, Contractor Desk, Core Principle, Desk Progression Spec, Employee, Employee Desk (+29 more)
 
 ### Community 40 - "execApprovalResolveOperation.ts"
-Cohesion: 0.19
-Nodes (20): GatewayClientLike, resolveExecApprovalViaStudio(), SetState, applyApprovalIngressEffects(), ApprovalIngressResult, ApprovalPauseRequest, AutoResumeDispatchIntent, AutoResumePreflightIntent (+12 more)
+Cohesion: 0.15
+Nodes (21): ExecApprovalEventEffects, applyApprovalIngressEffects(), ApprovalIngressResult, ApprovalPauseRequest, AutoResumeDispatchIntent, AutoResumePreflightIntent, AwaitingUserInputPatch, deriveAwaitingUserInputPatches() (+13 more)
 
 ### Community 41 - "deskDirectives.ts"
-Cohesion: 0.10
-Nodes (35): cacheIntentSnapshot(), getCachedIntentSnapshot(), intentSnapshotCache, normalizeDirectiveText(), normalizeOfficeCallCallee(), normalizeOfficeTextRecipient(), OfficeCallDirective, OfficeCallPhase (+27 more)
+Cohesion: 0.11
+Nodes (33): cacheIntentSnapshot(), getCachedIntentSnapshot(), intentSnapshotCache, normalizeDirectiveText(), normalizeOfficeCallCallee(), normalizeOfficeTextRecipient(), OfficeDeskDirective, OfficeGithubDirective (+25 more)
 
 ### Community 42 - "Office Systems Roadmap"
 Cohesion: 0.05
@@ -430,15 +440,15 @@ Nodes (34): Architecture Planning, Authoring Rules, Brainstorming, Bulletin Boar
 
 ### Community 48 - "settings-store.ts"
 Cohesion: 0.13
-Nodes (29): GET(), PUT(), readGatewayUrl(), runtime, POST(), GET(), isPatch(), PUT() (+21 more)
+Nodes (32): GET(), PUT(), readGatewayUrl(), runtime, POST(), runtime, GET(), isPatch() (+24 more)
 
 ### Community 49 - "AgentChatPanel.tsx"
-Cohesion: 0.07
-Nodes (36): AgentChatComposer, AgentChatFinalItems, AgentChatPanel(), AgentChatPanelProps, AgentChatTranscript, AssistantMessageCard, CHAT_SELECT_STYLE, EMPTY_CHAT_INTRO_MESSAGES (+28 more)
+Cohesion: 0.11
+Nodes (25): AgentAvatar(), AgentChatComposer, AgentChatFinalItems, AgentChatPanelProps, AgentChatTranscript, AssistantIntroCard, AssistantMessageCard, CHAT_SELECT_STYLE (+17 more)
 
 ### Community 50 - "planning.ts"
-Cohesion: 0.08
-Nodes (45): CommandModeId, ChatHistoryMessage, buildRoleAvatarProfile(), CompanyBuilderModal(), CompanyBuilderModalProps, createEmptyRole(), joinCommaList(), parseCommaList() (+37 more)
+Cohesion: 0.15
+Nodes (24): runCompanyBootstrapOperation(), buildCompanyAgentBlueprints(), buildRoleAgentsMarkdown(), buildRoleHeartbeatMarkdown(), buildRoleIdentity(), buildRoleMemoryMarkdown(), buildRoleSoulDraft(), buildRoleToolsMarkdown() (+16 more)
 
 ### Community 51 - "spotify-jukebox/store.ts"
 Cohesion: 0.09
@@ -457,24 +467,24 @@ Cohesion: 0.14
 Nodes (7): main(), main(), main(), three, main(), main(), main()
 
 ### Community 55 - "shared-store.ts"
-Cohesion: 0.19
-Nodes (21): isTaskBoardSource(), isTaskBoardStatus(), appendHistory(), archiveSharedTask(), defaultStore(), ensureDirectory(), listSharedTasks(), normalizeHistoryEntry() (+13 more)
+Cohesion: 0.14
+Nodes (28): DELETE(), errorJson(), GET(), isRecord(), json(), PUT(), isTaskBoardSource(), isTaskBoardStatus() (+20 more)
 
 ### Community 56 - "profile.ts"
 Cohesion: 0.09
 Nodes (32): AgentAvatarEditorPanelHandle, AgentAvatarEditorPanelProps, AGENT_AVATAR_BOTTOM_STYLE_OPTIONS, AGENT_AVATAR_CLOTHING_COLOR_OPTIONS, AGENT_AVATAR_GENDER_OPTIONS, AGENT_AVATAR_HAIR_COLOR_OPTIONS, AGENT_AVATAR_HAIR_STYLE_OPTIONS, AGENT_AVATAR_HAT_STYLE_OPTIONS (+24 more)
 
-### Community 57 - "cleanup-ux-artifacts.mjs"
-Cohesion: 0.12
-Nodes (18): __dirname, nextConfig, securityHeaders, cleanupPlaywrightProcesses(), clearDirContents(), ensureDir(), killPattern(), main() (+10 more)
+### Community 57 - "runtimeEventBridge.ts"
+Cohesion: 0.07
+Nodes (38): extractReasoningBody(), hasReasoningSignal(), hasUnclosedThinkingTag(), isReasoningOnlyAssistantChunk(), normalizeReasoningComparable(), planRuntimeAgentEvent(), resolveThinkingFromAgentStream(), RuntimeAgentWorkflowCommand (+30 more)
 
 ### Community 58 - "constants.ts"
-Cohesion: 0.07
-Nodes (36): AGENT_SCALE, BUMP_RECOVERY_MS, DESK_STICKY_MS, EAST_HALL_WIDTH, EAST_WING_DOOR_Y, EAST_WING_ROOM_HEIGHT, EAST_WING_ROOM_TOP_Y, EAST_WING_SIDE_MARGIN (+28 more)
+Cohesion: 0.05
+Nodes (55): AGENT_RADIUS, AGENT_SCALE, BUMP_FREEZE_MS, BUMP_RECOVERY_MS, DESK_STICKY_MS, EAST_HALL_WIDTH, EAST_WING_DOOR_Y, EAST_WING_ROOM_HEIGHT (+47 more)
 
 ### Community 59 - "triggers.ts"
-Cohesion: 0.17
-Nodes (20): useOfficeSkillTriggers(), buildOfficeSkillTriggerHoldMaps(), DEFAULT_SKILL_TRIGGER_FALLBACKS_BY_SKILL_KEY, DefaultSkillTriggerFallback, isOfficeSkillTriggerMovementTarget(), OFFICE_INTERACTION_TARGETS, OFFICE_SKILL_TRIGGER_MOVEMENT_TARGETS, OFFICE_SKILL_TRIGGER_PLACE_REGISTRY (+12 more)
+Cohesion: 0.15
+Nodes (23): isSkillEnabledForAgent(), useOfficeSkillTriggers(), buildOfficeSkillTriggerHoldMaps(), DEFAULT_SKILL_TRIGGER_FALLBACKS_BY_SKILL_KEY, DefaultSkillTriggerFallback, isOfficeSkillTriggerMovementTarget(), OFFICE_INTERACTION_TARGETS, OFFICE_SKILL_TRIGGER_MOVEMENT_TARGETS (+15 more)
 
 ### Community 60 - "Hierarchy And Teams Spec"
 Cohesion: 0.06
@@ -485,44 +495,44 @@ Cohesion: 0.06
 Nodes (32): Agent Interaction Model, Contractor, Core Principle, Delegation Model, Executive, Existing Code Seams, Future Extensions, Goal (+24 more)
 
 ### Community 62 - "colorSemantics.ts"
-Cohesion: 0.09
-Nodes (23): react, @testing-library/react, applyTheme(), getPreferredTheme(), ThemeMode, ThemeToggle(), AGENT_STATUS_BADGE_CLASS, AGENT_STATUS_LABEL (+15 more)
+Cohesion: 0.11
+Nodes (24): applyTheme(), getPreferredTheme(), ThemeMode, ThemeToggle(), AGENT_STATUS_BADGE_CLASS, AGENT_STATUS_LABEL, GATEWAY_STATUS_BADGE_CLASS, GATEWAY_STATUS_LABEL (+16 more)
 
 ### Community 63 - "runtimeChatEventWorkflow.ts"
-Cohesion: 0.06
-Nodes (50): RuntimeAgentWorkflowInput, planRuntimeChatEvent(), resolveTerminalSeq(), RuntimeChatWorkflowCommand, RuntimeChatWorkflowInput, RuntimeChatWorkflowResult, summarizeThinkingMessage(), terminalAssistantFinalEntryId() (+42 more)
+Cohesion: 0.11
+Nodes (26): planRuntimeChatEvent(), resolveTerminalSeq(), RuntimeChatWorkflowCommand, RuntimeChatWorkflowInput, RuntimeChatWorkflowResult, summarizeThinkingMessage(), terminalAssistantFinalEntryId(), terminalAssistantMetaEntryId() (+18 more)
 
 ### Community 64 - "transcript.ts"
-Cohesion: 0.06
-Nodes (61): buildHistoryMetadataPatch(), HistoryRequestIntent, HistoryResponseDisposition, resolveHistoryFetchLimit(), resolveHistoryRequestIntent(), resolveHistoryResponseDisposition(), areStringArraysEqual(), ChatHistoryMessage (+53 more)
+Cohesion: 0.07
+Nodes (50): buildHistoryMetadataPatch(), HistoryRequestIntent, HistoryResponseDisposition, resolveHistoryFetchLimit(), resolveHistoryRequestIntent(), resolveHistoryResponseDisposition(), areStringArraysEqual(), ChatHistoryMessage (+42 more)
 
 ### Community 65 - "with"
 Cohesion: 0.06
 Nodes (31): env, IMAGE_BASENAME, REGISTRY, jobs, publish, name, contents, packages (+23 more)
 
 ### Community 66 - "browser-preview/route.ts"
-Cohesion: 0.11
-Nodes (27): BrowserOpenResponse, browserRequest(), BrowserScreenshotResponse, BrowserTab, BrowserTabsResponse, buildBrowserHeaders(), ensurePreviewTab(), GET() (+19 more)
+Cohesion: 0.08
+Nodes (35): getFreePort(), main(), sleep(), BrowserOpenResponse, browserRequest(), BrowserScreenshotResponse, BrowserTab, BrowserTabsResponse (+27 more)
 
 ### Community 67 - "GatewayResponseError"
-Cohesion: 0.18
-Nodes (14): Runtime Tool Groups Used By Capability Updates, Studio: Where “Permissions” Are Chosen, AgentSessionState, applySessionSettingMutation(), ApplySessionSettingMutationParams, buildErrorPrefix(), buildFallbackError(), buildWebchatBlockedMessage() (+6 more)
+Cohesion: 0.22
+Nodes (12): AgentSessionState, applySessionSettingMutation(), ApplySessionSettingMutationParams, buildErrorPrefix(), buildFallbackError(), buildWebchatBlockedMessage(), resolveModelFromPatchResult(), SessionSettingField (+4 more)
 
 ### Community 68 - "schema.ts"
 Cohesion: 0.11
 Nodes (31): asBoolean(), asNumber(), asString(), defaultLayers(), isRecord(), normalizeAmbiencePreset(), normalizeDeskAssignments(), normalizeInteractionKind() (+23 more)
 
 ### Community 69 - "normalizeCommandText"
-Cohesion: 0.20
-Nodes (18): resolveOfficeCallDirective(), resolveOfficeTextDirective(), applyUserMessageTriggers(), buildPhoneCallDirectiveKey(), buildStableLatestRequestSeed(), buildTextMessageDirectiveKey(), createPhoneCallRequest(), createTextMessageRequest() (+10 more)
+Cohesion: 0.27
+Nodes (15): applyUserMessageTriggers(), buildPhoneCallDirectiveKey(), buildStableLatestRequestSeed(), buildTextMessageDirectiveKey(), createPhoneCallRequest(), createTextMessageRequest(), hasOtherOfficeDirective(), isTransientBoothRequestFresh() (+7 more)
 
-### Community 70 - "execApprovalRunControlOperation.ts"
-Cohesion: 0.19
-Nodes (10): ExecApprovalPendingSnapshot, EXEC_APPROVAL_AUTO_RESUME_WAIT_TIMEOUT_MS, executeExecApprovalIngressCommands(), GatewayClientLike, RunControlDispatch, RunControlDispatchAction, runExecApprovalAutoResumeOperation(), runGatewayEventIngressOperation() (+2 more)
+### Community 70 - "useAgentSettingsMutationController.ts"
+Cohesion: 0.13
+Nodes (28): AgentPermissionsDraft, deleteAgentRecordViaStudio(), MutationBlockState, runAgentConfigMutationLifecycle(), AgentForSettingsMutation, RestartingMutationBlockState, SkillSetupMessage, SkillSetupMessageMap (+20 more)
 
 ### Community 71 - "StudioSettingsCoordinator"
-Cohesion: 0.18
-Nodes (8): StudioSettingsCoordinator, defaultStudioSettings(), sanitizeStudioOfficePreference(), sanitizeStudioSettings(), sanitizeTaskBoardPreference(), StudioSettingsPatch, HookParams, makeCoordinator()
+Cohesion: 0.12
+Nodes (11): useOfficeFloorRuntimePersistence(), useStudioVoiceRepliesPreference(), UseStudioVoiceRepliesPreferenceParams, StudioSettingsCoordinator, defaultStudioSettings(), defaultStudioVoiceRepliesPreference(), resolveDeskAssignments(), resolveVoiceRepliesPreference() (+3 more)
 
 ### Community 72 - "models.ts"
 Cohesion: 0.14
@@ -537,8 +547,8 @@ Cohesion: 0.07
 Nodes (27): 1. Remote Claw3D Presence Endpoint, 2. Remote OpenClaw Gateway, Connection Modes, Current Beta Limitations, Disable Behavior, Gateway mode connects but messaging fails, How To Connect, Mental Model (+19 more)
 
 ### Community 75 - "voiceTranscription.ts"
-Cohesion: 0.11
-Nodes (23): MAX_VOICE_UPLOAD_BYTES, POST(), runtime, buildVoiceTranscriptionErrorMessage(), inferVoiceFileExtension(), loadOpenClawSdk(), MediaUnderstandingDecision, MediaUnderstandingOutput (+15 more)
+Cohesion: 0.06
+Nodes (38): __dirname, nextConfig, securityHeaders, cleanupPlaywrightProcesses(), clearDirContents(), ensureDir(), killPattern(), main() (+30 more)
 
 ### Community 76 - "office/store.ts"
 Cohesion: 0.17
@@ -546,15 +556,15 @@ Nodes (25): asString(), PUT(), runtime, asString(), GET(), PUT(), runtime, creat
 
 ### Community 77 - "createPayloadBuilder.ts"
 Cohesion: 0.13
-Nodes (24): addDays(), buildCronJobCreateInput(), CronCreateDraft, formatterCache, getFormatter(), resolveAgentId(), resolveAtSchedule(), resolveEverySchedule() (+16 more)
+Nodes (25): addDays(), buildCronJobCreateInput(), CronCreateDraft, CronCreateTemplateId, formatterCache, getFormatter(), resolveAgentId(), resolveAtSchedule() (+17 more)
 
 ### Community 78 - "personalityBuilder.ts"
-Cohesion: 0.14
-Nodes (25): buildIdentityFileDraft(), createAgentFilesState(), AgentFilesInput, cleanLabel(), cleanValue(), IDENTITY_PLACEHOLDER_VALUES, isIdentityPlaceholder(), isSectionHeading() (+17 more)
+Cohesion: 0.16
+Nodes (22): buildIdentityFileDraft(), AgentFilesInput, cleanLabel(), cleanValue(), IDENTITY_PLACEHOLDER_VALUES, isIdentityPlaceholder(), isSectionHeading(), isUserContextPlaceholder() (+14 more)
 
 ### Community 79 - "resolveStateDir"
 Cohesion: 0.10
-Nodes (29): contentTypeFromName(), GET(), runtime, uploadsDir(), ALLOWED_CONTENT_TYPES, ALLOWED_EXTENSIONS, CONTENT_TYPE_BY_EXT, isTextContentType() (+21 more)
+Nodes (28): contentTypeFromName(), GET(), runtime, uploadsDir(), ALLOWED_CONTENT_TYPES, ALLOWED_EXTENSIONS, CONTENT_TYPE_BY_EXT, isTextContentType() (+20 more)
 
 ### Community 80 - "Runtime Profile Architecture"
 Cohesion: 0.08
@@ -580,13 +590,13 @@ Nodes (14): phaser, OfficePhaserCanvas(), OfficePhaserCanvasProps, createOfficeB
 Cohesion: 0.08
 Nodes (23): 1. Aiko — Office Lady / Corporate Lead, 2. Haruto — Store Manager / Smart Casual, 3. Yumi — Schoolkid / Energetic Student, 4. Kenji — Stock Clerk / Tech Specialist, 5. Sakura — Grandma Shopper / Senior Advisor, 6. Ren — Food Courier / Urban Streetwear, 7. Mina — Cashier / Creative Retailer, 8. Takeshi — Shoplifter / Sneaky Rogue (+15 more)
 
-### Community 86 - "AgentState"
-Cohesion: 0.09
-Nodes (40): executeAgentReconcileCommands(), GatewayClientLike, ReconcileCommand, ReconcileDispatchAction, runAgentReconcileOperation(), buildReconcileTerminalPatch(), ReconcileEligibility, resolveReconcileEligibility() (+32 more)
+### Community 86 - "useRuntimeSyncController.ts"
+Cohesion: 0.17
+Nodes (21): resolveRuntimeSyncBootstrapHistoryAgentIds(), resolveRuntimeSyncFocusedHistoryPollingIntent(), resolveRuntimeSyncGapRecoveryIntent(), resolveRuntimeSyncLoadMoreHistoryLimit(), resolveRuntimeSyncReconcilePollingIntent(), RUNTIME_SYNC_DEFAULT_HISTORY_LIMIT, RUNTIME_SYNC_FOCUSED_HISTORY_INTERVAL_MS, RUNTIME_SYNC_MAX_HISTORY_LIMIT (+13 more)
 
 ### Community 87 - "settingsRouteWorkflow.ts"
-Cohesion: 0.16
-Nodes (24): buildSettingsRouteHref(), InspectSidebarState, parseSettingsRouteAgentIdFromPathname(), parseSettingsRouteAgentIdFromQueryParam(), planBackToChatCommands(), planFleetSelectCommands(), planNonRouteSelectionSyncCommands(), planOpenSettingsRouteCommands() (+16 more)
+Cohesion: 0.21
+Nodes (21): buildSettingsRouteHref(), InspectSidebarState, parseSettingsRouteAgentIdFromPathname(), parseSettingsRouteAgentIdFromQueryParam(), planBackToChatCommands(), planFleetSelectCommands(), planNonRouteSelectionSyncCommands(), planOpenSettingsRouteCommands() (+13 more)
 
 ### Community 88 - "CustomRuntimeProvider"
 Cohesion: 0.10
@@ -597,8 +607,8 @@ Cohesion: 0.12
 Nodes (15): 1. Pre-flight: confirm graphify + current state (read-only), 2. Write failing unit test, 3. Implement auto-hide state in `OfficeFloorNav.tsx`, 4. Re-run the test, 5. Full test suite — confirm no regressions, 6. Typecheck + lint, 7. Manual sanity (dev server), 8. Update graphify + commit (+7 more)
 
 ### Community 90 - "Claw3D + OpenClaw + Tailscale Setup Tutorial"
-Cohesion: 0.08
-Nodes (25): 0) Architecture and Responsibilities, 10) Security Notes, 1) Prerequisites, 2.1 Install OpenClaw, 2.2 Run onboarding and install daemon, 2.3 Verify Gateway health, 2.4 Get your Gateway token, 2) Install and Start OpenClaw on Machine A (+17 more)
+Cohesion: 0.06
+Nodes (31): 0) Architecture and Responsibilities, 10) Security Notes, 1) Prerequisites, 2.1 Install OpenClaw, 2.2 Run onboarding and install daemon, 2.3 Verify Gateway health, 2.4 Get your Gateway token, 2) Install and Start OpenClaw on Machine A (+23 more)
 
 ### Community 91 - "[0.1.4] - 2026-04-23"
 Cohesion: 0.08
@@ -613,68 +623,68 @@ Cohesion: 0.14
 Nodes (19): normalizeText(), POST(), runtime, TextMessageRequestBody, Bubble(), ContactList(), KEYBOARD_ROWS, KeyboardKey() (+11 more)
 
 ### Community 94 - "execApprovalControlLoopWorkflow.ts"
-Cohesion: 0.12
-Nodes (19): AutoResumeIntent, ExecApprovalIngressCommand, PauseRunIntent, planAutoResumeIntent(), planIngressCommands(), planPausedRunMapCleanup(), planPauseRunIntent(), resolvePauseTargetAgent() (+11 more)
+Cohesion: 0.08
+Nodes (33): AutoResumeIntent, ExecApprovalIngressCommand, ExecApprovalPendingSnapshot, PauseRunIntent, planAutoResumeIntent(), planIngressCommands(), planPausedRunMapCleanup(), planPauseRunIntent() (+25 more)
 
 ### Community 95 - "agentFleetHydrationDerivation.ts"
 Cohesion: 0.12
-Nodes (24): AgentsListResult, DerivedHydrateAgentFleetResult, DeriveFleetHydrationInput, deriveHydrateAgentFleetResult(), ExecApprovalsSnapshot, ExecAsk, ExecHost, ExecPolicyEntry (+16 more)
+Nodes (25): AgentsListResult, DerivedHydrateAgentFleetResult, DeriveFleetHydrationInput, deriveHydrateAgentFleetResult(), ExecApprovalsSnapshot, ExecAsk, ExecHost, ExecPolicyEntry (+17 more)
 
-### Community 96 - "agent-state/route.ts"
-Cohesion: 0.11
-Nodes (24): isSafeAgentId(), POST(), PUT(), resolveAgentStateSshTarget(), RestoreAgentStateRequest, runtime, TrashAgentStateRequest, ensureUnderBase() (+16 more)
+### Community 96 - "message-extract.ts"
+Cohesion: 0.13
+Nodes (27): AgentInstructionParams, ENVELOPE_CHANNELS, EXEC_APPROVAL_AUTO_RESUME_MARKER, EXEC_APPROVAL_WAIT_POLICY, extractRawText(), extractText(), extractTextCached(), extractThinking() (+19 more)
 
 ### Community 97 - "tasks/types.ts"
-Cohesion: 0.15
-Nodes (17): TaskBoardPanel(), KanbanImmersiveScreen(), formatRelativeTime(), STATUS_LABELS, STATUS_ORDER, stopAndGetCardId(), TaskBoardView(), TASK_BOARD_SOURCES (+9 more)
+Cohesion: 0.16
+Nodes (16): TaskBoardPanel(), KanbanImmersiveScreen(), formatRelativeTime(), STATUS_LABELS, STATUS_ORDER, stopAndGetCardId(), TaskBoardView(), TASK_BOARD_SOURCES (+8 more)
 
 ### Community 98 - "PI + Chat Streaming (Studio Side)"
 Cohesion: 0.09
 Nodes (23): Connect failures, Connect handshake, Debugging Checklist (When Chat “Feels Buggy”), End-To-End Flow (PI Run -> UI), `event: "agent"` payload, `event: "chat"` payload, Exec Approvals In Chat (Related To “PI Runs”), High-Level Network Path (+15 more)
 
-### Community 99 - "AnalyticsPanel.tsx"
-Cohesion: 0.14
-Nodes (27): AnalyticsPanel(), DatePickerField(), formatBudgetInput(), formatDuration(), formatPercent(), openNativeDatePicker(), parseBudgetInput(), StatCard() (+19 more)
+### Community 99 - "agents/agentFiles.ts"
+Cohesion: 0.17
+Nodes (16): AgentFilesState, useAgentFilesEditor(), UseAgentFilesEditorResult, AGENT_FILE_NAMES, AgentFileName, createAgentFilesState(), isAgentFileName(), PERSONALITY_FILE_LABELS (+8 more)
 
 ### Community 100 - "agentMessaging.ts"
-Cohesion: 0.14
-Nodes (19): buildAgentHandoffInstruction(), GatewayAgentsListResult, GatewayCallLike, resolveLabel(), resolveSessionKeyFromAgentList(), RuntimeAgentHandoffPayload, RuntimeAgentMessagePayload, sendAgentHandoffViaRuntime() (+11 more)
+Cohesion: 0.11
+Nodes (21): parseAgentIdFromSessionKey(), buildAgentHandoffInstruction(), buildDirectedAgentMessageInstruction(), GatewayAgentsListResult, GatewayCallLike, resolveLabel(), resolveSessionKeyFromAgentList(), RuntimeAgentHandoffPayload (+13 more)
 
 ### Community 101 - "Step-by-step tasks"
 Cohesion: 0.08
 Nodes (24): Architecture / proposed approach, Current context / assumptions, Files touched, Goal, Plan: Run Claw3D natively on the host (drop Docker), keep kerja.besoksenin.web.id, Risks, tradeoffs, open questions, Step-by-step tasks, Task 0: Graphify read and baseline snapshot (2 min) (+16 more)
 
-### Community 102 - "remote-message/route.ts"
-Cohesion: 0.23
-Nodes (11): GET(), POST(), AgentsListResult, POST(), resolveLatestAssistantHistoryText(), runtime, stripRemoteAgentPrefix(), buildAgentMainSessionKey() (+3 more)
+### Community 102 - "presence.ts"
+Cohesion: 0.09
+Nodes (34): GET(), runtime, POST(), runtime, stripRemoteAgentPrefix(), AgentsListResult, POST(), resolveLatestAssistantHistoryText() (+26 more)
 
 ### Community 103 - "Custom Runtime Provider Spec"
 Cohesion: 0.09
 Nodes (21): Capability Philosophy, Core Principle, Current Branch Status, Custom Metadata Surface, Custom Runtime Provider Spec, Event Model, Goal, Implementation Strategy (+13 more)
 
 ### Community 104 - "AgentSettingsPanel.tsx"
-Cohesion: 0.14
-Nodes (18): AgentInspectHeader(), AgentInspectHeaderProps, AgentSettingsPanel(), AgentSettingsPanelProps, applyTemplateDefaults(), arePermissionsDraftEqual(), createInitialCronDraft(), CRON_TEMPLATE_OPTIONS (+10 more)
+Cohesion: 0.25
+Nodes (13): AgentInspectHeader(), AgentInspectHeaderProps, AgentSettingsPanel(), applyTemplateDefaults(), arePermissionsDraftEqual(), createInitialCronDraft(), CRON_TEMPLATE_OPTIONS, CronTemplateOption (+5 more)
 
 ### Community 105 - "service.ts"
-Cohesion: 0.10
-Nodes (33): runtime, buildJiraSearchUrl(), buildSourceState(), buildSpeech(), buildStandupMeeting(), coerceText(), dedupePullRequests(), expandRange() (+25 more)
+Cohesion: 0.08
+Nodes (40): PUT(), runtime, sourceTone(), StandupImmersiveScreen(), GitHubPullRequestSummary, advanceStandupMeeting(), buildJiraSearchUrl(), buildSourceState() (+32 more)
 
 ### Community 106 - "README.md"
 Cohesion: 0.10
-Nodes (10): Roadmap, Current Security Limitations, Deployment Notes, Reporting A Vulnerability, Scope, Security Policy, Maintainer Contact Notes, Public Help (+2 more)
+Nodes (11): Code Of Conduct, Enforcement, Expected Behavior, Our Pledge, Unacceptable Behavior, Roadmap, Current Security Limitations, Deployment Notes (+3 more)
 
-### Community 107 - "coerceString"
-Cohesion: 0.24
-Nodes (18): coerceString(), mergeGatewayConnectionState(), mergeGatewayProfiles(), mergeGatewaySettings(), normalizeCompanyField(), normalizeCompanyRoleTitles(), normalizeGatewayAdapterType(), normalizeGatewayConnectionState() (+10 more)
+### Community 107 - "remove/route.ts"
+Cohesion: 0.19
+Nodes (14): normalizeRemoveRequest(), normalizeRequired(), POST(), REMOVABLE_SOURCES, resolveSkillRemovalSshTarget(), runtime, resolveUserPath(), isPathInside() (+6 more)
 
 ### Community 108 - "Universal Backend Plan"
 Cohesion: 0.10
 Nodes (20): Capability Matrix, Core Adapter Contract, Event Model, Hermes Provider, High-Value PR Split, Near-Term Guidance For Luke, OpenClaw Provider, PR 1: Runtime Abstraction (+12 more)
 
 ### Community 109 - "GatewayClient"
-Cohesion: 0.10
-Nodes (12): GatewayResponseError, GatewayClient, parseConnectFailedCloseReason(), ensureGatewayReloadModeHotForLocalStudio(), GatewayConfigSnapshot, isRecord(), resolveReloadModeFromConfig(), shouldAwaitDisconnectRestartForReloadMode() (+4 more)
+Cohesion: 0.12
+Nodes (13): GatewayErrorPayload, GatewayResponseError, ensureGatewayReloadModeHotForLocalStudio(), GatewayConfigSnapshot, isRecord(), resolveReloadModeFromConfig(), shouldAwaitDisconnectRestartForReloadMode(), shouldAwaitDisconnectRestartForRemoteMutation() (+5 more)
 
 ### Community 110 - "pathfinding.ts"
 Cohesion: 0.19
@@ -689,16 +699,16 @@ Cohesion: 0.10
 Nodes (19): Agent Mapping, Capability Profile, Current Implementation Notes, Custom Provider Reference, Event Mapping, Explicit Non-Goals, Goal, Position (+11 more)
 
 ### Community 113 - "lucide-react"
-Cohesion: 0.13
-Nodes (23): lucide-react, AgentsStep(), AgentsStepProps, CompanyStep(), CompanyStepProps, CompleteStep(), OnboardingWizard(), OnboardingWizardProps (+15 more)
+Cohesion: 0.16
+Nodes (19): lucide-react, AgentsStep(), AgentsStepProps, CompanyStep(), CompanyStepProps, CompleteStep(), OnboardingWizard(), OnboardingWizardProps (+11 more)
 
 ### Community 114 - "useOfficeBuilderStore.ts"
 Cohesion: 0.16
 Nodes (17): OfficeBuilderPage(), nextId(), OfficeBuilderPanel(), OfficeBuilderPanelProps, BuilderAction, BuilderHistory, BuilderSelection, BuilderState (+9 more)
 
-### Community 115 - "nodeGatewayClient.ts"
-Cohesion: 0.15
-Nodes (14): runtime, stripRemoteAgentPrefix(), asRecord(), base64UrlEncode(), buildConnectParams(), buildDeviceAuthPayload(), createDeviceIdentity(), DeviceIdentity (+6 more)
+### Community 115 - "CompanyBuilderModal.tsx"
+Cohesion: 0.17
+Nodes (16): CommandModeId, buildRoleAvatarProfile(), CompanyBuilderModal(), CompanyBuilderModalProps, createEmptyRole(), joinCommaList(), parseCommaList(), renderRoleFacts() (+8 more)
 
 ### Community 116 - "Code Documentation"
 Cohesion: 0.11
@@ -708,72 +718,72 @@ Nodes (19): API Route Inventory, Builder Stack, Code Documentation, Contributor 
 Cohesion: 0.11
 Nodes (18): aliases, components, hooks, lib, ui, utils, iconLibrary, registries (+10 more)
 
-### Community 118 - "updateGatewayAgentOverrides"
-Cohesion: 0.31
-Nodes (12): applyGatewayConfigPatch(), isRecord(), readConfigAgentList(), readHeartbeatDefaults(), removeGatewayAgentFromConfigOnly(), removeGatewayHeartbeatOverride(), resolveHeartbeatSettings(), shouldRetryConfigWrite() (+4 more)
+### Community 118 - "fleetLifecycleWorkflow.ts"
+Cohesion: 0.22
+Nodes (13): executeAgentReconcileCommands(), GatewayClientLike, ReconcileCommand, ReconcileDispatchAction, runAgentReconcileOperation(), buildReconcileTerminalPatch(), ReconcileEligibility, resolveReconcileEligibility() (+5 more)
 
 ### Community 119 - "Skills in OpenClaw + Claw3D"
-Cohesion: 0.11
-Nodes (18): 10.1 Route and navigation model, 10.2 Skills tab data and interactions, 10.3 Mutation wiring from Studio, 10.4 Scope warning shown in Studio, 10) Claw3D UX (current behavior), 11) What recent `.agent/done` plans show, 12) UX redesign constraints that are not optional, 13) Practical mental model for reviewing a Skills screenshot (+10 more)
+Cohesion: 0.10
+Nodes (19): 10.1 Route and navigation model, 10.2 Skills tab data and interactions, 10.3 Mutation wiring from Studio, 10.4 Scope warning shown in Studio, 10) Claw3D UX (current behavior), 11) What recent `.agent/done` plans show, 12) UX redesign constraints that are not optional, 13) Practical mental model for reviewing a Skills screenshot (+11 more)
 
-### Community 120 - "createAgentBootstrapOperation.ts"
-Cohesion: 0.22
-Nodes (11): CREATE_AGENT_DEFAULT_PERMISSIONS, CreateCompletion, CreatedAgent, resolveBootstrapErrorMessage(), runCreateAgentBootstrapOperation(), buildBootstrapGlobalErrorMessage(), buildBootstrapModalErrorMessage(), buildMissingCreatedAgentMessage() (+3 more)
+### Community 120 - "deskMonitor.ts"
+Cohesion: 0.19
+Nodes (15): AgentChatItem, buildOfficeDeskMonitor(), deriveEditorDocument(), derivePseudoEditor(), extractDomains(), extractPath(), extractUrls(), flattenMonitorEntry() (+7 more)
 
 ### Community 121 - "execApprovals.ts"
 Cohesion: 0.21
 Nodes (11): OpenClaw (Upstream): Exec Approvals (Policy + Events), ExecAllowlistEntry, ExecApprovalsAgent, ExecApprovalsFile, ExecApprovalsSnapshot, GatewayExecApprovalAsk, GatewayExecApprovalSecurity, normalizeAllowlist() (+3 more)
 
-### Community 122 - "task-store/route.ts"
-Cohesion: 0.47
-Nodes (6): DELETE(), errorJson(), GET(), isRecord(), json(), PUT()
+### Community 122 - "deleteAgentOperation.ts"
+Cohesion: 0.15
+Nodes (13): DeleteAgentTransactionDeps, DeleteAgentTransactionResult, deleteAgentViaStudio(), EMPTY_TRASH_RESULT, FetchJson, GatewayAgentStateMove, RestoreAgentStateResult, runDeleteFlow() (+5 more)
 
 ### Community 123 - "compilerOptions"
 Cohesion: 0.11
 Nodes (18): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+10 more)
 
 ### Community 124 - "layout/route.ts"
-Cohesion: 0.19
-Nodes (18): fetchRemoteOfficeLayoutSnapshot(), GET(), PUT(), runtime, deriveRemoteLayoutUrlFromPresenceUrl(), isRecord(), normalizeOfficeLayoutSnapshot(), defaultStore() (+10 more)
+Cohesion: 0.22
+Nodes (17): fetchRemoteOfficeLayoutSnapshot(), GET(), PUT(), runtime, deriveRemoteLayoutUrlFromPresenceUrl(), isRecord(), normalizeOfficeLayoutSnapshot(), OfficeLayoutSnapshot (+9 more)
 
 ### Community 125 - "specialLatestUpdateOperation.ts"
-Cohesion: 0.12
-Nodes (23): buildLatestUpdatePatch(), LatestUpdateIntent, LatestUpdateKind, resolveLatestUpdateIntent(), resolveLatestUpdateKind(), ChatHistoryMessage, ChatHistoryResult, createSpecialLatestUpdateOperation() (+15 more)
+Cohesion: 0.20
+Nodes (12): buildLatestUpdatePatch(), LatestUpdateIntent, LatestUpdateKind, resolveLatestUpdateIntent(), resolveLatestUpdateKind(), ChatHistoryMessage, ChatHistoryResult, createSpecialLatestUpdateOperation() (+4 more)
 
 ### Community 126 - "AgentCreateWizardModal.tsx"
-Cohesion: 0.09
-Nodes (31): AgentCreateWizardModal(), AgentCreateWizardModalProps, buildInitialDraft(), WizardField(), WizardStepId, wizardSteps, WizardTextAreaField(), AgentIdentityFields() (+23 more)
+Cohesion: 0.12
+Nodes (23): AgentCreateWizardModal(), AgentCreateWizardModalProps, buildInitialDraft(), WizardField(), WizardStepId, wizardSteps, WizardTextAreaField(), AgentEditorModal() (+15 more)
 
 ### Community 127 - "presence.ts"
-Cohesion: 0.14
-Nodes (25): runtime, SummaryPreviewSnapshot, SummaryStatusSnapshot, normalizeRemoteGatewayUrl(), useRemoteOfficePresence(), UseRemoteOfficePresenceParams, UseRemoteOfficePresenceResult, buildAgentMainSessionKey() (+17 more)
+Cohesion: 0.20
+Nodes (15): SummaryPreviewSnapshot, SummaryStatusSnapshot, normalizeRemoteGatewayUrl(), useRemoteOfficePresence(), UseRemoteOfficePresenceParams, UseRemoteOfficePresenceResult, buildOfficePresenceSnapshotFromGateway(), GatewayAgentsListEntry (+7 more)
 
 ### Community 128 - "profilePortrait.ts"
-Cohesion: 0.47
-Nodes (8): blendHex(), buildAgentAvatarPortraitSvg(), buildGlassesSvg(), buildHairSvg(), buildHatSvg(), buildHeadsetSvg(), escapeXml(), normalizeHex()
+Cohesion: 0.31
+Nodes (11): AgentAvatarProps, AgentAvatarProfile, blendHex(), buildAgentAvatarPortraitDataUrl(), buildAgentAvatarPortraitSvg(), buildGlassesSvg(), buildHairSvg(), buildHatSvg() (+3 more)
 
 ### Community 129 - "gateway-proxy.js"
 Cohesion: 0.30
 Nodes (13): buildErrorResponse(), createFrameRateLimiter(), createGatewayProxy(), hasCompleteDeviceAuth(), hasNonEmptyDeviceToken(), hasNonEmptyPassword(), hasNonEmptyToken(), injectAuthToken() (+5 more)
 
 ### Community 130 - "studioRoute.ts"
-Cohesion: 0.31
+Cohesion: 0.26
 Nodes (5): @playwright/test, createStudioRoute(), DEFAULT_SETTINGS, stubStudioRoute(), StudioSettingsFixture
 
 ### Community 131 - "ref_node_path"
 Cohesion: 0.08
-Nodes (24): main(), parseArgs(), tryReadGatewayTokenFromOpenclawCli(), contents, destPath, repoRoot, isRecord(), LEGACY_STATE_DIRNAMES (+16 more)
+Nodes (22): main(), parseArgs(), tryReadGatewayTokenFromOpenclawCli(), contents, destPath, repoRoot, isRecord(), LEGACY_STATE_DIRNAMES (+14 more)
 
 ### Community 132 - "SkillsMarketplacePanel.tsx"
 Cohesion: 0.13
-Nodes (24): SkillsMarketplaceModal(), SkillsMarketplaceModalProps, buildSearchBlob(), FILTER_LABELS, formatInstalls(), formatRating(), getAgentSkillEnabled(), MarketplaceFilter (+16 more)
+Nodes (23): SkillsMarketplaceModal(), SkillsMarketplaceModalProps, buildSearchBlob(), FILTER_LABELS, formatInstalls(), formatRating(), getAgentSkillEnabled(), MarketplaceFilter (+15 more)
 
-### Community 133 - "vitest"
-Cohesion: 0.17
-Nodes (12): vitest, AgentAvatarCreatorModal(), AgentAvatarCreatorModalProps, AgentAvatarEditorPanel, AgentEditorModal(), AgentEditorModalProps, AgentEditorSection, editorSections (+4 more)
+### Community 133 - "createDefaultAgentAvatarProfile"
+Cohesion: 0.31
+Nodes (6): AgentAvatarCreatorModal(), AgentAvatarCreatorModalProps, AgentAvatarEditorPanel, createDemoMainAgentSeed(), createDefaultAgentAvatarProfile(), buildAgent()
 
 ### Community 134 - "Hermes Gateway Adapter"
-Cohesion: 0.12
+Cohesion: 0.13
 Nodes (15): 1. Start Hermes, 2. Configure environment, 3. Start Claw3D and the adapter, 4. Optional all-in-one local startup, ACP status, Architecture, Current limitations, Hermes Gateway Adapter (+7 more)
 
 ### Community 135 - "Agent Bus Integration"
@@ -789,24 +799,24 @@ Cohesion: 0.12
 Nodes (15): 1. Hermes/runtime stability and reconnect behavior, 2. Truthful backend selection, 3. Runtime seam expansion, 4. Office/runtime alignment, 5. Luke’s findings addressed, Current Operator Status, Included In This PR, Office Systems Note (+7 more)
 
 ### Community 138 - "call/mock.ts"
-Cohesion: 0.13
-Nodes (19): normalizeText(), PhoneCallRequestBody, POST(), runtime, display, metadata, mono, RootLayout() (+11 more)
+Cohesion: 0.23
+Nodes (13): normalizeText(), PhoneCallRequestBody, POST(), runtime, buildMockPhoneCallScenario(), buildPromptText(), buildRecipientReply(), buildSpokenText() (+5 more)
 
 ### Community 139 - "voiceReply/provider.ts"
 Cohesion: 0.19
 Nodes (12): POST(), runtime, VoiceReplyRequestBody, normalizeVoiceReplyText(), useVoiceReplyPlayback(), VoiceReplyPlaybackRequest, normalizeVoiceId(), normalizeVoiceSpeed() (+4 more)
 
-### Community 140 - "message-extract.ts"
-Cohesion: 0.06
-Nodes (65): AgentChatItem, AgentChatRenderBlock, appendThinkingTraceEvent(), AssistantTraceEvent, buildAgentChatItems(), BuildAgentChatItemsInput, buildAgentChatRenderBlocks(), buildFinalAgentChatItems() (+57 more)
+### Community 140 - "chatItems.ts"
+Cohesion: 0.16
+Nodes (28): AgentChatRenderBlock, appendThinkingTraceEvent(), buildAgentChatItems(), BuildAgentChatItemsInput, buildAgentChatRenderBlocks(), buildFinalAgentChatItems(), extractFirstCodeBlockLine(), extractToolArgSummary() (+20 more)
 
-### Community 141 - "useConfigMutationQueue.ts"
+### Community 141 - "useRunLog.ts"
 Cohesion: 0.18
-Nodes (12): ConfigMutationGateInput, shouldStartNextConfigMutation(), GatewayStatus, observeGatewayRestart(), RestartObservation, ActiveConfigMutation, ConfigMutationKind, mutationRequiresIdleAgents() (+4 more)
+Nodes (15): findLatestHeartbeatResponse(), formatClockTime(), formatDuration(), HistoryPanel(), TRIGGER_LABELS, findAgentForRunEvent(), resolveLifecyclePhase(), resolveRunTrigger() (+7 more)
 
 ### Community 142 - "taskBoardState.ts"
-Cohesion: 0.36
-Nodes (8): compareCards(), sortTaskBoardCards(), TaskBoardAction, taskBoardReducer(), upsertTaskBoardCard(), defaultTaskBoardPreference(), defaultStudioTaskBoardPreference(), resolveTaskBoardPreference()
+Cohesion: 0.52
+Nodes (6): compareCards(), sortTaskBoardCards(), TaskBoardAction, taskBoardReducer(), upsertTaskBoardCard(), defaultTaskBoardPreference()
 
 ### Community 143 - "animePresets.ts"
 Cohesion: 0.16
@@ -821,32 +831,32 @@ Cohesion: 0.14
 Nodes (13): `claw3d`, Current Profiles, Current Runtime Contract, `custom`, `demo`, `hermes`, `local`, Multi-Agent Message Contract (+5 more)
 
 ### Community 146 - "useOfficeStandupController.ts"
-Cohesion: 0.24
-Nodes (13): everyoneArrived(), expandRange(), getZonedParts(), isMeetingActive(), matchesCronPart(), sameScheduledMinute(), shouldRunNow(), splitCronExpr() (+5 more)
+Cohesion: 0.20
+Nodes (15): everyoneArrived(), expandRange(), getZonedParts(), isMeetingActive(), matchesCronPart(), OfficeStandupController, sameScheduledMinute(), shouldRunNow() (+7 more)
 
-### Community 147 - "skills/types.ts"
-Cohesion: 0.07
-Nodes (47): MarketplaceMessage, useOfficeSkillsMarketplace(), readGatewayAgentSkillsAllowlist(), resolveRequiredAgentId(), updateGatewayAgentSkillsAllowlist(), normalizeSkillName(), resolveVisibleAgentSkillNames(), setAgentSkillEnabled() (+39 more)
+### Community 147 - "install-gateway.ts"
+Cohesion: 0.13
+Nodes (20): appendPackagedSkillsToMarketplace(), buildPackagedSkillStatusEntry(), EMPTY_REQUIREMENTS, getPackagedSkillById(), PACKAGED_SKILLS, PackagedSkillId, buildInstallerMessage(), escapeForJsonString() (+12 more)
 
-### Community 148 - "useStudioVoiceRepliesPreference.ts"
-Cohesion: 0.53
-Nodes (5): useStudioVoiceRepliesPreference(), UseStudioVoiceRepliesPreferenceParams, defaultStudioVoiceRepliesPreference(), resolveVoiceRepliesPreference(), StudioVoiceRepliesPreference
+### Community 148 - "loadPullRequestDetail"
+Cohesion: 0.41
+Nodes (14): loadPullRequestDetail(), loadPullRequestFiles(), normalizeComments(), normalizeCommits(), normalizeFiles(), normalizeLabels(), normalizeReviews(), normalizeStatusChecks() (+6 more)
 
 ### Community 149 - "RunningAvatarLoader"
 Cohesion: 0.22
 Nodes (12): OfficeLoadingFallback(), OfficePage(), readDebugFlag(), GatewayConnectScreen(), GatewayConnectScreenProps, resolveLocalGatewayPort(), box(), RunningAvatarLoader() (+4 more)
 
-### Community 150 - "Code Of Conduct"
-Cohesion: 0.33
-Nodes (5): Code Of Conduct, Enforcement, Expected Behavior, Our Pledge, Unacceptable Behavior
+### Community 150 - "useChatInteractionController.test.ts"
+Cohesion: 0.15
+Nodes (13): AgentIdFn, CallFn, ControllerValue, createAgent(), DispatchFn, ErrorFn, GatewayStatus, HistoryInFlightFn (+5 more)
 
 ### Community 151 - "Critical Fixes"
 Cohesion: 0.17
 Nodes (11): 1. Telemetry Removed, 2. Constant-Time Token Comparison, 3. Auth Rate Limiting, 4. WebSocket Frame Validation, 5. Upstream URL Allowlist, 6. Custom Runtime Proxy Allowlist, 7. Security Headers, 8. Media Route Symlink Rejection (+3 more)
 
-### Community 152 - "approvals/types.ts"
-Cohesion: 0.13
-Nodes (6): resolveExecApprovalFollowUpIntent(), shouldTreatExecApprovalResolveErrorAsUnknownId(), normalizeExecAsk(), shouldPauseRunForPendingExecApproval(), PendingExecApproval, SetState
+### Community 152 - "gateway.ts"
+Cohesion: 0.29
+Nodes (10): createGatewayTask(), deleteGatewayTask(), GatewayTaskCreateInput, GatewayTaskRecord, GatewayTasksListResult, GatewayTaskUpdateInput, isUnsupportedTaskGatewayError(), listGatewayTasks() (+2 more)
 
 ### Community 153 - "AmbienceSystem.ts"
 Cohesion: 0.27
@@ -865,8 +875,8 @@ Cohesion: 0.20
 Nodes (9): Field rules, File format, Mutation rules, Required workflow, Response style, Storage location, Supported actions, TODO Board (+1 more)
 
 ### Community 157 - "studioBootstrapOperation.ts"
-Cohesion: 0.09
-Nodes (38): AgentsListResult, ExecApprovalsSnapshot, GatewayClientLike, hydrateAgentFleetFromGateway(), HydrateAgentFleetResult, isRecord(), parseIdentityNameFromContent(), resolveAgentsListFromHelloSnapshot() (+30 more)
+Cohesion: 0.08
+Nodes (39): AgentsListResult, ExecApprovalsSnapshot, GatewayClientLike, hydrateAgentFleetFromGateway(), HydrateAgentFleetResult, isRecord(), parseIdentityNameFromContent(), resolveAgentsListFromHelloSnapshot() (+31 more)
 
 ### Community 158 - "access-gate.js"
 Cohesion: 0.36
@@ -877,16 +887,16 @@ Cohesion: 0.44
 Nodes (8): find_free_port(), info(), log(), pids_on_port(), port_free(), port_owned_by(), clawd3d-start.sh script, warn()
 
 ### Community 160 - "loadStudioSettings"
-Cohesion: 0.10
-Nodes (31): expandTildeLocal(), GET(), isWithinAllowedRoot(), MIME_BY_EXT, readLocalMedia(), resolveAndValidateLocalMediaPath(), resolveSshTarget(), runtime (+23 more)
+Cohesion: 0.09
+Nodes (33): isSafeAgentId(), POST(), PUT(), resolveAgentStateSshTarget(), RestoreAgentStateRequest, runtime, TrashAgentStateRequest, expandTildeLocal() (+25 more)
 
 ### Community 162 - "ws"
 Cohesion: 0.17
 Nodes (4): ws@^8.18.3, ws, ws, ws
 
-### Community 163 - "9) Troubleshooting"
-Cohesion: 0.33
-Nodes (6): `401` or auth errors from Claw3D, 9) Troubleshooting, Claw3D still cannot connect after token is correct, `EPROTO` or `wrong version number`, Gateway itself is unhealthy, Tailscale URL works nowhere
+### Community 163 - "janitors.ts"
+Cohesion: 0.25
+Nodes (9): buildJanitorActorsForCue(), hashString(), JANITOR_SWEEP_DURATION_MS, JANITOR_TOOLS, pruneExpiredJanitorActors(), JANITOR_ENTRY_POINTS, JANITOR_EXIT_POINTS, ROAM_POINTS (+1 more)
 
 ### Community 164 - "gatewayClient.reconnect-recovery.test.ts"
 Cohesion: 0.22
@@ -904,9 +914,9 @@ Nodes (7): Agent workflow, Authentication model, Channel behavior, OpenClaw Gate
 Cohesion: 0.25
 Nodes (8): Already In Progress Or Partially Covered, Before Starting Bigger Work, Good First Contribution Areas, Later, Next, Now, Product Ideas To Reduce OpenClaw Dependency, Roadmap
 
-### Community 168 - "smoke-dev-server.mjs"
-Cohesion: 0.60
-Nodes (3): getFreePort(), main(), sleep()
+### Community 168 - "layout.tsx"
+Cohesion: 0.28
+Nodes (6): display, metadata, mono, RootLayout(), sans, SuspenseStreamGuard()
 
 ### Community 169 - "pathfinding.ts"
 Cohesion: 0.16
@@ -917,28 +927,64 @@ Cohesion: 0.33
 Nodes (5): blank_issues_enabled, contact_links, about, name, url
 
 ### Community 171 - "shared-store-client.ts"
-Cohesion: 0.30
-Nodes (10): archiveSharedTaskRecord(), fetchWithTimeout(), isRetryable(), listSharedTaskRecords(), parseResponse(), sleep(), TaskStoreRequestError, upsertSharedTaskRecord() (+2 more)
+Cohesion: 0.35
+Nodes (9): archiveSharedTaskRecord(), fetchWithTimeout(), isRetryable(), listSharedTaskRecords(), parseResponse(), sleep(), TaskStoreRequestError, upsertSharedTaskRecord() (+1 more)
+
+### Community 172 - "useVoiceRecorder.ts"
+Cohesion: 0.33
+Nodes (8): PREFERRED_VOICE_MIME_TYPES, resolvePreferredVoiceMimeType(), resolveVoiceErrorMessage(), resolveVoiceExtension(), stopVoiceStream(), useVoiceRecorder(), VoiceRecorderState, VoiceSendPayload
 
 ### Community 173 - "Contributing"
 Cohesion: 0.22
 Nodes (9): Before you start, Contributing, Local setup, Minimal issue template, Minimal PR template, Pull requests, Reporting issues, Support And Routing (+1 more)
 
 ### Community 174 - "Step-by-step tasks"
-Cohesion: 0.15
-Nodes (13): Step-by-step tasks, Task 10 — Visual calibration (manual, 1 iterasi), Task 11 — Regression: existing unit tests, Task 12 — Graphify refresh (WAJIB per AGENTS.md), Task 13 — Dokumentasi singkat, Task 1 — Ambil file `.blend` dari Drive, Task 2 — Install Blender headless (one-time), Task 3 — Export `.blend` → `.glb` (Draco-compressed, web) (+5 more)
+Cohesion: 0.10
+Nodes (19): Architecture / proposed approach, Claw3D — Ganti geometri male procedural dengan model GLB dari Drive, Current context / assumptions, Goal, Risks, tradeoffs, open questions, Step-by-step tasks, Task 10 — Visual calibration (manual, 1 iterasi), Task 11 — Regression: existing unit tests (+11 more)
 
 ### Community 175 - "useChatInteractionController.ts"
-Cohesion: 0.12
-Nodes (21): DraftFlushIntent, DraftTimerIntent, NewSessionIntent, planDraftFlushIntent(), planDraftTimerIntent(), planNewSessionIntent(), planStopRunIntent(), StopRunIntent (+13 more)
+Cohesion: 0.20
+Nodes (15): DraftFlushIntent, DraftTimerIntent, NewSessionIntent, planDraftFlushIntent(), planDraftTimerIntent(), planNewSessionIntent(), planStopRunIntent(), StopRunIntent (+7 more)
 
 ### Community 177 - "multiavatar.ts"
-Cohesion: 0.16
-Nodes (17): AgentAvatar(), AgentAvatarProps, AssistantIntroCard, AgentCreateModal(), AgentCreateModalContent(), AgentCreateModalProps, resolveInitialName(), AVATAR_ACCENTS (+9 more)
+Cohesion: 0.33
+Nodes (8): AVATAR_ACCENTS, AVATAR_FOREGROUNDS, AVATAR_PALETTE, buildAvatarDataUrl(), buildAvatarLabel(), buildAvatarSvg(), hashSeed(), pick()
+
+### Community 178 - "dom/index.ts"
+Cohesion: 0.38
+Nodes (4): createRafBatcher(), isNearBottom(), RafBatcher, ScrollMetrics
 
 ### Community 179 - "custom/route.ts"
 Cohesion: 0.33
 Nodes (7): CustomRuntimeRequestBody, isRuntimeUrlAllowed(), normalizeMethod(), normalizePathname(), normalizeRuntimeUrl(), POST(), runtime
+
+### Community 186 - "janitorReset.ts"
+Cohesion: 0.38
+Nodes (4): buildSessionEpochSnapshot(), OfficeCleaningCue, resolveResetAgentIds(), SessionEpochSnapshot
+
+### Community 187 - "useRuntimeSyncController.test.ts"
+Cohesion: 0.40
+Nodes (5): executeHistorySyncCommands(), createAgent(), renderController(), RenderControllerContext, RuntimeSyncControllerValue
+
+### Community 188 - "useOnboardingState.ts"
+Cohesion: 0.53
+Nodes (4): OnboardingStateReturn, readCompleted(), useOnboardingState(), writeCompleted()
+
+### Community 189 - "useStudioOfficePreference.ts"
+Cohesion: 0.53
+Nodes (5): useStudioOfficePreference(), UseStudioOfficePreferenceParams, defaultStudioOfficePreferencePublic(), resolveOfficePreferencePublic(), StudioOfficePreferencePublic
+
+### Community 190 - "studioSettings.test.ts"
+Cohesion: 0.47
+Nodes (5): defaultStudioFloorRuntimeState(), resolveDefaultStudioGatewayProfile(), resolveStudioActiveFloorId(), resolveStudioFloorRuntimeState(), resolveStudioGatewayProfiles()
+
+### Community 191 - "rewriteMediaLinesToMarkdown"
+Cohesion: 0.53
+Nodes (4): IMAGE_EXTENSIONS, isImagePath(), rewriteMediaLinesToMarkdown(), toMediaUrl()
+
+### Community 192 - "createGatewayAgent"
+Cohesion: 0.50
+Nodes (5): How Studio Chooses the Default Workspace Path, Studio -> Gateway: “Create Agent” End-to-End, createGatewayAgent(), dirnameLike(), joinPathLike()
 
 ### Community 193 - "index.js"
 Cohesion: 0.21
@@ -952,37 +998,41 @@ Nodes (4): NEXT_PUBLIC_GATEWAY_URL, NEXT_TELEMETRY_DISABLED, PATH, deploy-local.
 Cohesion: 0.29
 Nodes (7): `scripts`, `server`, `src/app`, `src/features`, `src/lib`, `tests`, Top-Level Code Map
 
+### Community 197 - "useFinalizedAssistantReplyListener.ts"
+Cohesion: 0.50
+Nodes (4): AgentReplyListenerItem, LastAssistantEntry, resolveLatestAssistantEntry(), useFinalizedAssistantReplyListener()
+
+### Community 198 - "Support"
+Cohesion: 0.40
+Nodes (4): Maintainer Contact Notes, Public Help, Sensitive Reports, Support
+
 ### Community 199 - "StudioGatewayAdapterType"
 Cohesion: 0.40
 Nodes (4): SettingsPanelProps, StudioGatewayAdapterType, CURATED_ELEVENLABS_VOICES, CuratedVoiceOption
 
-### Community 202 - "glbPaletteTexture.ts"
-Cohesion: 0.43
-Nodes (6): computeRampShades(), PALETTE_RAMP_COORDINATES, parseHex(), RampDefinition, SHADE_MULTIPLIERS, shadeHex()
-
 ### Community 208 - "settings.ts"
-Cohesion: 0.07
-Nodes (34): DEFAULT_REMOTE_OFFICE_SOURCE_KIND, defaultStudioFloorRuntimeState(), defaultStudioStandupJiraConfig(), defaultStudioStandupPreference(), defaultStudioStandupScheduleConfig(), FloorRuntimeConnectionStatus, FocusFilter, LOOPBACK_HOSTNAMES (+26 more)
+Cohesion: 0.06
+Nodes (85): TaskBoardPreferencePatch, coerceString(), DEFAULT_REMOTE_OFFICE_SOURCE_KIND, defaultFocusedPreference(), defaultStudioOfficePreference(), defaultStudioStandupJiraConfig(), defaultStudioStandupManualEntry(), defaultStudioStandupPreference() (+77 more)
 
 ## Knowledge Gaps
 - **3 isolated node(s):** `PATH`, `NEXT_TELEMETRY_DISABLED`, `NEXT_PUBLIC_GATEWAY_URL`
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2129 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2131 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `colorSemantics.ts` to `useTaskBoardController.ts`, `AgentsPageScreen.tsx`, `useAgentSettingsMutationController.ts`, `toWorld`, `OfficeScreen.tsx`, `vitest`, `SkillsMarketplacePanel.tsx`, `GatewayClient.ts`, `RetroOffice3D.tsx`, `call/mock.ts`, `useUsageAnalytics.ts`, `presentation.ts`, `useConfigMutationQueue.ts`, `voiceReply/provider.ts`, `animePresets.ts`, `district.ts`, `runtime/types.ts`, `useOfficeStandupController.ts`, `skills/types.ts`, `agents.tsx`, `RunningAvatarLoader`, `useStudioVoiceRepliesPreference.ts`, `chatSendOperation.ts`, `AgentState`, `GithubImmersiveScreen.tsx`, `agents.tsx`, `floors.ts`, `devDependencies`, `useChatInteractionController.ts`, `multiavatar.ts`, `AgentChatPanel.tsx`, `planning.ts`, `spotify-jukebox/store.ts`, `profile.ts`, `constants.ts`, `triggers.ts`, `transcript.ts`, `browser-preview/route.ts`, `StudioGatewayAdapterType`, `models.ts`, `dependencies`, `OfficePhaserCanvas.tsx`, `AgentState`, `settingsRouteWorkflow.ts`, `tasks/types.ts`, `AnalyticsPanel.tsx`, `AgentSettingsPanel.tsx`, `lucide-react`, `useOfficeBuilderStore.ts`, `specialLatestUpdateOperation.ts`, `AgentCreateWizardModal.tsx`, `presence.ts`?**
+- **Why does `react` connect `vitest` to `profilePortrait.ts`, `AgentsPageScreen.tsx`, `useAgentSettingsMutationController.ts`, `useTaskBoardController.ts`, `OfficeScreen.tsx`, `SkillsMarketplacePanel.tsx`, `toWorld`, `GatewayClient.ts`, `RetroOffice3D.tsx`, `useUsageAnalytics.ts`, `presentation.ts`, `useRunLog.ts`, `voiceReply/provider.ts`, `animePresets.ts`, `cameraLighting.tsx`, `runtime/types.ts`, `useOfficeStandupController.ts`, `agents.tsx`, `RunningAvatarLoader`, `useChatInteractionController.test.ts`, `execApprovalLifecycleWorkflow.ts`, `GithubImmersiveScreen.tsx`, `agents.tsx`, `mutationLifecycleWorkflow.ts`, `floors.ts`, `devDependencies`, `layout.tsx`, `useVoiceRecorder.ts`, `useChatInteractionController.ts`, `AgentChatPanel.tsx`, `spotify-jukebox/store.ts`, `profile.ts`, `constants.ts`, `triggers.ts`, `useOnboardingState.ts`, `useStudioOfficePreference.ts`, `colorSemantics.ts`, `useRuntimeSyncController.test.ts`, `browser-preview/route.ts`, `useFinalizedAssistantReplyListener.ts`, `useAgentSettingsMutationController.ts`, `StudioGatewayAdapterType`, `models.ts`, `StudioSettingsCoordinator`, `dependencies`, `OfficePhaserCanvas.tsx`, `useRuntimeSyncController.ts`, `settingsRouteWorkflow.ts`, `tasks/types.ts`, `agents/agentFiles.ts`, `AgentSettingsPanel.tsx`, `lucide-react`, `useOfficeBuilderStore.ts`, `CompanyBuilderModal.tsx`, `AgentCreateWizardModal.tsx`, `presence.ts`?**
   _High betweenness centrality (0.087) - this node is a cross-community bridge._
 - **Are the 3 inferred relationships involving `OfficeScreen()` (e.g. with `Current Post-Merge Sequence` and `Immediate Next Deliverables`) actually correct?**
   _`OfficeScreen()` has 3 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `PATH`, `NEXT_TELEMETRY_DISABLED`, `NEXT_PUBLIC_GATEWAY_URL` to the rest of the system?**
   _3 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `AgentsPageScreen.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.09759759759759759 - nodes in this community are weakly interconnected._
-- **Why does `vitest` connect `vitest` to `useTaskBoardController.ts`, `AgentsPageScreen.tsx`, `useAgentSettingsMutationController.ts`, `ref_node_path`, `navigation.ts`, `GatewayClient.ts`, `hermes-gateway-adapter.js`, `message-extract.ts`, `message-extract.ts`, `useConfigMutationQueue.ts`, `agentConfig.ts`, `animePresets.ts`, `presentation.ts`, `chatSendOperation.ts`, `runtime/types.ts`, `skills/types.ts`, `agents.tsx`, `settings.ts`, `claw3doctor.mjs`, `agentPermissionsOperation.ts`, `AgentState`, `approvals/types.ts`, `remove-gateway.ts`, `standup/store.ts`, `studioBootstrapOperation.ts`, `access-gate.js`, `mutationLifecycleWorkflow.ts`, `eventTriggers.ts`, `floors.ts`, `coordinator.ts`, `GatewayBrowserClient`, `devDependencies`, `gatewayClient.reconnect-recovery.test.ts`, `ws`, `loadStudioSettings`, `deskDirectives.ts`, `pathfinding.ts`, `execApprovalResolveOperation.ts`, `useChatInteractionController.ts`, `settings-store.ts`, `AgentChatPanel.tsx`, `multiavatar.ts`, `planning.ts`, `custom/route.ts`, `shared-store.ts`, `profile.ts`, `cleanup-ux-artifacts.mjs`, `constants.ts`, `triggers.ts`, `colorSemantics.ts`, `runtimeChatEventWorkflow.ts`, `transcript.ts`, `index.js`, `browser-preview/route.ts`, `execApprovalRunControlOperation.ts`, `StudioSettingsCoordinator`, `models.ts`, `glbPaletteTexture.ts`, `voiceTranscription.ts`, `createPayloadBuilder.ts`, `personalityBuilder.ts`, `GatewayBrowserClient.ts`, `AgentState`, `settingsRouteWorkflow.ts`, `execApprovalControlLoopWorkflow.ts`, `agent-state/route.ts`, `tasks/types.ts`, `agentMessaging.ts`, `AgentSettingsPanel.tsx`, `GatewayClient`, `lucide-react`, `updateGatewayAgentOverrides`, `createAgentBootstrapOperation.ts`, `task-store/route.ts`, `specialLatestUpdateOperation.ts`, `AgentCreateWizardModal.tsx`?**
-  _High betweenness centrality (0.077) - this node is a cross-community bridge._
+  _Cohesion score 0.0647307924984876 - nodes in this community are weakly interconnected._
+- **Why does `vitest` connect `vitest` to `useTaskBoardController.ts`, `AgentsPageScreen.tsx`, `useAgentSettingsMutationController.ts`, `navigation.ts`, `GatewayClient.ts`, `hermes-gateway-adapter.js`, `gatewayRuntimeEventHandler.ts`, `presentation.ts`, `agentConfig.ts`, `AgentAvatarGlbModel`, `chatSendOperation.ts`, `agents.tsx`, `claw3doctor.mjs`, `agentPermissionsOperation.ts`, `execApprovalLifecycleWorkflow.ts`, `remove-gateway.ts`, `standup/store.ts`, `mutationLifecycleWorkflow.ts`, `floors.ts`, `coordinator.ts`, `devDependencies`, `execApprovalResolveOperation.ts`, `deskDirectives.ts`, `planning.ts`, `shared-store.ts`, `profile.ts`, `runtimeEventBridge.ts`, `constants.ts`, `triggers.ts`, `colorSemantics.ts`, `runtimeChatEventWorkflow.ts`, `transcript.ts`, `browser-preview/route.ts`, `useAgentSettingsMutationController.ts`, `StudioSettingsCoordinator`, `models.ts`, `voiceTranscription.ts`, `createPayloadBuilder.ts`, `GatewayBrowserClient.ts`, `useRuntimeSyncController.ts`, `settingsRouteWorkflow.ts`, `execApprovalControlLoopWorkflow.ts`, `message-extract.ts`, `tasks/types.ts`, `agents/agentFiles.ts`, `remove/route.ts`, `GatewayClient`, `lucide-react`, `fleetLifecycleWorkflow.ts`, `deskMonitor.ts`, `execApprovals.ts`, `deleteAgentOperation.ts`, `specialLatestUpdateOperation.ts`, `ref_node_path`, `createDefaultAgentAvatarProfile`, `chatItems.ts`, `animePresets.ts`, `install-gateway.ts`, `useChatInteractionController.test.ts`, `gateway.ts`, `studioBootstrapOperation.ts`, `access-gate.js`, `loadStudioSettings`, `GatewayBrowserClient`, `ws`, `janitors.ts`, `gatewayClient.reconnect-recovery.test.ts`, `pathfinding.ts`, `useChatInteractionController.ts`, `multiavatar.ts`, `dom/index.ts`, `custom/route.ts`, `janitorReset.ts`, `useRuntimeSyncController.test.ts`, `useOnboardingState.ts`, `studioSettings.test.ts`, `rewriteMediaLinesToMarkdown`, `index.js`, `livePatchQueue.ts`, `canvasResetStability.test.ts`?**
+  _High betweenness centrality (0.080) - this node is a cross-community bridge._
 - **Should `useAgentSettingsMutationController.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.05844155844155844 - nodes in this community are weakly interconnected._
-- **Why does `next` connect `next` to `AgentsPageScreen.tsx`, `OfficeScreen.tsx`, `call/mock.ts`, `voiceReply/provider.ts`, `animePresets.ts`, `GithubImmersiveScreen.tsx`, `standup/store.ts`, `github.ts`, `loadStudioSettings`, `devDependencies`, `settings-store.ts`, `multiavatar.ts`, `custom/route.ts`, `index.js`, `browser-preview/route.ts`, `voiceTranscription.ts`, `office/store.ts`, `resolveStateDir`, `dependencies`, `SmsBoothImmersiveScreen.tsx`, `agent-state/route.ts`, `remote-message/route.ts`, `service.ts`, `nodeGatewayClient.ts`, `layout/route.ts`, `presence.ts`?**
+  _Cohesion score 0.08816326530612245 - nodes in this community are weakly interconnected._
+- **Why does `next` connect `next` to `profilePortrait.ts`, `AgentsPageScreen.tsx`, `OfficeScreen.tsx`, `call/mock.ts`, `voiceReply/provider.ts`, `animePresets.ts`, `GithubImmersiveScreen.tsx`, `github.ts`, `loadStudioSettings`, `devDependencies`, `layout.tsx`, `settings-store.ts`, `custom/route.ts`, `index.js`, `browser-preview/route.ts`, `voiceTranscription.ts`, `office/store.ts`, `resolveStateDir`, `dependencies`, `SmsBoothImmersiveScreen.tsx`, `presence.ts`, `service.ts`, `remove/route.ts`, `layout/route.ts`?**
   _High betweenness centrality (0.049) - this node is a cross-community bridge._

@@ -1110,9 +1110,9 @@
     "semantic_hash": ""
   },
   "src/features/office/screens/OfficeScreen.tsx": {
-    "mtime": 1792947678.5074468,
-    "seen": 1792948294.3810952,
-    "ast_hash": "502ffdf0f72be1712f296ff349e90ffc",
+    "mtime": 1792970650.6950786,
+    "seen": 1792970975.6777933,
+    "ast_hash": "29f012f34e3c284349edcca7c7215bf1",
     "semantic_hash": ""
   },
   "src/features/office/screens/PhoneBoothImmersiveScreen.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792969478.381049,
-    "seen": 1792969779.1253211,
-    "ast_hash": "6e2e84b847f39f09c3711476c28f6a51",
+    "mtime": 1792970643.3579092,
+    "seen": 1792970975.6778858,
+    "ast_hash": "166887ab001b7f72fb91b89f2d0290bf",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -3795,6 +3795,12 @@
     "mtime": 1792969413.6625428,
     "seen": 1792969779.1269798,
     "ast_hash": "f9da45ee51a85a37a306aea57e136528",
+    "semantic_hash": ""
+  },
+  "tests/unit/canvasResetStability.test.ts": {
+    "mtime": 1792970622.562429,
+    "seen": 1792970975.678722,
+    "ast_hash": "fdc41ac46b04b81114ba3b7c35c4ea4b",
     "semantic_hash": ""
   }
 }

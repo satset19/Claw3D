@@ -4681,11 +4681,10 @@ export function OfficeScreen({
 
   const showGatewayLoadingOverlay =
     !agentsLoaded &&
-    (!connectPromptReady ||
-      (gatewayUrl.trim().length > 0 &&
-        !shouldPromptForConnect &&
-        ((!didAttemptGatewayConnect && showDelayedGatewayLoadingOverlay) ||
-          (status === "connecting" && showDelayedGatewayLoadingOverlay))));
+    connectPromptReady &&
+    gatewayUrl.trim().length > 0 &&
+    !shouldPromptForConnect &&
+    showDelayedGatewayLoadingOverlay;
   const showGatewayConnectOverlay =
     connectPromptReady &&
     status === "disconnected" &&
