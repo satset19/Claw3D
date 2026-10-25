@@ -718,7 +718,7 @@ export const AgentModel = memo(function AgentModel({
           </mesh>
           <AgentAvatarGlbModel
             modelUrl={presetModelUrl}
-            targetHeight={0.0042}
+            targetHeight={0.9}
             colors={{
               skin: resolvedAppearance.body.skinTone,
               hair: resolvedAppearance.hair.color,

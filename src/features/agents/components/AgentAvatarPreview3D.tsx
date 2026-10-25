@@ -53,7 +53,7 @@ const PreviewFigure = ({
         <AgentAvatarGlbModel
           modelUrl={presetModelUrl}
           animationName="idle"
-          targetHeight={0.0042}
+          targetHeight={1.6}
           colors={{
             skin: profile.body.skinTone,
             hair: profile.hair.color,
