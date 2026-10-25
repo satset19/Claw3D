@@ -101,6 +101,7 @@ export const AgentModel = memo(function AgentModel({
   const awayBubbleRef = useRef<THREE.Group>(null);
   const bodyMatRef = useRef<THREE.MeshLambertMaterial>(null);
   const pos = useRef(new THREE.Vector3(0, 0, 0));
+  const isPositionInitialized = useRef(false);
   const resolvedAppearance = useMemo(
     () => appearance ?? createDefaultAgentAvatarProfile(agentId),
     [agentId, appearance],
@@ -119,13 +120,19 @@ export const AgentModel = memo(function AgentModel({
 
     const [wx, , wz] = toWorld(agent.x, agent.y);
     pos.current.set(wx, 0, wz);
-    groupRef.current.position.lerp(pos.current, 0.15);
 
-    const targetY = agent.facing;
-    let rotDelta = targetY - groupRef.current.rotation.y;
-    while (rotDelta > Math.PI) rotDelta -= Math.PI * 2;
-    while (rotDelta < -Math.PI) rotDelta += Math.PI * 2;
-    groupRef.current.rotation.y += rotDelta * 0.12;
+    if (!isPositionInitialized.current) {
+      groupRef.current.position.set(wx, 0, wz);
+      groupRef.current.rotation.y = agent.facing;
+      isPositionInitialized.current = true;
+    } else {
+      groupRef.current.position.lerp(pos.current, 0.15);
+      const targetY = agent.facing;
+      let rotDelta = targetY - groupRef.current.rotation.y;
+      while (rotDelta > Math.PI) rotDelta -= Math.PI * 2;
+      while (rotDelta < -Math.PI) rotDelta += Math.PI * 2;
+      groupRef.current.rotation.y += rotDelta * 0.12;
+    }
     const isWorkout = agent.state === "working_out";
     const isDancing = agent.state === "dancing";
     const isJanitor = "role" in agent && agent.role === "janitor";
@@ -711,7 +718,7 @@ export const AgentModel = memo(function AgentModel({
       }}
     >
       {presetModelUrl ? (
-        <group position={[0, agentStateLabel === "sitting" ? -0.12 : 0, 0]}>
+        <group position={[0, agentStateLabel === "sitting" ? -0.08 : 0, 0]}>
           <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
             <circleGeometry args={[0.12, 12]} />
             <meshBasicMaterial color="#000" transparent opacity={0.2} />
@@ -719,7 +726,7 @@ export const AgentModel = memo(function AgentModel({
           <Suspense fallback={null}>
             <AgentAvatarGlbModel
               modelUrl={presetModelUrl}
-              targetHeight={0.9}
+              targetHeight={0.5}
               colors={{
                 skin: resolvedAppearance.body.skinTone,
                 hair: resolvedAppearance.hair.color,

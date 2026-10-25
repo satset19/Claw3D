@@ -1110,9 +1110,9 @@
     "semantic_hash": ""
   },
   "src/features/office/screens/OfficeScreen.tsx": {
-    "mtime": 1792856529.0638227,
-    "seen": 1792862681.5882506,
-    "ast_hash": "764a8cc465b855a15ce8944a0014c1b2",
+    "mtime": 1792947678.5074468,
+    "seen": 1792948294.3810952,
+    "ast_hash": "502ffdf0f72be1712f296ff349e90ffc",
     "semantic_hash": ""
   },
   "src/features/office/screens/PhoneBoothImmersiveScreen.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792932426.964756,
-    "seen": 1792932754.0507193,
-    "ast_hash": "8958aa83167d0ed436703b1abfa626d9",
+    "mtime": 1792947700.8209682,
+    "seen": 1792948294.381341,
+    "ast_hash": "5033ed9d1b3198200f39f246894db83b",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -1956,9 +1956,9 @@
     "semantic_hash": ""
   },
   "src/lib/studio/settings.ts": {
-    "mtime": 1792856529.0948234,
-    "seen": 1792862681.5887284,
-    "ast_hash": "9f0ac5428102567572ee562f8e3d84ea",
+    "mtime": 1792947638.4085097,
+    "seen": 1792948294.3820763,
+    "ast_hash": "38eb4a4a530fa74c57fb96ef0f340bc0",
     "semantic_hash": ""
   },
   "src/lib/tasks/gateway.ts": {
@@ -3783,6 +3783,12 @@
     "mtime": 1792929292.1153765,
     "seen": 1792929876.7362745,
     "ast_hash": "ce37f4ce3c61f254ae6522fee0e41690",
+    "semantic_hash": ""
+  },
+  "tests/unit/deskAssignmentDeduplication.test.ts": {
+    "mtime": 1792947613.2279212,
+    "seen": 1792948294.3826325,
+    "ast_hash": "bd2c06b941b40e5869997047ab6a4995",
     "semantic_hash": ""
   }
 }

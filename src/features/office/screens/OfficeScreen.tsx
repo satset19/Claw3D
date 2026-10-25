@@ -1571,6 +1571,9 @@ export function OfficeScreen({
       const key = gatewayUrl.trim();
       const normalizedDeskUid = deskUid.trim();
       if (!key || !normalizedDeskUid) return;
+      const deskPatch: Record<string, string | null> = {
+        [normalizedDeskUid]: agentId,
+      };
       setDeskAssignmentByDeskUid((previous) => {
         const next = { ...previous };
         if (agentId) {
@@ -1582,6 +1585,7 @@ export function OfficeScreen({
               existingAgentId === agentId
             ) {
               delete next[existingDeskUid];
+              deskPatch[existingDeskUid] = null;
             }
           }
           next[normalizedDeskUid] = agentId;
@@ -1593,9 +1597,7 @@ export function OfficeScreen({
       settingsCoordinator.schedulePatch(
         {
           deskAssignments: {
-            [key]: {
-              [normalizedDeskUid]: agentId,
-            },
+            [key]: deskPatch,
           },
         },
         0,

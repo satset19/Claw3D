@@ -1077,6 +1077,11 @@ const normalizeDeskAssignments = (
       if (!deskUid) continue;
       const agentId = coerceString(agentIdRaw);
       if (!agentId) continue;
+      for (const [otherDeskUid, existingAgentId] of Object.entries(entries)) {
+        if (otherDeskUid !== deskUid && existingAgentId === agentId) {
+          delete entries[otherDeskUid];
+        }
+      }
       entries[deskUid] = agentId;
     }
     deskAssignments[gatewayKey] = entries;
@@ -1479,6 +1484,11 @@ export const mergeStudioSettings = (
         if (!agentId) {
           delete existing[deskUid];
           continue;
+        }
+        for (const [otherDeskUid, existingAgentId] of Object.entries(existing)) {
+          if (otherDeskUid !== deskUid && existingAgentId === agentId) {
+            delete existing[otherDeskUid];
+          }
         }
         existing[deskUid] = agentId;
       }
