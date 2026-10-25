@@ -5796,51 +5796,53 @@ export function RetroOffice3D({
             {/* Removed standalone Jukebox as it's now in the furniture loop */}
 
             {/* Agents — purely imperative, driven by renderAgentsRef inside useFrame. */}
-            {sceneAgents.map((agent) => {
-              const isJanitor = "role" in agent && agent.role === "janitor";
-              return (
-                <AgentObjectModel
-                  key={agent.id}
-                  agentId={agent.id}
-                  name={agent.name}
-                  subtitle={"subtitle" in agent ? agent.subtitle ?? null : null}
-                  status={agent.status}
-                  color={agentColorMap.get(agent.id) ?? "#888"}
-                  appearance={
-                    "avatarProfile" in agent
-                      ? (agent.avatarProfile ?? null)
-                      : null
-                  }
-                  agentsRef={renderAgentsRef}
-                  agentLookupRef={renderAgentLookupRef}
-                  onHover={isJanitor ? undefined : handleAgentHover}
-                  onUnhover={isJanitor ? undefined : handleAgentUnhover}
-                  onClick={isJanitor ? undefined : handleAgentClick}
-                  onContextMenu={isJanitor ? undefined : handleAgentContextMenu}
-                  showSpeech={
-                    isJanitor
-                      ? false
-                      : standupMeeting?.phase === "in_progress"
-                        ? Boolean(standupSpeechTextByAgentId[agent.id])
-                        : speechAgentIds.has(agent.id) ||
-                          Boolean(streamingTextByAgentId[agent.id])
-                  }
-                  speechText={
-                    isJanitor
-                      ? null
-                      : standupMeeting?.phase === "in_progress"
-                        ? (standupSpeechTextByAgentId[agent.id] ?? null)
-                        : (speechTextByAgentId[agent.id] ??
-                            streamingTextByAgentId[agent.id] ??
-                            null)
-                  }
-                  suppressSpeechBubble={
-                    suppressSceneSpeechBubbles &&
-                    standupMeeting?.currentSpeakerAgentId !== agent.id
-                  }
-                />
-              );
-            })}
+            <Suspense fallback={null}>
+              {sceneAgents.map((agent) => {
+                const isJanitor = "role" in agent && agent.role === "janitor";
+                return (
+                  <AgentObjectModel
+                    key={agent.id}
+                    agentId={agent.id}
+                    name={agent.name}
+                    subtitle={"subtitle" in agent ? agent.subtitle ?? null : null}
+                    status={agent.status}
+                    color={agentColorMap.get(agent.id) ?? "#888"}
+                    appearance={
+                      "avatarProfile" in agent
+                        ? (agent.avatarProfile ?? null)
+                        : null
+                    }
+                    agentsRef={renderAgentsRef}
+                    agentLookupRef={renderAgentLookupRef}
+                    onHover={isJanitor ? undefined : handleAgentHover}
+                    onUnhover={isJanitor ? undefined : handleAgentUnhover}
+                    onClick={isJanitor ? undefined : handleAgentClick}
+                    onContextMenu={isJanitor ? undefined : handleAgentContextMenu}
+                    showSpeech={
+                      isJanitor
+                        ? false
+                        : standupMeeting?.phase === "in_progress"
+                          ? Boolean(standupSpeechTextByAgentId[agent.id])
+                          : speechAgentIds.has(agent.id) ||
+                            Boolean(streamingTextByAgentId[agent.id])
+                    }
+                    speechText={
+                      isJanitor
+                        ? null
+                        : standupMeeting?.phase === "in_progress"
+                          ? (standupSpeechTextByAgentId[agent.id] ?? null)
+                          : (speechTextByAgentId[agent.id] ??
+                              streamingTextByAgentId[agent.id] ??
+                              null)
+                    }
+                    suppressSpeechBubble={
+                      suppressSceneSpeechBubbles &&
+                      standupMeeting?.currentSpeakerAgentId !== agent.id
+                    }
+                  />
+                );
+              })}
+            </Suspense>
 
             <ScenePingPongBall agentsRef={renderAgentsRef} />
 

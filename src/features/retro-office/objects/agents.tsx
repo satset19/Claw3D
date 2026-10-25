@@ -1,6 +1,6 @@
 import { Billboard, Text } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { memo, useMemo, useRef, useState } from "react";
+import { Suspense, memo, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { createDefaultAgentAvatarProfile } from "@/lib/avatars/profile";
 import { getAvatarBodyShape } from "@/lib/avatars/bodyShape";
@@ -716,26 +716,28 @@ export const AgentModel = memo(function AgentModel({
             <circleGeometry args={[0.12, 12]} />
             <meshBasicMaterial color="#000" transparent opacity={0.2} />
           </mesh>
-          <AgentAvatarGlbModel
-            modelUrl={presetModelUrl}
-            targetHeight={0.9}
-            colors={{
-              skin: resolvedAppearance.body.skinTone,
-              hair: resolvedAppearance.hair.color,
-              top: resolvedAppearance.clothing.topColor,
-              bottom: resolvedAppearance.clothing.bottomColor,
-              shoes: resolvedAppearance.clothing.shoesColor,
-            }}
-            animationName={
-              agentStateLabel === "walking"
-                ? "walk"
-                : agentStateLabel === "dancing"
-                  ? "special"
-                  : agentStateLabel === "working_out"
-                    ? "attack"
-                    : "idle"
-            }
-          />
+          <Suspense fallback={null}>
+            <AgentAvatarGlbModel
+              modelUrl={presetModelUrl}
+              targetHeight={0.9}
+              colors={{
+                skin: resolvedAppearance.body.skinTone,
+                hair: resolvedAppearance.hair.color,
+                top: resolvedAppearance.clothing.topColor,
+                bottom: resolvedAppearance.clothing.bottomColor,
+                shoes: resolvedAppearance.clothing.shoesColor,
+              }}
+              animationName={
+                agentStateLabel === "walking"
+                  ? "walk"
+                  : agentStateLabel === "dancing"
+                    ? "special"
+                    : agentStateLabel === "working_out"
+                      ? "attack"
+                      : "idle"
+              }
+            />
+          </Suspense>
         </group>
       ) : (
         <>

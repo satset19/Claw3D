@@ -2,7 +2,7 @@
 
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import {
   type AgentAvatarProfile,
@@ -328,17 +328,19 @@ export const AgentAvatarPreview3D = ({
           <RunningAvatarLoader size={26} trackWidth={72} label="Loading avatar..." />
         </div>
       ) : null}
-      <Canvas key={profileKey} camera={{ position: [0, 0.7, 2.5], fov: 34 }}>
+      <Canvas camera={{ position: [0, 0.7, 2.5], fov: 34 }}>
         <color attach="background" args={["#070b16"]} />
         <ambientLight intensity={1.4} />
         <directionalLight position={[3, 4, 5]} intensity={2.4} />
         <directionalLight position={[-4, 2, 3]} intensity={0.9} color="#89a6ff" />
-        <PreviewFigure
-          profile={resolvedProfile}
-          onFirstFrame={() => {
-            setReadyProfileKey(profileKey);
-          }}
-        />
+        <Suspense fallback={null}>
+          <PreviewFigure
+            profile={resolvedProfile}
+            onFirstFrame={() => {
+              setReadyProfileKey(profileKey);
+            }}
+          />
+        </Suspense>
         <Environment preset="city" />
         <OrbitControls enablePan={false} enableZoom={false} maxPolarAngle={1.8} minPolarAngle={1.1} />
       </Canvas>

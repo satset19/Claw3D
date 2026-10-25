@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792930951.5899498,
-    "seen": 1792931240.0729275,
-    "ast_hash": "ee5740fc20b852396046f1c8b9753b8d",
+    "mtime": 1792932030.1817276,
+    "seen": 1792932754.0499957,
+    "ast_hash": "f136ed31f9e1de76003e38b2be913a4d",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792872675.2695148,
-    "seen": 1792873084.5173264,
-    "ast_hash": "68963191e0352e82585b7813a8a27bb6",
+    "mtime": 1792932450.0332823,
+    "seen": 1792932754.0506017,
+    "ast_hash": "c682ff5617919a91a1be19a216f8cb1d",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792930974.4614267,
-    "seen": 1792931240.0736697,
-    "ast_hash": "ba30f82a3edc4eec40f1f49108432941",
+    "mtime": 1792932426.964756,
+    "seen": 1792932754.0507193,
+    "ast_hash": "8958aa83167d0ed436703b1abfa626d9",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -3666,9 +3666,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarGlbModel.tsx": {
-    "mtime": 1792929453.0521247,
-    "seen": 1792929876.7331357,
-    "ast_hash": "d1b957fc9a434095f5f6042e5ea250da",
+    "mtime": 1792931994.0889096,
+    "seen": 1792932754.049991,
+    "ast_hash": "0dc1c56a800f167c5853665f1f3ad9d6",
     "semantic_hash": ""
   },
   "public/office-assets/models/avatars/manifest.txt": {
