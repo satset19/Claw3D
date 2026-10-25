@@ -1,10 +1,14 @@
 "use client";
 
-import { useGLTF, useAnimations } from "@react-three/drei";
+import { useGLTF, useAnimations, useTexture } from "@react-three/drei";
 import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { ANIME_AVATAR_PRESETS } from "@/lib/avatars/animePresets";
+import {
+  getCharacterColorPalette,
+  type CharacterColorPalette,
+} from "@/lib/avatars/colorPalettes";
 
 export type AgentAvatarGlbAnimation =
   | "idle"
@@ -19,6 +23,7 @@ type Props = {
   modelUrl: string;
   animationName?: AgentAvatarGlbAnimation;
   targetHeight?: number;
+  palette?: CharacterColorPalette | null;
 };
 
 const CANDIDATES: Record<AgentAvatarGlbAnimation, string[]> = {
@@ -35,6 +40,7 @@ export const AgentAvatarGlbModel = ({
   modelUrl,
   animationName = "idle",
   targetHeight = 1.6,
+  palette,
 }: Props) => {
   const groupRef = useRef<THREE.Group>(null);
   const gltf = useGLTF(modelUrl);
@@ -43,23 +49,42 @@ export const AgentAvatarGlbModel = ({
     [gltf.scene],
   );
   const { actions, mixer } = useAnimations(gltf.animations, clonedScene);
+  const resolvedPalette = useMemo(
+    () => palette ?? getCharacterColorPalette(modelUrl),
+    [palette, modelUrl],
+  );
+
+  const charId = useMemo(
+    () => modelUrl.replace(/^.*\/|\.[^.]+$/g, "").toLowerCase(),
+    [modelUrl],
+  );
+  const customTexture = useTexture(
+    `/office-assets/models/avatars/textures/${charId}.png`,
+  );
 
   useLayoutEffect(() => {
+    if (customTexture) {
+      customTexture.colorSpace = THREE.SRGBColorSpace;
+      customTexture.flipY = false;
+      customTexture.needsUpdate = true;
+    }
+
     clonedScene.traverse((obj) => {
       const mesh = obj as THREE.Mesh;
       if (!mesh.isMesh) return;
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
       for (const m of mats) {
         const std = m as THREE.MeshStandardMaterial;
+        if (customTexture) {
+          std.map = customTexture;
+        }
         if (std.map) {
           std.map.colorSpace = THREE.SRGBColorSpace;
+          std.map.flipY = false;
           std.map.needsUpdate = true;
-          std.emissiveMap = std.map;
-          std.emissive = new THREE.Color(0xffffff);
-          std.emissiveIntensity = 1;
         }
-        if ("roughness" in std) std.roughness = 1;
-        if ("metalness" in std) std.metalness = 0;
+        if ("roughness" in std) std.roughness = 0.4;
+        if ("metalness" in std) std.metalness = 0.0;
         std.needsUpdate = true;
       }
     });
@@ -116,4 +141,5 @@ export const AgentAvatarGlbModel = ({
 
 for (const preset of ANIME_AVATAR_PRESETS) {
   useGLTF.preload(preset.modelUrl);
+  useTexture.preload(`/office-assets/models/avatars/textures/${preset.id}.png`);
 }

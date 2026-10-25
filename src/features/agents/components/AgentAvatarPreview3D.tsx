@@ -50,7 +50,7 @@ const PreviewFigure = ({
           <circleGeometry args={[0.32, 24]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.16} />
         </mesh>
-        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={1.6} />
+        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={0.0042} />
       </group>
     );
   }

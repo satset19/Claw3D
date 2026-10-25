@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792879821.0974464,
-    "seen": 1792880212.6625938,
-    "ast_hash": "d66efb776e08931679dbafdfeb46f8fb",
+    "mtime": 1792923127.5975802,
+    "seen": 1792923399.9965944,
+    "ast_hash": "574d74a5b59e26a15c81bf86c5c42460",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792879888.841033,
-    "seen": 1792880212.6637611,
-    "ast_hash": "e79b30120904ddbe6089d2bb5617085c",
+    "mtime": 1792921018.461124,
+    "seen": 1792923399.9977047,
+    "ast_hash": "5e78ce6f535e7ff6166fdd364f07e860",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -3588,9 +3588,9 @@
     "semantic_hash": ""
   },
   "src/lib/avatars/animePresets.ts": {
-    "mtime": 1792879790.201722,
-    "seen": 1792880212.6639977,
-    "ast_hash": "8997fef530db419b89620054fc7e5ba8",
+    "mtime": 1792923049.8978064,
+    "seen": 1792923399.9979079,
+    "ast_hash": "75fd19313cf5c0d1048117c80555906c",
     "semantic_hash": ""
   },
   "tests/unit/AnimePresetPicker.test.tsx": {
@@ -3618,63 +3618,141 @@
     "semantic_hash": ""
   },
   "public/avatars/anime/aiko.svg": {
-    "mtime": 1792878539.8618917,
-    "seen": 1792878778.572912,
-    "ast_hash": "c164f14ea910b0f50b03d10004968fba",
+    "mtime": 1792923111.1202037,
+    "seen": 1792923400.0010693,
+    "ast_hash": "147c17e2dba260fe0121b4d9985e7739",
     "semantic_hash": ""
   },
   "public/avatars/anime/haruto.svg": {
-    "mtime": 1792878539.8618917,
-    "seen": 1792878778.5729156,
-    "ast_hash": "2dbd4fc26b799c66bd03cb3287370f56",
+    "mtime": 1792923111.3262086,
+    "seen": 1792923400.001077,
+    "ast_hash": "ea81a646e51d610c6c4db42dfb31d724",
     "semantic_hash": ""
   },
   "public/avatars/anime/kenji.svg": {
-    "mtime": 1792878539.8618917,
-    "seen": 1792878778.572919,
-    "ast_hash": "bd5c05317465adc05059ca706586b980",
+    "mtime": 1792923111.703217,
+    "seen": 1792923400.001084,
+    "ast_hash": "5d635eccc6c7d557297e9edf24f3d2f6",
     "semantic_hash": ""
   },
   "public/avatars/anime/mina.svg": {
-    "mtime": 1792878539.8628917,
-    "seen": 1792878778.5729215,
-    "ast_hash": "e69ebfbb941465ae4de2ef71f1c5dc18",
+    "mtime": 1792923112.26623,
+    "seen": 1792923400.001091,
+    "ast_hash": "b920a6f078435ecccb75d70ee9b967c7",
     "semantic_hash": ""
   },
   "public/avatars/anime/ren.svg": {
-    "mtime": 1792878539.8628917,
-    "seen": 1792878778.572925,
-    "ast_hash": "a78b9b6f726232c682b5c5e004a55766",
+    "mtime": 1792923112.0792258,
+    "seen": 1792923400.0010984,
+    "ast_hash": "cd55b36250bf1ce7dd527da529f375a4",
     "semantic_hash": ""
   },
   "public/avatars/anime/sakura.svg": {
-    "mtime": 1792878539.8628917,
-    "seen": 1792878778.572929,
-    "ast_hash": "ee17183551881c0cc47656fbfb79ad3b",
+    "mtime": 1792923111.8912215,
+    "seen": 1792923400.0011063,
+    "ast_hash": "4256bccfecb5725602e94bd713e00db4",
     "semantic_hash": ""
   },
   "public/avatars/anime/takeshi.svg": {
-    "mtime": 1792878539.8628917,
-    "seen": 1792878778.5729327,
-    "ast_hash": "4ad17c27ecbc144638bacb5229e16800",
+    "mtime": 1792923112.5432363,
+    "seen": 1792923400.0011141,
+    "ast_hash": "d9a30973b129ee482a21b19140d244c8",
     "semantic_hash": ""
   },
   "public/avatars/anime/yumi.svg": {
-    "mtime": 1792878539.8638916,
-    "seen": 1792878778.5729358,
-    "ast_hash": "352d87402f85c942616037f213f01dc5",
+    "mtime": 1792923111.5122128,
+    "seen": 1792923400.0011218,
+    "ast_hash": "f6847cbc91555fb9cf4a4544be6fb1a9",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarGlbModel.tsx": {
-    "mtime": 1792879934.1800935,
-    "seen": 1792880212.6625843,
-    "ast_hash": "3fbe747f8f8139ab6951dd07b6097784",
+    "mtime": 1792923887.7190204,
+    "seen": 1792924146.5847437,
+    "ast_hash": "abc186f2fee8c472305c72afa605dfa4",
     "semantic_hash": ""
   },
   "public/office-assets/models/avatars/manifest.txt": {
-    "mtime": 1792879756.4329293,
-    "seen": 1792880212.6666906,
-    "ast_hash": "ad0eafc314b079a37947c89d2ea198c8",
+    "mtime": 1792881258.7488544,
+    "seen": 1792923400.0010395,
+    "ast_hash": "f8417840828ef86e9f16dd7ca8ab46c2",
+    "semantic_hash": ""
+  },
+  "src/lib/avatars/colorPalettes.ts": {
+    "mtime": 1792923015.7840285,
+    "seen": 1792923399.997924,
+    "ast_hash": "c4fc8ec3845c43bf5e9a0cb4d987935d",
+    "semantic_hash": ""
+  },
+  "tests/unit/avatar-scale.test.ts": {
+    "mtime": 1792913986.958284,
+    "seen": 1792923399.9991138,
+    "ast_hash": "22f465b83853b97085d0766a5f19e7ae",
+    "semantic_hash": ""
+  },
+  "tests/unit/colorPalettes.test.ts": {
+    "mtime": 1792923027.1782882,
+    "seen": 1792923399.9991937,
+    "ast_hash": "aa0b48cd53a83d8a74e2277bb8cf347d",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_100000-claw3d-3d-avatar-glb-color-references.md": {
+    "mtime": 1792922262.1647356,
+    "seen": 1792923400.0006557,
+    "ast_hash": "22d4cc6a7ee7d0f3e1b5f6276a4c7f06",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_120000-fix-claw3d-anime-character-size.md": {
+    "mtime": 1792913964.706768,
+    "seen": 1792923400.0006628,
+    "ast_hash": "aad6bb1a3341d69d58291b6f52250efc",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/aiko.png": {
+    "mtime": 1792923839.4979112,
+    "seen": 1792924146.589195,
+    "ast_hash": "60cdeffae54c34dcb7f34cd72d0ea1a8",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/haruto.png": {
+    "mtime": 1792923839.6049135,
+    "seen": 1792924146.5892034,
+    "ast_hash": "0989ddf771c10fed9c25a7d41b40b73c",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/kenji.png": {
+    "mtime": 1792923839.795918,
+    "seen": 1792924146.5892098,
+    "ast_hash": "3adcda3049cf3532fbea00584e3fb3fb",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/mina.png": {
+    "mtime": 1792923840.0769243,
+    "seen": 1792924146.5892167,
+    "ast_hash": "10ead945978cfb444362e8906b4cae18",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/ren.png": {
+    "mtime": 1792923839.9779222,
+    "seen": 1792924146.5892234,
+    "ast_hash": "85e383224a8fb96a5f4fb48c472156b5",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/sakura.png": {
+    "mtime": 1792923839.88692,
+    "seen": 1792924146.589231,
+    "ast_hash": "a41d720f12b5f42cc5a224164d836696",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/takeshi.png": {
+    "mtime": 1792923840.1769269,
+    "seen": 1792924146.589237,
+    "ast_hash": "09dde6ab3a2e483464f40e5401329248",
+    "semantic_hash": ""
+  },
+  "public/office-assets/models/avatars/textures/yumi.png": {
+    "mtime": 1792923839.7009158,
+    "seen": 1792924146.5892432,
+    "ast_hash": "b12c16a43f8d979bdb263c2c9d7a0c62",
     "semantic_hash": ""
   }
 }

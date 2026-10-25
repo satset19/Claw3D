@@ -711,19 +711,25 @@ export const AgentModel = memo(function AgentModel({
       }}
     >
       {presetModelUrl ? (
-        <AgentAvatarGlbModel
-          modelUrl={presetModelUrl}
-          targetHeight={0.9}
-          animationName={
-            agentStateLabel === "walking"
-              ? "walk"
-              : agentStateLabel === "dancing"
-                ? "special"
-                : agentStateLabel === "working_out"
-                  ? "attack"
-                  : "idle"
-          }
-        />
+        <group position={[0, agentStateLabel === "sitting" ? -0.12 : 0, 0]}>
+          <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <circleGeometry args={[0.12, 12]} />
+            <meshBasicMaterial color="#000" transparent opacity={0.2} />
+          </mesh>
+          <AgentAvatarGlbModel
+            modelUrl={presetModelUrl}
+            targetHeight={0.0042}
+            animationName={
+              agentStateLabel === "walking"
+                ? "walk"
+                : agentStateLabel === "dancing"
+                  ? "special"
+                  : agentStateLabel === "working_out"
+                    ? "attack"
+                    : "idle"
+            }
+          />
+        </group>
       ) : (
         <>
       <mesh position={[0, 0.001, 0]} rotation={[-Math.PI / 2, 0, 0]}>

@@ -1,8 +1,14 @@
+import {
+  CHARACTER_COLOR_PALETTES,
+  type CharacterColorPalette,
+} from "@/lib/avatars/colorPalettes";
+
 export type AnimeAvatarPreset = {
   id: string;
   label: string;
   url: string;
   modelUrl: string;
+  palette: CharacterColorPalette;
   license: "CC0" | "CC-BY" | "CC-BY-SA";
   source: string;
   author?: string;
@@ -18,6 +24,16 @@ const make = (id: string, label: string): AnimeAvatarPreset => ({
   label,
   url: `/avatars/anime/${id}.svg`,
   modelUrl: `/office-assets/models/avatars/${id}.glb`,
+  palette: CHARACTER_COLOR_PALETTES[id] ?? {
+    id,
+    name: label,
+    skin: "#f8d5c2",
+    hair: "#151515",
+    top: "#2d3748",
+    bottom: "#1e3a8a",
+    accent: "#f59e0b",
+    shoes: "#1a1a1a",
+  },
   license: "CC0",
   source: `${PORTRAIT_SOURCE} + ${MODEL_SOURCE}`,
   author: `${PORTRAIT_AUTHOR}, ${MODEL_AUTHOR}`,
