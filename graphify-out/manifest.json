@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792940942.7243645,
-    "seen": 1792942424.681502,
-    "ast_hash": "6ebe3f36259c72647d6afe1f178e5628",
+    "mtime": 1792969489.3963053,
+    "seen": 1792969779.123918,
+    "ast_hash": "7a98c5ceac6739ce2b36c370d3a176b7",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792932450.0332823,
-    "seen": 1792932754.0506017,
-    "ast_hash": "c682ff5617919a91a1be19a216f8cb1d",
+    "mtime": 1792969478.381049,
+    "seen": 1792969779.1253211,
+    "ast_hash": "6e2e84b847f39f09c3711476c28f6a51",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -3789,6 +3789,12 @@
     "mtime": 1792947613.2279212,
     "seen": 1792948294.3826325,
     "ast_hash": "bd2c06b941b40e5869997047ab6a4995",
+    "semantic_hash": ""
+  },
+  "tests/unit/assignedDeskRetention.test.ts": {
+    "mtime": 1792969413.6625428,
+    "seen": 1792969779.1269798,
+    "ast_hash": "f9da45ee51a85a37a306aea57e136528",
     "semantic_hash": ""
   }
 }

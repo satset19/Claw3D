@@ -1591,7 +1591,7 @@ function useAgentTick(
             ns.path = [];
             ns.state = "standing";
           } else if (existing.status === "working") {
-            ns.interactionTarget = undefined;
+            ns.interactionTarget = deskPos ? "desk" : undefined;
             ns.smsBoothStage = undefined;
             ns.phoneBoothStage = undefined;
             ns.serverRoomStage = undefined;
@@ -1599,16 +1599,29 @@ function useAgentTick(
             ns.qaLabStage = undefined;
             ns.qaLabStationType = undefined;
             ns.workoutStyle = undefined;
-            const r = pickRoamPoint(agent.id);
-            ns.targetX = r.x;
-            ns.targetY = r.y;
-            ns.path = planPath(existing.x, existing.y, r.x, r.y);
-            ns.state = "walking";
+            if (deskPos) {
+              ns.targetX = deskPos.x;
+              ns.targetY = deskPos.y;
+              const isAtDesk =
+                Math.hypot(existing.x - deskPos.x, existing.y - deskPos.y) < 15;
+              ns.path = isAtDesk
+                ? []
+                : planPath(existing.x, existing.y, deskPos.x, deskPos.y);
+              ns.state = isAtDesk ? "sitting" : "walking";
+            } else {
+              const r = pickRoamPoint(agent.id);
+              ns.targetX = r.x;
+              ns.targetY = r.y;
+              ns.path = planPath(existing.x, existing.y, r.x, r.y);
+              ns.state = "walking";
+            }
           }
         }
       } else {
-        // New agent — spawn at a random position and plan path to first target.
-        const { x: sx, y: sy } = pickSpawnPoint(agent.id);
+        // Agent baru: jika sudah punya penugasan meja, langsung spawn di mejanya
+        const spawnPos = deskPos ?? pickSpawnPoint(agent.id);
+        const sx = spawnPos.x;
+        const sy = spawnPos.y;
         const serverRoomRoute = resolveServerRoomRoute(sx, sy);
         const smsBoothRoute = resolveSmsBoothRoute(smsBoothItem, sx, sy);
         const phoneBoothRoute = resolvePhoneBoothRoute(phoneBoothItem, sx, sy);
@@ -1647,7 +1660,7 @@ function useAgentTick(
                             y: serverRoomRoute.targetY,
                           }
                         : (deskPos ?? { x: sx, y: sy })
-            : { x: sx, y: sy };
+            : (deskPos ?? { x: sx, y: sy });
         ns = {
           x: sx,
           y: sy,
@@ -1667,7 +1680,9 @@ function useAgentTick(
               explicitGithubHold ||
               deskPos)
               ? "walking"
-              : "standing",
+              : deskPos
+                ? "sitting"
+                : "standing",
           interactionTarget: explicitMeetingHold
             ? "meeting_room"
             : explicitGymHold

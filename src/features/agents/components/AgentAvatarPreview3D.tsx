@@ -311,14 +311,9 @@ export const AgentAvatarPreview3D = ({
     () => profile ?? createDefaultAgentAvatarProfile("preview"),
     [profile]
   );
-  const avatarSwitchKey = useMemo(
-    () => `${resolvedProfile.imageUrl ?? "procedural"}_${resolvedProfile.body.gender}`,
-    [resolvedProfile.imageUrl, resolvedProfile.body.gender]
-  );
   return (
     <div className={`relative ${className}`}>
       <Canvas
-        key={avatarSwitchKey}
         gl={{ preserveDrawingBuffer: true }}
         camera={{ position: [0, 0.6, 3.2], fov: 34 }}
       >
