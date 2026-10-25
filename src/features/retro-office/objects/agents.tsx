@@ -719,6 +719,13 @@ export const AgentModel = memo(function AgentModel({
           <AgentAvatarGlbModel
             modelUrl={presetModelUrl}
             targetHeight={0.0042}
+            colors={{
+              skin: resolvedAppearance.body.skinTone,
+              hair: resolvedAppearance.hair.color,
+              top: resolvedAppearance.clothing.topColor,
+              bottom: resolvedAppearance.clothing.bottomColor,
+              shoes: resolvedAppearance.clothing.shoesColor,
+            }}
             animationName={
               agentStateLabel === "walking"
                 ? "walk"

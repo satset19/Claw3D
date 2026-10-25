@@ -456,15 +456,15 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarEditorPanel.tsx": {
-    "mtime": 1792878539.8418913,
-    "seen": 1792878778.5703988,
-    "ast_hash": "71f218c62c5b77d5f2d259a40cb52c05",
+    "mtime": 1792929578.836054,
+    "seen": 1792929876.7331264,
+    "ast_hash": "343af5d12fbcff6521eb17cf017b34c9",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792923127.5975802,
-    "seen": 1792923399.9965944,
-    "ast_hash": "574d74a5b59e26a15c81bf86c5c42460",
+    "mtime": 1792929505.1763387,
+    "seen": 1792929876.7331429,
+    "ast_hash": "46dda21b456d9836f9d8c613c8a98032",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792921018.461124,
-    "seen": 1792923399.9977047,
-    "ast_hash": "5e78ce6f535e7ff6166fdd364f07e860",
+    "mtime": 1792929517.4036236,
+    "seen": 1792929876.7340722,
+    "ast_hash": "d6ea20bdb6f9222e6ca6a970c5eeb1ae",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -1524,9 +1524,9 @@
     "semantic_hash": ""
   },
   "src/lib/avatars/profile.ts": {
-    "mtime": 1792878539.8418913,
-    "seen": 1792878778.5712576,
-    "ast_hash": "9be4ecf8cd1be3e0baba7647d78db81c",
+    "mtime": 1792924496.5340374,
+    "seen": 1792929876.7342813,
+    "ast_hash": "73c63cf0f41dd585fd0288d74543dbe4",
     "semantic_hash": ""
   },
   "src/lib/avatars/profilePortrait.ts": {
@@ -3666,9 +3666,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarGlbModel.tsx": {
-    "mtime": 1792923887.7190204,
-    "seen": 1792924146.5847437,
-    "ast_hash": "abc186f2fee8c472305c72afa605dfa4",
+    "mtime": 1792929453.0521247,
+    "seen": 1792929876.7331357,
+    "ast_hash": "d1b957fc9a434095f5f6042e5ea250da",
     "semantic_hash": ""
   },
   "public/office-assets/models/avatars/manifest.txt": {
@@ -3753,6 +3753,36 @@
     "mtime": 1792923839.7009158,
     "seen": 1792924146.5892432,
     "ast_hash": "b12c16a43f8d979bdb263c2c9d7a0c62",
+    "semantic_hash": ""
+  },
+  "src/lib/avatars/glbPaletteTexture.ts": {
+    "mtime": 1792929406.179033,
+    "seen": 1792929876.734268,
+    "ast_hash": "0348f11cc35d2545fa7b2e229788333b",
+    "semantic_hash": ""
+  },
+  "tests/unit/avatarCustomColor.test.ts": {
+    "mtime": 1792924484.9467704,
+    "seen": 1792929876.7351267,
+    "ast_hash": "8043ca337332af7da422bd4dd616cf20",
+    "semantic_hash": ""
+  },
+  "tests/unit/avatarCustomColor3D.test.ts": {
+    "mtime": 1792929583.8811717,
+    "seen": 1792929876.735133,
+    "ast_hash": "82ad60d45054f2fb7d9f6f2a2e7b6404",
+    "semantic_hash": ""
+  },
+  "tests/unit/glbPaletteTexture.test.ts": {
+    "mtime": 1792929418.7853267,
+    "seen": 1792929876.7356005,
+    "ast_hash": "925d2c46bf9706591c217208e5240d65",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-25_110500-claw3d-3d-avatar-custom-color.md": {
+    "mtime": 1792929292.1153765,
+    "seen": 1792929876.7362745,
+    "ast_hash": "ce37f4ce3c61f254ae6522fee0e41690",
     "semantic_hash": ""
   }
 }

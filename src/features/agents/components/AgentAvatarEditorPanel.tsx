@@ -17,6 +17,7 @@ import {
 } from "@/lib/avatars/profile";
 import { AgentAvatarPreview3D } from "@/features/agents/components/AgentAvatarPreview3D";
 import { AnimePresetPicker } from "@/features/agents/components/AnimePresetPicker";
+import { CHARACTER_COLOR_PALETTES } from "@/lib/avatars/colorPalettes";
 import { randomUUID } from "@/lib/uuid";
 
 export type AgentAvatarEditorPanelProps = {
@@ -160,9 +161,32 @@ export const AgentAvatarEditorPanel = forwardRef<
             </h3>
             <AnimePresetPicker
               selectedUrl={draft.imageUrl ?? null}
-              onSelect={(url) =>
-                setDraft((current) => ({ ...current, imageUrl: url }))
-              }
+              onSelect={(url) => {
+                if (!url) {
+                  setDraft((current) => ({ ...current, imageUrl: null }));
+                  return;
+                }
+                const cleanId = url.replace(/^.*\/|\.[^.]+$/g, "").toLowerCase();
+                const presetPalette = CHARACTER_COLOR_PALETTES[cleanId];
+                setDraft((current) => ({
+                  ...current,
+                  imageUrl: url,
+                  body: {
+                    ...current.body,
+                    skinTone: presetPalette?.skin ?? current.body.skinTone,
+                  },
+                  hair: {
+                    ...current.hair,
+                    color: presetPalette?.hair ?? current.hair.color,
+                  },
+                  clothing: {
+                    ...current.clothing,
+                    topColor: presetPalette?.top ?? current.clothing.topColor,
+                    bottomColor: presetPalette?.bottom ?? current.clothing.bottomColor,
+                    shoesColor: presetPalette?.shoes ?? current.clothing.shoesColor,
+                  },
+                }));
+              }}
             />
             <p className="text-[10px] text-muted-foreground/80">
               Anime presets by Lisa Wischofsky (DiceBear lorelei, CC0). Pick a preset or keep Procedural to use the sliders below.
@@ -188,6 +212,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                     onClick={() =>
                       setDraft((current) => ({
                         ...current,
+                        imageUrl: null,
                         body: { ...current.body, gender: option.id },
                       }))
                     }
@@ -203,7 +228,7 @@ export const AgentAvatarEditorPanel = forwardRef<
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Skin tone
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {AGENT_AVATAR_SKIN_TONE_OPTIONS.map((option) => {
                 const selected = draft.body.skinTone === option.color;
                 return (
@@ -222,6 +247,20 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
+              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
+                <input
+                  type="color"
+                  value={draft.body.skinTone.startsWith("#") ? draft.body.skinTone : "#f7d7c2"}
+                  onChange={(e) =>
+                    setDraft((current) => ({
+                      ...current,
+                      body: { ...current.body, skinTone: e.target.value },
+                    }))
+                  }
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">+</span>
+              </label>
             </div>
           </section>
 
@@ -244,6 +283,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                     onClick={() =>
                       setDraft((current) => ({
                         ...current,
+                        imageUrl: null,
                         hair: { ...current.hair, style: option.id },
                       }))
                     }
@@ -259,7 +299,7 @@ export const AgentAvatarEditorPanel = forwardRef<
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Hair color
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {AGENT_AVATAR_HAIR_COLOR_OPTIONS.map((option) => {
                 const selected = draft.hair.color === option.color;
                 return (
@@ -278,6 +318,20 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
+              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
+                <input
+                  type="color"
+                  value={draft.hair.color.startsWith("#") ? draft.hair.color : "#151515"}
+                  onChange={(e) =>
+                    setDraft((current) => ({
+                      ...current,
+                      hair: { ...current.hair, color: e.target.value },
+                    }))
+                  }
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">+</span>
+              </label>
             </div>
           </section>
 
@@ -300,6 +354,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                     onClick={() =>
                       setDraft((current) => ({
                         ...current,
+                        imageUrl: null,
                         clothing: { ...current.clothing, topStyle: option.id },
                       }))
                     }
@@ -315,7 +370,7 @@ export const AgentAvatarEditorPanel = forwardRef<
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Top color
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {AGENT_AVATAR_CLOTHING_COLOR_OPTIONS.map((option) => {
                 const selected = draft.clothing.topColor === option.color;
                 return (
@@ -334,6 +389,20 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
+              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
+                <input
+                  type="color"
+                  value={draft.clothing.topColor.startsWith("#") ? draft.clothing.topColor : "#2d3748"}
+                  onChange={(e) =>
+                    setDraft((current) => ({
+                      ...current,
+                      clothing: { ...current.clothing, topColor: e.target.value },
+                    }))
+                  }
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">+</span>
+              </label>
             </div>
           </section>
 
@@ -356,6 +425,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                     onClick={() =>
                       setDraft((current) => ({
                         ...current,
+                        imageUrl: null,
                         clothing: { ...current.clothing, bottomStyle: option.id },
                       }))
                     }
@@ -371,7 +441,7 @@ export const AgentAvatarEditorPanel = forwardRef<
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Bottom color
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {AGENT_AVATAR_CLOTHING_COLOR_OPTIONS.map((option) => {
                 const selected = draft.clothing.bottomColor === option.color;
                 return (
@@ -390,6 +460,20 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
+              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
+                <input
+                  type="color"
+                  value={draft.clothing.bottomColor.startsWith("#") ? draft.clothing.bottomColor : "#2d3748"}
+                  onChange={(e) =>
+                    setDraft((current) => ({
+                      ...current,
+                      clothing: { ...current.clothing, bottomColor: e.target.value },
+                    }))
+                  }
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">+</span>
+              </label>
             </div>
           </section>
 
@@ -397,7 +481,7 @@ export const AgentAvatarEditorPanel = forwardRef<
             <h3 className="font-mono text-[11px] font-semibold tracking-[0.06em] text-muted-foreground">
               Shoe color
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {AGENT_AVATAR_SHOE_COLOR_OPTIONS.map((option) => {
                 const selected = draft.clothing.shoesColor === option.color;
                 return (
@@ -416,6 +500,20 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
+              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
+                <input
+                  type="color"
+                  value={draft.clothing.shoesColor.startsWith("#") ? draft.clothing.shoesColor : "#1a1a1a"}
+                  onChange={(e) =>
+                    setDraft((current) => ({
+                      ...current,
+                      clothing: { ...current.clothing, shoesColor: e.target.value },
+                    }))
+                  }
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <span className="text-[10px] font-bold text-muted-foreground">+</span>
+              </label>
             </div>
           </section>
 
@@ -438,6 +536,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                     onClick={() =>
                       setDraft((current) => ({
                         ...current,
+                        imageUrl: null,
                         accessories: { ...current.accessories, hatStyle: option.id },
                       }))
                     }
@@ -482,6 +581,7 @@ export const AgentAvatarEditorPanel = forwardRef<
                   onClick={() =>
                     setDraft((current) => ({
                       ...current,
+                      imageUrl: null,
                       accessories: {
                         ...current.accessories,
                         [option.key]: !current.accessories[option.key],

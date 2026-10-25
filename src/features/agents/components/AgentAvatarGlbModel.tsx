@@ -1,7 +1,7 @@
 "use client";
 
 import { useGLTF, useAnimations, useTexture } from "@react-three/drei";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { ANIME_AVATAR_PRESETS } from "@/lib/avatars/animePresets";
@@ -9,6 +9,10 @@ import {
   getCharacterColorPalette,
   type CharacterColorPalette,
 } from "@/lib/avatars/colorPalettes";
+import {
+  type CustomAvatarColors,
+  applyColorsToPaletteCanvas,
+} from "@/lib/avatars/glbPaletteTexture";
 
 export type AgentAvatarGlbAnimation =
   | "idle"
@@ -24,6 +28,7 @@ type Props = {
   animationName?: AgentAvatarGlbAnimation;
   targetHeight?: number;
   palette?: CharacterColorPalette | null;
+  colors?: CustomAvatarColors | null;
 };
 
 const CANDIDATES: Record<AgentAvatarGlbAnimation, string[]> = {
@@ -41,6 +46,7 @@ export const AgentAvatarGlbModel = ({
   animationName = "idle",
   targetHeight = 1.6,
   palette,
+  colors,
 }: Props) => {
   const groupRef = useRef<THREE.Group>(null);
   const gltf = useGLTF(modelUrl);
@@ -62,11 +68,55 @@ export const AgentAvatarGlbModel = ({
     `/office-assets/models/avatars/textures/${charId}.png`,
   );
 
+  const [dynamicTexture, setDynamicTexture] = useState<THREE.CanvasTexture | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const colorsKey = useMemo(() => {
+    if (!colors) return "";
+    return `${colors.skin ?? ""}_${colors.hair ?? ""}_${colors.top ?? ""}_${colors.bottom ?? ""}_${colors.shoes ?? ""}_${colors.accent ?? ""}`;
+  }, [colors]);
+
+  useEffect(() => {
+    if (!colorsKey || !colors || !customTexture?.image) {
+      if (dynamicTexture) {
+        dynamicTexture.dispose();
+        setDynamicTexture(null);
+      }
+      return;
+    }
+
+    if (!canvasRef.current) {
+      canvasRef.current = document.createElement("canvas");
+    }
+    const canvas = canvasRef.current;
+    applyColorsToPaletteCanvas(canvas, customTexture.image as HTMLImageElement, colors);
+
+    setDynamicTexture((prev) => {
+      if (prev) {
+        prev.needsUpdate = true;
+        return prev;
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.flipY = false;
+      tex.needsUpdate = true;
+      return tex;
+    });
+  }, [colors, colorsKey, customTexture]);
+
+  useEffect(() => {
+    return () => {
+      dynamicTexture?.dispose();
+    };
+  }, [dynamicTexture]);
+
+  const activeTexture = dynamicTexture ?? customTexture;
+
   useLayoutEffect(() => {
-    if (customTexture) {
-      customTexture.colorSpace = THREE.SRGBColorSpace;
-      customTexture.flipY = false;
-      customTexture.needsUpdate = true;
+    if (activeTexture) {
+      activeTexture.colorSpace = THREE.SRGBColorSpace;
+      activeTexture.flipY = false;
+      activeTexture.needsUpdate = true;
     }
 
     clonedScene.traverse((obj) => {
@@ -75,8 +125,8 @@ export const AgentAvatarGlbModel = ({
       const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
       for (const m of mats) {
         const std = m as THREE.MeshStandardMaterial;
-        if (customTexture) {
-          std.map = customTexture;
+        if (activeTexture) {
+          std.map = activeTexture;
         }
         if (std.map) {
           std.map.colorSpace = THREE.SRGBColorSpace;
@@ -101,7 +151,7 @@ export const AgentAvatarGlbModel = ({
     clonedScene.position.x = -center.x;
     clonedScene.position.z = -center.z;
     clonedScene.position.y = -scaledBox.min.y;
-  }, [clonedScene, targetHeight]);
+  }, [clonedScene, targetHeight, activeTexture]);
 
   useEffect(() => {
     const names = CANDIDATES[animationName] ?? [];

@@ -163,6 +163,9 @@ const pick = <T,>(values: readonly T[], index: number) => values[index % values.
 const resolveColor = (value: unknown, options: ColorOption[], fallback: string) => {
   const color = coerceString(value).toLowerCase();
   if (!color) return fallback;
+  if (/^#[0-9a-f]{3}$/i.test(color) || /^#[0-9a-f]{6}$/i.test(color)) {
+    return color;
+  }
   const option =
     options.find((entry) => entry.id === color) ??
     options.find((entry) => entry.color.toLowerCase() === color);

@@ -50,7 +50,18 @@ const PreviewFigure = ({
           <circleGeometry args={[0.32, 24]} />
           <meshBasicMaterial color="#000000" transparent opacity={0.16} />
         </mesh>
-        <AgentAvatarGlbModel modelUrl={presetModelUrl} animationName="idle" targetHeight={0.0042} />
+        <AgentAvatarGlbModel
+          modelUrl={presetModelUrl}
+          animationName="idle"
+          targetHeight={0.0042}
+          colors={{
+            skin: profile.body.skinTone,
+            hair: profile.hair.color,
+            top: profile.clothing.topColor,
+            bottom: profile.clothing.bottomColor,
+            shoes: profile.clothing.shoesColor,
+          }}
+        />
       </group>
     );
   }
