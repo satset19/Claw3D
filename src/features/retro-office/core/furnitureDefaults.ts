@@ -420,6 +420,23 @@ const DEFAULT_ART_ROOM_ITEMS: FurnitureSeed[] = [
   { type: "plant", x: 280, y: 240 },
 ];
 
+export const DEFAULT_BEDROOM_ITEMS: FurnitureSeed[] = [
+  { type: "wall", x: 480, y: 30, w: 300, h: 8 },
+  { type: "wall", x: 480, y: 250, w: 300, h: 8 },
+  { type: "wall", x: 480, y: 30, w: 8, h: 220 },
+  { type: "wall", x: 780, y: 30, w: 8, h: 220 },
+  { type: "door", x: 620, y: 250, w: 40, h: 8 },
+  { type: "bed", x: 519, y: 37, facing: 90 },
+  { type: "bed", x: 611, y: 37, facing: 90 },
+  { type: "bed", x: 703, y: 37, facing: 90 },
+  { type: "bed", x: 519, y: 97, facing: 90 },
+  { type: "bed", x: 611, y: 97, facing: 90 },
+  { type: "bed", x: 703, y: 97, facing: 90 },
+  { type: "bed", x: 519, y: 157, facing: 90 },
+  { type: "bed", x: 611, y: 157, facing: 90 },
+  { type: "bed", x: 703, y: 157, facing: 90 },
+];
+
 const DEFAULT_LOBBY_FURNITURE: FurnitureSeed[] = [
   { type: "round_table", x: 120, y: 110, r: 72 },
   { type: "chair", x: 182, y: 110, facing: 0 },
@@ -461,8 +478,6 @@ const DEFAULT_FURNITURE: FurnitureSeed[] = [
   { type: "chair", x: 120, y: 480, facing: 180 },
   { type: "chair", x: 50, y: 150, facing: 105 },
   { type: "chair", x: 60, y: 80, facing: 60 },
-  { type: "chair", x: 550, y: 50, facing: 0 },
-  { type: "bookshelf", x: 600, y: 30, w: 80, h: 120 },
   { type: "couch", x: 270, y: 90, w: 40, h: 80, vertical: true, facing: 180 },
   { type: "fridge", x: 1050, y: 20, w: 40, h: 80 },
   { type: "stove", x: 920, y: 20 },
@@ -543,12 +558,12 @@ const DEFAULT_FURNITURE: FurnitureSeed[] = [
   { type: "lamp", x: 980, y: 390 },
   { type: "trash", x: 830, y: 20 },
   { type: "plant", x: 40, y: 40 },
-  { type: "plant", x: 660, y: 30 },
   { type: "plant", x: 340, y: 700 },
   { type: "plant", x: 450, y: 450 },
   { type: "plant", x: 1090, y: 310 },
   { type: "plant", x: 1100, y: 490 },
   { type: "plant", x: 530, y: 700 },
+  ...DEFAULT_BEDROOM_ITEMS,
   ...DEFAULT_SERVER_ROOM_ITEMS,
   ...DEFAULT_GYM_ITEMS,
   ...DEFAULT_QA_LAB_ITEMS,
@@ -796,5 +811,13 @@ export const ensureOfficeQaLab = (items: FurnitureItem[]): FurnitureItem[] => {
   return [
     ...items,
     ...DEFAULT_QA_LAB_ITEMS.map((item) => ({ ...item, _uid: nextUid() })),
+  ];
+};
+
+export const ensureOfficeBedroom = (items: FurnitureItem[]): FurnitureItem[] => {
+  if (items.some((item) => item.type === "bed")) return items;
+  return [
+    ...items,
+    ...DEFAULT_BEDROOM_ITEMS.map((item) => ({ ...item, _uid: nextUid() })),
   ];
 };

@@ -64,9 +64,64 @@ export type RenderAgent = SceneActor & {
   janitorPauseUntil?: number;
 };
 
+export type FurnitureItemType =
+  | "wall"
+  | "door"
+  | "desk_cubicle"
+  | "chair"
+  | "round_table"
+  | "executive_desk"
+  | "couch"
+  | "couch_v"
+  | "bookshelf"
+  | "plant"
+  | "beanbag"
+  | "pingpong"
+  | "table_rect"
+  | "coffee_machine"
+  | "fridge"
+  | "water_cooler"
+  | "atm"
+  | "sms_booth"
+  | "phone_booth"
+  | "whiteboard"
+  | "cabinet"
+  | "computer"
+  | "lamp"
+  | "printer"
+  | "stove"
+  | "microwave"
+  | "wall_cabinet"
+  | "sink"
+  | "vending"
+  | "server_rack"
+  | "server_terminal"
+  | "qa_terminal"
+  | "kanban_board"
+  | "device_rack"
+  | "test_bench"
+  | "treadmill"
+  | "weight_bench"
+  | "dumbbell_rack"
+  | "exercise_bike"
+  | "punching_bag"
+  | "jukebox"
+  | "rowing_machine"
+  | "kettlebell_rack"
+  | "yoga_mat"
+  | "keyboard"
+  | "mouse"
+  | "trash"
+  | "mug"
+  | "clock"
+  | "easel"
+  | "dishwasher"
+  | "bed"
+  | (string & {});
+
 export type FurnitureItem = {
   _uid: string;
-  type: string;
+  type: FurnitureItemType;
   x: number;
   y: number;
   w?: number;

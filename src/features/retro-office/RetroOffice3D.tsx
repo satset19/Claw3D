@@ -478,6 +478,17 @@ const ReadOnlyFurnitureClone = memo(function ReadOnlyFurnitureClone({
             onPointerOver={NOOP_FURNITURE_UID_HANDLER}
             onPointerOut={NOOP_FURNITURE_HANDLER}
           />
+        ) : item.type === "bed" ? (
+          <PrimitiveBedModel
+            key={item._uid}
+            item={item}
+            isSelected={false}
+            isHovered={false}
+            editMode={false}
+            onPointerDown={NOOP_FURNITURE_UID_HANDLER}
+            onPointerOver={NOOP_FURNITURE_UID_HANDLER}
+            onPointerOut={NOOP_FURNITURE_HANDLER}
+          />
         ) : item.type === "round_table" ? (
           <PrimitiveRoundTableModel
             key={item._uid}
@@ -2273,16 +2284,18 @@ const buildInitialFurnitureLayout = (
   storageNamespace: string,
   layoutPreset: OfficeLayoutPreset,
 ): FurnitureItem[] =>
-  ensureOfficeKanbanBoard(
-    ensureOfficeJukebox(
-      ensureOfficeQaLab(
-        ensureOfficeGymRoom(
-          ensureOfficeServerRoom(
-            ensureOfficePhoneBooth(
-              ensureOfficeSmsBooth(
-                ensureOfficeAtm(
-                  ensureOfficePingPongTable(
-                    loadFurniture(storageNamespace) ?? materializeDefaults(layoutPreset),
+  ensureOfficeBedroom(
+    ensureOfficeKanbanBoard(
+      ensureOfficeJukebox(
+        ensureOfficeQaLab(
+          ensureOfficeGymRoom(
+            ensureOfficeServerRoom(
+              ensureOfficePhoneBooth(
+                ensureOfficeSmsBooth(
+                  ensureOfficeAtm(
+                    ensureOfficePingPongTable(
+                      loadFurniture(storageNamespace) ?? materializeDefaults(layoutPreset),
+                    ),
                   ),
                 ),
               ),
@@ -5476,6 +5489,18 @@ export function RetroOffice3D({
                     onPointerDown={handleFurniturePointerDown}
                     onPointerOver={handleFurniturePointerOver}
                     onPointerOut={handleFurniturePointerOut}
+                  />
+                ) : item.type === "bed" ? (
+                  <PrimitiveBedModel
+                    key={item._uid}
+                    item={item}
+                    isSelected={item._uid === selectedUid}
+                    isHovered={item._uid === hoverUid}
+                    editMode={editMode}
+                    onPointerDown={handleFurniturePointerDown}
+                    onPointerOver={handleFurniturePointerOver}
+                    onPointerOut={handleFurniturePointerOut}
+                    onClick={handleDeskClick}
                   />
                 ) : item.type === "round_table" ? (
                   <PrimitiveRoundTableModel

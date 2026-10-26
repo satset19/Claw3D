@@ -9,7 +9,11 @@ import {
   SCALE,
   WALL_THICKNESS,
 } from "@/features/retro-office/core/constants";
-import { getItemRotationRadians, toWorld } from "@/features/retro-office/core/geometry";
+import {
+  getItemBaseSize,
+  getItemRotationRadians,
+  toWorld,
+} from "@/features/retro-office/core/geometry";
 import type { FurnitureItem, RenderAgent } from "@/features/retro-office/core/types";
 import type {
   BasicFurnitureModelProps,
@@ -510,6 +514,164 @@ export function MugModel({
         <torusGeometry args={[0.016, 0.006, 6, 12, Math.PI]} />
         <meshStandardMaterial color="#e8ded0" roughness={0.6} metalness={0.02} />
       </mesh>
+    </group>
+  );
+}
+
+export function BedModel({
+  item,
+  isSelected,
+  isHovered,
+  editMode,
+  onPointerDown,
+  onPointerOver,
+  onPointerOut,
+  onClick,
+}: InteractiveFurnitureModelProps) {
+  const [wx, , wz] = toWorld(item.x, item.y);
+  const { width, height } = getItemBaseSize(item);
+  const widthWorld = width * SCALE;
+  const depthWorld = height * SCALE;
+  const rotY = getItemRotationRadians(item);
+  const highlightColor = isSelected
+    ? "#fbbf24"
+    : isHovered && editMode
+      ? "#4a90d9"
+      : "#000000";
+  const highlightIntensity = isSelected ? 0.35 : isHovered && editMode ? 0.22 : 0;
+
+  const w = widthWorld;
+  const d = depthWorld;
+
+  return (
+    <group
+      position={[wx, item.elevation ?? 0, wz]}
+      onPointerDown={(event) => {
+        event.stopPropagation();
+        onPointerDown(item._uid);
+      }}
+      onPointerOver={(event) => {
+        event.stopPropagation();
+        onPointerOver(item._uid);
+      }}
+      onPointerOut={(event) => {
+        event.stopPropagation();
+        onPointerOut();
+      }}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick?.(item._uid);
+      }}
+    >
+      <group position={[w / 2, 0, d / 2]} rotation={[0, rotY, 0]}>
+        {/* Wooden frame: 4 legs */}
+        <mesh position={[-w / 2 + 0.025, 0.06, -d / 2 + 0.025]} castShadow receiveShadow>
+          <boxGeometry args={[0.035, 0.12, 0.035]} />
+          <meshStandardMaterial
+            color="#6d4c41"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+        <mesh position={[w / 2 - 0.025, 0.06, -d / 2 + 0.025]} castShadow receiveShadow>
+          <boxGeometry args={[0.035, 0.12, 0.035]} />
+          <meshStandardMaterial
+            color="#6d4c41"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+        <mesh position={[-w / 2 + 0.025, 0.06, d / 2 - 0.025]} castShadow receiveShadow>
+          <boxGeometry args={[0.035, 0.12, 0.035]} />
+          <meshStandardMaterial
+            color="#6d4c41"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+        <mesh position={[w / 2 - 0.025, 0.06, d / 2 - 0.025]} castShadow receiveShadow>
+          <boxGeometry args={[0.035, 0.12, 0.035]} />
+          <meshStandardMaterial
+            color="#6d4c41"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+
+        {/* Wooden frame: base platform */}
+        <mesh position={[0, 0.16, 0]} castShadow receiveShadow>
+          <boxGeometry args={[w, 0.08, d]} />
+          <meshStandardMaterial
+            color="#6d4c41"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+
+        {/* Wooden frame: headboard */}
+        <mesh position={[0, 0.26, -d / 2 + 0.02]} castShadow receiveShadow>
+          <boxGeometry args={[w * 1.02, 0.36, 0.04]} />
+          <meshStandardMaterial
+            color="#5d4037"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+
+        {/* Wooden frame: footboard */}
+        <mesh position={[0, 0.17, d / 2 - 0.015]} castShadow receiveShadow>
+          <boxGeometry args={[w * 1.02, 0.14, 0.03]} />
+          <meshStandardMaterial
+            color="#5d4037"
+            roughness={0.7}
+            metalness={0.08}
+            emissive={highlightColor}
+            emissiveIntensity={highlightIntensity}
+          />
+        </mesh>
+
+        {/* Mattress */}
+        <mesh position={[0, 0.26, 0.01]} castShadow receiveShadow>
+          <boxGeometry args={[w * 0.92, 0.12, d * 0.92]} />
+          <meshStandardMaterial
+            color="#f5f0eb"
+            roughness={0.9}
+            metalness={0.02}
+          />
+        </mesh>
+
+        {/* Pillow */}
+        <mesh position={[0, 0.345, -d * 0.30]} castShadow receiveShadow>
+          <boxGeometry args={[w * 0.72, 0.05, d * 0.22]} />
+          <meshStandardMaterial
+            color="#ffffff"
+            roughness={0.8}
+            metalness={0.0}
+          />
+        </mesh>
+
+        {/* Blanket */}
+        <mesh position={[0, 0.335, d * 0.14]} castShadow receiveShadow>
+          <boxGeometry args={[w * 0.94, 0.03, d * 0.60]} />
+          <meshStandardMaterial
+            color={item.color ?? "#2563eb"}
+            roughness={0.75}
+            metalness={0.05}
+          />
+        </mesh>
+      </group>
     </group>
   );
 }

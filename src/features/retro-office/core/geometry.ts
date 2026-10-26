@@ -84,6 +84,7 @@ export const ITEM_FOOTPRINT: Record<string, [number, number]> = {
   trash: [20, 20],
   mug: [14, 14],
   clock: [20, 20],
+  bed: [46, 76],
 };
 
 export const getItemBaseSize = (item: FurnitureItem) => {
@@ -173,6 +174,8 @@ export const ITEM_METADATA: Record<string, { blocksNavigation: boolean; navPaddi
   trash:           { blocksNavigation: false }, // small bin
   clock:           { blocksNavigation: false }, // wall-mounted
   mug:             { blocksNavigation: false }, // desk item
+  // ── bedroom ────────────────────────────────────────────────────────────────
+  bed:             { blocksNavigation: true, navPadding: 4 },
 };
 
 export const FURNITURE_ROTATION: Record<string, number> = {
