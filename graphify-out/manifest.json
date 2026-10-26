@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "server/hermes-gateway-adapter.js": {
-    "mtime": 1792976767.2575781,
-    "seen": 1792978728.0275395,
-    "ast_hash": "02b51fcc639eb9fac5e935523b2ab425",
+    "mtime": 1792980543.0202281,
+    "seen": 1792980671.8875282,
+    "ast_hash": "4ea3490e5f787f3449815dbb6494978d",
     "semantic_hash": ""
   },
   "server/index.js": {
@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
-    "mtime": 1792976420.9279063,
-    "seen": 1792978728.0287228,
-    "ast_hash": "48fef2cc74593305f1b2980f2407b703",
+    "mtime": 1792980116.9307632,
+    "seen": 1792980671.8942184,
+    "ast_hash": "21ff9fdf009229866ceea9ca08eab153",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentCreateModal.tsx": {
@@ -918,9 +918,9 @@
     "semantic_hash": ""
   },
   "src/features/office/components/OfficeFloorNav.tsx": {
-    "mtime": 1792874666.6256979,
-    "seen": 1792874911.2409735,
-    "ast_hash": "fcc397cd1f3ff3c061c0045e6706f606",
+    "mtime": 1792980162.0927663,
+    "seen": 1792980671.8948793,
+    "ast_hash": "e103359fa08429e57502f54a57aebc90",
     "semantic_hash": ""
   },
   "src/features/office/components/OfficePhaserCanvas.tsx": {
@@ -1110,9 +1110,9 @@
     "semantic_hash": ""
   },
   "src/features/office/screens/OfficeScreen.tsx": {
-    "mtime": 1792977026.451343,
-    "seen": 1792978728.029741,
-    "ast_hash": "f9d833624981483266216f13783e7288",
+    "mtime": 1792980207.6517782,
+    "seen": 1792980671.895131,
+    "ast_hash": "6143c15cad859393fbdac7717f63f9d7",
     "semantic_hash": ""
   },
   "src/features/office/screens/PhoneBoothImmersiveScreen.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792973564.6614177,
-    "seen": 1792973840.3957798,
-    "ast_hash": "ef4f521e3c39344c73a386ae8bc9459a",
+    "mtime": 1792980842.3038776,
+    "seen": 1792980842.884793,
+    "ast_hash": "9498d33477475f876907323c69559ac3",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -1266,15 +1266,15 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/core/furnitureDefaults.ts": {
-    "mtime": 1792856529.069823,
-    "seen": 1792862681.588327,
-    "ast_hash": "2746ea6bc753ea6563ff18c75d559b27",
+    "mtime": 1792980831.2656324,
+    "seen": 1792980842.8848195,
+    "ast_hash": "b5f47ffdf48df8c4097850f8272fcc29",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/geometry.ts": {
-    "mtime": 1792856529.069823,
-    "seen": 1792862681.58833,
-    "ast_hash": "4733be6a40b61cb7bdc6c84edd5e3ce5",
+    "mtime": 1792980616.6608644,
+    "seen": 1792980671.8953476,
+    "ast_hash": "dc833389969a566f8b15b6065ce21f47",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/janitors.ts": {
@@ -1284,9 +1284,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/core/navigation.ts": {
-    "mtime": 1792856529.069823,
-    "seen": 1792862681.5883355,
-    "ast_hash": "4c7b9faeecbe70bba6b026129b646b17",
+    "mtime": 1792980131.743092,
+    "seen": 1792980671.895432,
+    "ast_hash": "77d5a60a5a78a61161dfc2b36ccad830",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/navigation/gymRoute.ts": {
@@ -1332,9 +1332,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/core/types.ts": {
-    "mtime": 1792856529.070823,
-    "seen": 1792862681.588392,
-    "ast_hash": "233f8d6580803a54b8fcd8d589e0d7a1",
+    "mtime": 1792980588.9882495,
+    "seen": 1792980671.895518,
+    "ast_hash": "aadba754d792effc404e884f3afa6e71",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/Jukebox.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792976292.2060695,
-    "seen": 1792978728.0300283,
-    "ast_hash": "b61319ed3bdfa3ff480fe73957dbfc02",
+    "mtime": 1792979959.5992692,
+    "seen": 1792980671.8955367,
+    "ast_hash": "c28ff2d2e336c74819c5abfa98e7bbf3",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -1368,9 +1368,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/primitives.tsx": {
-    "mtime": 1792856529.072823,
-    "seen": 1792862681.5884311,
-    "ast_hash": "e20ea4994d994a78b420c1305ebcac4a",
+    "mtime": 1792980726.9703152,
+    "seen": 1792980842.8849652,
+    "ast_hash": "3fe137c675d6d1e5b3357d4baf53ccde",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/types.ts": {
@@ -1392,9 +1392,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/scene/environment.tsx": {
-    "mtime": 1792856529.073823,
-    "seen": 1792862681.5884511,
-    "ast_hash": "483adc3fa790be93cac1aae561e553b5",
+    "mtime": 1792980596.4614155,
+    "seen": 1792980671.8956044,
+    "ast_hash": "8b09a6d0226399f5c6d0e908600aeb60",
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/NavigationSystem.tsx": {
@@ -1680,9 +1680,9 @@
     "semantic_hash": ""
   },
   "src/lib/office/floors.ts": {
-    "mtime": 1792856529.0838232,
-    "seen": 1792862681.5885947,
-    "ast_hash": "7862be856eabea4afdd2e83c25bd9176",
+    "mtime": 1792980155.8566277,
+    "seen": 1792980671.896001,
+    "ast_hash": "7ca503f1126b91b0870732fe8d9fbbaa",
     "semantic_hash": ""
   },
   "src/lib/office/gatewayPresence.ts": {
@@ -2490,9 +2490,9 @@
     "semantic_hash": ""
   },
   "tests/unit/floorRoster.test.ts": {
-    "mtime": 1792856529.113824,
-    "seen": 1792862681.589012,
-    "ast_hash": "85628b50944dffd41d25a634fcd0fb86",
+    "mtime": 1792980407.6722214,
+    "seen": 1792980671.9065864,
+    "ast_hash": "20cf3d46d5e9ec85ff27761b65cfd1ee",
     "semantic_hash": ""
   },
   "tests/unit/gatewayAgentFiles.test.ts": {
@@ -2784,9 +2784,9 @@
     "semantic_hash": ""
   },
   "tests/unit/officeFloors.test.ts": {
-    "mtime": 1792856529.1238241,
-    "seen": 1792862681.589154,
-    "ast_hash": "9a988d6eee692fca6806641a79d5cd01",
+    "mtime": 1792980196.1845233,
+    "seen": 1792980671.9184794,
+    "ast_hash": "1833783a84453f3a400e7daff03e1139",
     "semantic_hash": ""
   },
   "tests/unit/officePathfinding.test.ts": {
@@ -3030,9 +3030,9 @@
     "semantic_hash": ""
   },
   "tests/unit/studioSettings.test.ts": {
-    "mtime": 1792856529.1288242,
-    "seen": 1792862681.5892704,
-    "ast_hash": "0b0f2e1d4ef4f5b945f29eb97cff2cb9",
+    "mtime": 1792980434.0188067,
+    "seen": 1792980671.9188545,
+    "ast_hash": "cb3f27de0b995da02e85a2b6e18e08e6",
     "semantic_hash": ""
   },
   "tests/unit/studioSettingsCoordinator.test.ts": {
@@ -3120,9 +3120,9 @@
     "semantic_hash": ""
   },
   "tests/unit/useOfficeFloorRuntimePersistence.test.ts": {
-    "mtime": 1792856529.1318243,
-    "seen": 1792862681.5893133,
-    "ast_hash": "439bba5c37390b5fa63e9aa9db52bd50",
+    "mtime": 1792980517.1556535,
+    "seen": 1792980671.9189825,
+    "ast_hash": "07d8eac45b536dda379de48116fc280b",
     "semantic_hash": ""
   },
   "tests/unit/useRuntimeConnection.test.ts": {
@@ -3528,9 +3528,9 @@
     "semantic_hash": ""
   },
   "wsset.mjs": {
-    "mtime": 1792865704.3558106,
-    "seen": 1792866754.4736555,
-    "ast_hash": "d1cc9da1493e6c6ab40d03f1f92c8cda",
+    "mtime": 1792980530.6889544,
+    "seen": 1792980671.919078,
+    "ast_hash": "166bc5767e6d108a7975fa5f25c23d37",
     "semantic_hash": ""
   },
   ".hermes/plans/2026-10-25_000000-claw3d-male-avatar-glb.md": {
@@ -3546,9 +3546,9 @@
     "semantic_hash": ""
   },
   "tests/unit/officeFloorNavAutohide.test.tsx": {
-    "mtime": 1792874695.9813783,
-    "seen": 1792874911.242268,
-    "ast_hash": "249be5f2e1699cbaee0c67aaef77c355",
+    "mtime": 1792980511.278523,
+    "seen": 1792980671.918469,
+    "ast_hash": "f5a3b36146eb85033704468c0de27fce",
     "semantic_hash": ""
   },
   ".hermes/plans/2026-10-25_033617-office-floor-nav-autohide.md": {
@@ -3813,6 +3813,18 @@
     "mtime": 1792976158.772141,
     "seen": 1792978728.0329714,
     "ast_hash": "f0c9c0e655b78ce88f2f16250519b2c7",
+    "semantic_hash": ""
+  },
+  "src/features/retro-office/scene/GardenWorkspace.tsx": {
+    "mtime": 1792980402.66411,
+    "seen": 1792980671.895589,
+    "ast_hash": "2e3dc3cb50155f3b07883c9070fd9556",
+    "semantic_hash": ""
+  },
+  "tests/unit/navigation.doorsAndCollision.test.ts": {
+    "mtime": 1792980749.5708172,
+    "seen": 1792980842.888755,
+    "ast_hash": "bb90922ddc0e3ba11809bc01bd58a092",
     "semantic_hash": ""
   }
 }

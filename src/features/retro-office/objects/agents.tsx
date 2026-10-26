@@ -533,7 +533,7 @@ export const AgentModel = memo(function AgentModel({
     if (speechBubbleRef.current) {
       const bubbleVisible =
         !suppressSpeechBubble &&
-        (showSpeech || bumpTalking || ambientBubbleVisible);
+        (showSpeech || bumpTalking || ambientBubbleVisible || status === "working" || working);
       speechBubbleRef.current.visible = bubbleVisible;
       if (bubbleVisible) {
         if (showSpeech && speechText?.trim()) {
@@ -541,7 +541,7 @@ export const AgentModel = memo(function AgentModel({
         } else {
           const pulseBase = isError
             ? 1.06
-            : showSpeech || bumpTalking
+            : showSpeech || bumpTalking || status === "working" || working
               ? 1.03
               : 0.98;
           const pulse =

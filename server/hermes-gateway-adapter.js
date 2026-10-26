@@ -77,7 +77,7 @@ const MAX_TOOL_ROUNDS = 8;
 // Orchestrator system prompt
 // ---------------------------------------------------------------------------
 
-const ORCHESTRATOR_SYSTEM_PROMPT = `You are ${HERMES_AGENT_NAME}, an AI orchestrator managing a team of sub-agents in a virtual 3D office.
+const ORCHESTRATOR_SYSTEM_PROMPT = `You are ${HERMES_AGENT_NAME}, an AI orchestrator and decision maker managing a team of sub-agents in a virtual 3D office. You can spawn up to 10 sub-agents for parallel research and analysis, synthesise their findings, and make final decisions.
 
 You have tools to build and manage your team autonomously:
 
@@ -689,6 +689,7 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck) {
   }
 
   let textContent = "";
+  let reasoningContent = "";
   let finishReason = "stop";
   /** @type {Record<number, {id: string, name: string, argsStr: string}>} */
   const toolCallAccum = {};
@@ -712,10 +713,17 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck) {
             finishReason = choice.finish_reason;
           }
           const delta = choice.delta || {};
+          // Reasoning/thinking content
+          const reasoningDelta =
+            delta.reasoning_content || delta.reasoning || delta.thinking || "";
+          if (typeof reasoningDelta === "string" && reasoningDelta) {
+            reasoningContent += reasoningDelta;
+            if (onTextDelta) onTextDelta(textContent, reasoningContent);
+          }
           // Text content
           if (typeof delta.content === "string" && delta.content) {
             textContent += delta.content;
-            if (onTextDelta) onTextDelta(textContent);
+            if (onTextDelta) onTextDelta(textContent, reasoningContent);
           }
           // Tool call accumulation
           if (Array.isArray(delta.tool_calls)) {
@@ -740,16 +748,23 @@ async function streamOneTurn(messages, model, tools, onTextDelta, abortCheck) {
     return { id: tc.id, name: tc.name, args };
   });
 
+  const thinkMatch = textContent.match(/<think(?:ing)?>([\s\S]*?)<\/think(?:ing)?>/i);
+  if (thinkMatch) {
+    if (!reasoningContent) reasoningContent = thinkMatch[1].trim();
+    textContent = textContent.replace(/<think(?:ing)?>[\s\S]*?<\/think(?:ing)?>/i, "").trim();
+  }
+
   if (!textContent.trim() && toolCalls.length === 0 && finishReason === "stop") {
     const fallback = await completeOneTurn(messages, resolvedModel, tools);
     return {
       textContent: fallback.textContent,
       toolCalls: fallback.toolCalls,
       finishReason: fallback.finishReason,
+      reasoningContent,
     };
   }
 
-  return { textContent, toolCalls, finishReason };
+  return { textContent, toolCalls, finishReason, reasoningContent };
 }
 
 // ---------------------------------------------------------------------------
@@ -762,9 +777,28 @@ function broadcastEvent(frame) {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Tool executors
-// ---------------------------------------------------------------------------
+function buildAgentSystemMessages(agentId, agent) {
+  const parts = [];
+  if (agent?.systemPrompt) {
+    parts.push(agent.systemPrompt);
+  }
+  const soul = agentFiles.get(`${agentId}/SOUL.md`);
+  if (soul && soul.trim()) {
+    parts.push(soul.trim());
+  }
+  const agentsMd = agentFiles.get(`${agentId}/AGENTS.md`);
+  if (agentsMd && agentsMd.trim()) {
+    parts.push(agentsMd.trim());
+  }
+  const memory = agentFiles.get(`${agentId}/MEMORY.md`);
+  if (memory && memory.trim()) {
+    parts.push(`# Durable Memory\n${memory.trim()}`);
+  }
+  const combined = parts.join("\n\n");
+  const identityMsg = { role: "system", content: `[User identity]\n${HERMES_USER_IDENTITY}` };
+  return combined ? [{ role: "system", content: combined }, identityMsg] : [identityMsg];
+}
+
 
 async function execSpawnAgent(args) {
   const name = (typeof args.name === "string" ? args.name : "Agent").trim() || "Agent";
@@ -819,10 +853,7 @@ async function execDelegateTask(args) {
   const model = agent.settings.model || HERMES_MODEL;
 
   // Build messages for sub-agent
-  const identityMsg = { role: "system", content: `[User identity]\n${HERMES_USER_IDENTITY}` };
-  const systemMsg = agent.systemPrompt
-    ? [{ role: "system", content: agent.systemPrompt }, identityMsg]
-    : [identityMsg];
+  const systemMsg = buildAgentSystemMessages(targetId, agent);
   const contextHistory = agent.settings.wipe ? [] : [...history];
   const messages = [...systemMsg, ...contextHistory, { role: "user", content: message }];
 
@@ -976,22 +1007,23 @@ async function executeToolCall(tc, sendEvent) {
 
 async function runAgenticLoop({ sessionKey, agentId, userMessage, model, tools, emitDelta, abortCheck, sendEvent }) {
   const agent = agentRegistry.get(agentId);
-  const identityMsg = { role: "system", content: `[User identity]\n${HERMES_USER_IDENTITY}` };
-  const systemMsg = agent?.systemPrompt
-    ? [{ role: "system", content: agent.systemPrompt }, identityMsg]
-    : [identityMsg];
+  const systemMsg = buildAgentSystemMessages(agentId, agent);
   const history = getHistory(sessionKey);
   const contextHistory = (agent?.settings?.wipe) ? [] : [...history];
   let messages = [...systemMsg, ...contextHistory, { role: "user", content: userMessage }];
 
   let finalText = "";
+  let accumulatedThinking = "";
   let round = 0;
 
   while (round < MAX_TOOL_ROUNDS) {
     round++;
-    const { textContent, toolCalls, finishReason } = await streamOneTurn(
+    const { textContent, toolCalls, finishReason, reasoningContent } = await streamOneTurn(
       messages, model, tools, emitDelta, abortCheck
     );
+    if (reasoningContent && typeof reasoningContent === "string") {
+      accumulatedThinking += (accumulatedThinking ? "\n\n" : "") + reasoningContent.trim();
+    }
 
     if (finishReason === "tool_calls" && toolCalls.length > 0) {
       // Inform user that tools are being executed (brief status text)
@@ -1027,13 +1059,18 @@ async function runAgenticLoop({ sessionKey, agentId, userMessage, model, tools, 
 
   // Persist to history
   if (agent?.settings?.continuity !== false) {
-    history.push({ role: "user", content: userMessage });
-    history.push({ role: "assistant", content: finalText });
+    const userEntry = { role: "user", content: userMessage, timestamp: Date.now() };
+    const assistantEntry = { role: "assistant", content: finalText, timestamp: Date.now() };
+    if (accumulatedThinking.trim()) {
+      assistantEntry.thinking = accumulatedThinking.trim();
+    }
+    history.push(userEntry);
+    history.push(assistantEntry);
     saveHistoryToDisk();
     touchSession(sessionKey);
   }
 
-  return finalText;
+  return { finalText, accumulatedThinking };
 }
 
 // ---------------------------------------------------------------------------
@@ -1298,15 +1335,21 @@ async function handleMethod(method, params, id, sendEvent) {
             payload: { runId, sessionKey, state, ...extra } });
         };
 
-        const onTextDelta = (partial) => {
-          if (!aborted) emitChat("delta", { message: { role: "assistant", content: partial } });
+        const onTextDelta = (partial, reasoning) => {
+          if (!aborted) {
+            const messagePayload = { role: "assistant", content: partial };
+            if (reasoning && typeof reasoning === "string") {
+              messagePayload.thinking = reasoning;
+            }
+            emitChat("delta", { message: messagePayload });
+          }
         };
 
         try {
           // Only the orchestrator gets team management tools
           const tools = isOrchestrator ? TEAM_TOOLS : [];
 
-          const finalText = await runAgenticLoop({
+          const { finalText, accumulatedThinking } = await runAgenticLoop({
             sessionKey, agentId: sessionAgentId, userMessage,
             model, tools, emitDelta: onTextDelta,
             abortCheck: () => aborted, sendEvent,
@@ -1315,8 +1358,12 @@ async function handleMethod(method, params, id, sendEvent) {
           if (aborted) {
             emitChat("aborted", {});
           } else {
+            const finalMessage = { role: "assistant", content: finalText };
+            if (accumulatedThinking && accumulatedThinking.trim()) {
+              finalMessage.thinking = accumulatedThinking.trim();
+            }
             emitChat("final", { stopReason: "end_turn",
-              message: { role: "assistant", content: finalText } });
+              message: finalMessage });
             sendEvent({ type: "event", event: "presence", seq: seqCounter++,
               payload: { sessions: { recent: [{ key: sessionKey, updatedAt: Date.now() }],
                 byAgent: [{ agentId: sessionAgentId, recent: [{ key: sessionKey, updatedAt: Date.now() }] }] } } });

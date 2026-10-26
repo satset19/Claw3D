@@ -80,6 +80,7 @@ import {
 } from "@/features/retro-office/core/constants";
 import {
   ensureOfficeAtm,
+  ensureOfficeBedroom,
   ensureOfficeGymRoom,
   ensureOfficeKanbanBoard,
   ensureOfficePhoneBooth,
@@ -127,6 +128,7 @@ import {
   getMeetingSeatLocations,
   getQaLabStations,
   GYM_DEFAULT_TARGET,
+  isCellBlocked,
   MEETING_OVERFLOW_LOCATIONS,
   QA_LAB_DEFAULT_TARGET,
   resolveDeskIndexForItem,
@@ -194,6 +196,7 @@ import {
   YogaMatModel as InteractiveYogaMatModel,
 } from "@/features/retro-office/objects/machines";
 import {
+  BedModel as PrimitiveBedModel,
   ClockModel as PrimitiveClockModel,
   DoorModel as PrimitiveDoorModel,
   InstancedWallSegmentsModel as PrimitiveInstancedWallSegmentsModel,
@@ -208,6 +211,7 @@ import {
   FloorAndWalls as SceneFloorAndWalls,
   WallPictures as SceneWallPictures,
 } from "@/features/retro-office/scene/environment";
+import { GardenWorkspace } from "@/features/retro-office/scene/GardenWorkspace";
 import {
   CAMERA_PRESETS as CAMERA_PRESET_MAP,
   CameraAnimator as CameraPresetAnimator,
@@ -1879,6 +1883,24 @@ function useAgentTick(
         dy = wpY - agent.y;
       const dist = Math.hypot(dx, dy);
 
+      // When an agent moves along path waypoints, ensure the agent does not move
+      // into a blocked grid cell. If the next step target is blocked, clamp to the
+      // current position so the agent cannot walk through walls or furniture.
+      if (path.length > 0) {
+        const nextStepX = dist > speed ? agent.x + (dx / dist) * speed : wpX;
+        const nextStepY = dist > speed ? agent.y + (dy / dist) * speed : wpY;
+        if (isCellBlocked(nextStepX, nextStepY, grid)) {
+          return {
+            ...agent,
+            x: agent.x,
+            y: agent.y,
+            path: [],
+            state: "standing" as const,
+            frame: agent.frame + 1,
+          };
+        }
+      }
+
       let ns = agent.state,
         nx = agent.x,
         ny = agent.y,
@@ -2183,6 +2205,11 @@ function useAgentTick(
       if ((danceUntilByAgentId[agent.id] ?? 0) > now && ns !== "away") {
         ns = "dancing";
         npath = [];
+      }
+
+      if (isCellBlocked(nx, ny, grid)) {
+        nx = agent.x;
+        ny = agent.y;
       }
 
       return {
@@ -5373,6 +5400,11 @@ export function RetroOffice3D({
               <Environment preset="city" />
             </Suspense>
 
+            {/* Outdoor garden patio workspace outside south wall of headquarter */}
+            <Suspense fallback={null}>
+              <GardenWorkspace />
+            </Suspense>
+
             {/* Furniture models — each loads its GLB asynchronously. */}
             <Suspense fallback={null}>
               {!editMode ? (
@@ -5834,7 +5866,8 @@ export function RetroOffice3D({
                         : standupMeeting?.phase === "in_progress"
                           ? Boolean(standupSpeechTextByAgentId[agent.id])
                           : speechAgentIds.has(agent.id) ||
-                            Boolean(streamingTextByAgentId[agent.id])
+                            Boolean(streamingTextByAgentId[agent.id]) ||
+                            agent.status === "working"
                     }
                     speechText={
                       isJanitor
@@ -5843,7 +5876,7 @@ export function RetroOffice3D({
                           ? (standupSpeechTextByAgentId[agent.id] ?? null)
                           : (speechTextByAgentId[agent.id] ??
                               streamingTextByAgentId[agent.id] ??
-                              null)
+                              (agent.status === "working" ? "..." : null))
                     }
                     suppressSpeechBubble={
                       suppressSceneSpeechBubbles &&

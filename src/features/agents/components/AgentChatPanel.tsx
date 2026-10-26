@@ -1117,7 +1117,7 @@ const AgentChatComposer = memo(function AgentChatComposer({
             </InlineHoverTooltip>
           ) : null}
         </div>
-        <div className="hidden">
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
           <span className="font-mono tracking-[0.02em]">Show</span>
           <button
             type="button"

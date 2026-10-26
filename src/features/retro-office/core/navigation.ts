@@ -3,6 +3,7 @@ import {
   getItemBounds,
   ITEM_FOOTPRINT,
   ITEM_METADATA,
+  resolveItemTypeKey,
   snap,
 } from "@/features/retro-office/core/geometry";
 import type {
@@ -67,11 +68,22 @@ export const JANITOR_EXIT_POINTS: FacingPoint[] = [
   { x: 1510, y: 680, facing: -Math.PI / 2 },
 ];
 
-const GRID_CELL = 25;
-const GRID_COLS = Math.ceil(CANVAS_W / GRID_CELL);
-const GRID_ROWS = Math.ceil(CANVAS_H / GRID_CELL);
+export const GRID_CELL = 25;
+export const GRID_COLS = Math.ceil(CANVAS_W / GRID_CELL);
+export const GRID_ROWS = Math.ceil(CANVAS_H / GRID_CELL);
 
 export type NavGrid = Uint8Array;
+
+export function isCellBlocked(
+  x: number,
+  y: number,
+  grid: NavGrid,
+): boolean {
+  const col = Math.floor(x / GRID_CELL);
+  const row = Math.floor(y / GRID_CELL);
+  if (col < 0 || col >= GRID_COLS || row < 0 || row >= GRID_ROWS) return true;
+  return grid[row * GRID_COLS + col] !== 0;
+}
 
 /**
  * Returns true if the given item type should block pathfinding cells.
@@ -79,15 +91,30 @@ export type NavGrid = Uint8Array;
  * nav-blocking behaviour. Unknown types default to false (non-blocking) so
  * newly added decorative items never accidentally block navigation.
  */
-const itemBlocksNavigation = (type: string): boolean =>
-  ITEM_METADATA[type]?.blocksNavigation ?? false;
+const itemBlocksNavigation = (typeOrItem: string | FurnitureItem): boolean => {
+  if (typeof typeOrItem === "string") {
+    return ITEM_METADATA[typeOrItem]?.blocksNavigation ?? false;
+  }
+  const resolvedType = resolveItemTypeKey(typeOrItem);
+  return (
+    typeOrItem.type === "wall" ||
+    (ITEM_METADATA[typeOrItem.type]?.blocksNavigation ?? false) ||
+    (ITEM_METADATA[resolvedType]?.blocksNavigation ?? false)
+  );
+};
 
 export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
   const grid = new Uint8Array(GRID_COLS * GRID_ROWS);
   const defaultPad = GRID_CELL * 0.6;
+
+  // First pass: ensure solid furniture and walls are blocked on the grid.
   for (const item of furniture) {
-    if (!itemBlocksNavigation(item.type)) continue;
-    const itemPad = ITEM_METADATA[item.type]?.navPadding ?? defaultPad;
+    if (!itemBlocksNavigation(item)) continue;
+    const resolvedType = resolveItemTypeKey(item);
+    const itemPad =
+      ITEM_METADATA[item.type]?.navPadding ??
+      ITEM_METADATA[resolvedType]?.navPadding ??
+      defaultPad;
     const bounds = getItemBounds(item);
     const x1 = bounds.x - itemPad;
     const y1 = bounds.y - itemPad;
@@ -104,6 +131,34 @@ export function buildNavGrid(furniture: FurnitureItem[]): NavGrid {
     }
   }
 
+  // Second pass: carve out unblocked cells for all items where item.type === 'door'
+  // in the door footprint plus 1 cell margin on each side of the door.
+  // This guarantees the door opening is NEVER accidentally blocked by adjacent wall padding.
+  for (const item of furniture) {
+    if (item.type !== "door") continue;
+    const bounds = getItemBounds(item);
+    const minX = Math.min(bounds.x, item.x);
+    const maxX = Math.max(bounds.x + bounds.w, item.x + (item.w ?? bounds.w));
+    const minY = Math.min(bounds.y, item.y);
+    const maxY = Math.max(bounds.y + bounds.h, item.y + (item.h ?? bounds.h));
+    const c1 = Math.max(0, Math.floor(minX / GRID_CELL) - 1);
+    const c2 = Math.min(
+      GRID_COLS - 1,
+      Math.floor(maxX / GRID_CELL) + 1,
+    );
+    const r1 = Math.max(0, Math.floor(minY / GRID_CELL) - 1);
+    const r2 = Math.min(
+      GRID_ROWS - 1,
+      Math.floor(maxY / GRID_CELL) + 1,
+    );
+    for (let row = r1; row <= r2; row += 1) {
+      for (let col = c1; col <= c2; col += 1) {
+        grid[row * GRID_COLS + col] = 0;
+      }
+    }
+  }
+
+  // Outer canvas boundaries remain impassable.
   for (let column = 0; column < GRID_COLS; column += 1) {
     grid[column] = 1;
     grid[(GRID_ROWS - 1) * GRID_COLS + column] = 1;
@@ -176,9 +231,15 @@ export function astar(
   er = endFree.r;
   // Same nav cell: start and end are close enough that A* has no grid edges
   // to traverse. The destination is still reachable — return a single-waypoint
-  // path to the exact target pixel so the movement layer can make the final
-  // fine-grained adjustment instead of staying put.
-  if (sc === ec && sr === er) return [{ x: ex, y: ey }];
+  // path to the exact target pixel (or cell centre if exact pixel is blocked)
+  // so the movement layer can make the final fine-grained adjustment instead of staying put.
+  if (sc === ec && sr === er) {
+    const endCell = toCell(ex, ey);
+    if (grid[endCell.r * GRID_COLS + endCell.c] !== 0) {
+      return [{ x: cellCx(sc), y: cellCy(sr) }];
+    }
+    return [{ x: ex, y: ey }];
+  }
 
   const nodeCount = GRID_COLS * GRID_ROWS;
   const gCost = new Float32Array(nodeCount).fill(Infinity);
@@ -254,8 +315,11 @@ export function astar(
         node = parent[node];
       }
       path.reverse();
-      if (path.length) path[path.length - 1] = { x: ex, y: ey };
-      else path.push({ x: ex, y: ey });
+      const endCell = toCell(ex, ey);
+      if (grid[endCell.r * GRID_COLS + endCell.c] === 0) {
+        if (path.length) path[path.length - 1] = { x: ex, y: ey };
+        else path.push({ x: ex, y: ey });
+      }
       return path;
     }
 
@@ -275,15 +339,15 @@ export function astar(
       const nextIndex = nextRow * GRID_COLS + nextColumn;
       if (visited[nextIndex] || grid[nextIndex]) continue;
 
-      // For diagonal moves, require both orthogonal neighbours to be free so
-      // agents cannot clip through the corner of a blocked cell (issue #6).
+      // For diagonal moves, strictly ensure diagonal movement cannot cut across
+      // blocked diagonal corners (both orthogonal neighbours must be unblocked).
       // E.g. moving NE (dc=+1, dr=-1) requires N (dc=0, dr=-1) and E (dc=+1, dr=0) to be clear.
       if (columnOffset !== 0 && rowOffset !== 0) {
         const orthogonalA =
           (currentRow + rowOffset) * GRID_COLS + currentColumn;
         const orthogonalB =
           currentRow * GRID_COLS + (currentColumn + columnOffset);
-        if (grid[orthogonalA] || grid[orthogonalB]) continue;
+        if (grid[orthogonalA] !== 0 || grid[orthogonalB] !== 0) continue;
       }
       const nextCost = gCost[current] + cost;
       if (nextCost < gCost[nextIndex]) {
