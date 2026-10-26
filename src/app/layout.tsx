@@ -37,7 +37,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;var d=t?t==='dark':m;document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
+              "(function(){try{var p=localStorage.getItem('claw3d_theme_preset');var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(p==='cyberpunk'){document.documentElement.classList.add('dark','theme-cyberpunk');}else if(p==='lofi'){document.documentElement.classList.add('dark','theme-lofi');}else if(p==='nordic'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('theme-nordic');}else{var d=t?t==='dark':m;document.documentElement.classList.toggle('dark',d);}}catch(e){}})();",
           }}
         />
       </head>

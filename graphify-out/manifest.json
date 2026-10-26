@@ -348,9 +348,9 @@
     "semantic_hash": ""
   },
   "src/app/layout.tsx": {
-    "mtime": 1792869775.83217,
-    "seen": 1792870173.544111,
-    "ast_hash": "f74d2b606d488e45e8b4734dcd2ce7b6",
+    "mtime": 1792974648.8137214,
+    "seen": 1792974838.2043903,
+    "ast_hash": "b7e56b4caf7516408661344ef4c1f644",
     "semantic_hash": ""
   },
   "src/app/office/builder/page.tsx": {
@@ -378,9 +378,9 @@
     "semantic_hash": ""
   },
   "src/components/theme-toggle.tsx": {
-    "mtime": 1792856529.0398223,
-    "seen": 1792862681.5878327,
-    "ast_hash": "d4dec429a6a47ad37740fec74092460b",
+    "mtime": 1792974691.0946405,
+    "seen": 1792974838.2044153,
+    "ast_hash": "9406e7d576701be6e9d54ba215357aa0",
     "semantic_hash": ""
   },
   "src/features/agents/approvals/execApprovalControlLoopWorkflow.ts": {
@@ -1404,9 +1404,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/cameraLighting.tsx": {
-    "mtime": 1792973547.5040286,
-    "seen": 1792973840.3965657,
-    "ast_hash": "31f97ad07d1cd7ac399f0f9fd90d6188",
+    "mtime": 1792974643.6846101,
+    "seen": 1792974838.2068012,
+    "ast_hash": "3f990b67a9e33345c1404af31a1a4fc9",
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/sceneRuntime.tsx": {

@@ -405,21 +405,33 @@ export function DayNightCycle({
 }
 
 export function OfficeLighting({ theme }: { theme?: "light" | "dark" } = {}) {
-  const [isDark, setIsDark] = useState(() => {
-    if (theme) return theme === "dark";
-    if (typeof document === "undefined") return false;
-    return document.documentElement.classList.contains("dark");
+  const [activeTheme, setActiveTheme] = useState<"cyberpunk" | "lofi" | "nordic" | "dark">(() => {
+    if (typeof document === "undefined") return "cyberpunk";
+    if (document.documentElement.classList.contains("theme-cyberpunk")) return "cyberpunk";
+    if (document.documentElement.classList.contains("theme-lofi")) return "lofi";
+    if (document.documentElement.classList.contains("theme-nordic")) return "nordic";
+    if (document.documentElement.classList.contains("dark")) return "dark";
+    return "cyberpunk";
   });
 
   useEffect(() => {
-    if (theme) {
-      setIsDark(theme === "dark");
-      return;
-    }
     if (typeof document === "undefined") return;
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    });
+    const detect = () => {
+      const root = document.documentElement;
+      if (root.classList.contains("theme-cyberpunk")) {
+        setActiveTheme("cyberpunk");
+      } else if (root.classList.contains("theme-lofi")) {
+        setActiveTheme("lofi");
+      } else if (root.classList.contains("theme-nordic")) {
+        setActiveTheme("nordic");
+      } else if (root.classList.contains("dark")) {
+        setActiveTheme("dark");
+      } else {
+        setActiveTheme("cyberpunk");
+      }
+    };
+    detect();
+    const observer = new MutationObserver(detect);
     observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
@@ -427,20 +439,95 @@ export function OfficeLighting({ theme }: { theme?: "light" | "dark" } = {}) {
     return () => observer.disconnect();
   }, [theme]);
 
-  // Clean visibility in both light and dark themes
-  const ambientIntensity = isDark ? 0.74 : 0.72;
-  const ambientColor = isDark ? "#ccd4e2" : "#d8d4c8";
-  const sunIntensity = isDark ? 1.15 : 1.1;
-  const sunColor = isDark ? "#eaf0ff" : "#f6f1e6";
-  const fillIntensity = isDark ? 0.45 : 0.4;
+  // Cyberpunk Neon Lighting (Cyan key + Magenta rim)
+  if (activeTheme === "cyberpunk") {
+    return (
+      <>
+        <ambientLight intensity={0.58} color="#152030" />
+        <directionalLight
+          position={[8, 14, 6]}
+          intensity={1.2}
+          color="#a5f3fc"
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+          shadow-bias={-0.0002}
+          shadow-normalBias={0.02}
+          shadow-camera-left={-WORLD_W * 0.7}
+          shadow-camera-right={WORLD_W * 0.7}
+          shadow-camera-top={WORLD_H * 0.7}
+          shadow-camera-bottom={-WORLD_H * 0.7}
+        />
+        <directionalLight
+          position={[-6, 7, -5]}
+          intensity={0.65}
+          color="#f43f5e"
+        />
+      </>
+    );
+  }
 
+  // Cozy Lo-Fi Lighting (Warm amber key + evening fill)
+  if (activeTheme === "lofi") {
+    return (
+      <>
+        <ambientLight intensity={0.68} color="#362f28" />
+        <directionalLight
+          position={[8, 14, 6]}
+          intensity={1.25}
+          color="#fed7aa"
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+          shadow-bias={-0.0002}
+          shadow-normalBias={0.02}
+          shadow-camera-left={-WORLD_W * 0.7}
+          shadow-camera-right={WORLD_W * 0.7}
+          shadow-camera-top={WORLD_H * 0.7}
+          shadow-camera-bottom={-WORLD_H * 0.7}
+        />
+        <directionalLight
+          position={[-6, 7, -5]}
+          intensity={0.35}
+          color="#9bb4d6"
+        />
+      </>
+    );
+  }
+
+  // Nordic Clean Lighting (Daylight crisp white)
+  if (activeTheme === "nordic") {
+    return (
+      <>
+        <ambientLight intensity={0.88} color="#f8fafc" />
+        <directionalLight
+          position={[8, 15, 6]}
+          intensity={1.1}
+          color="#ffffff"
+          castShadow
+          shadow-mapSize={[1024, 1024]}
+          shadow-bias={-0.0002}
+          shadow-normalBias={0.02}
+          shadow-camera-left={-WORLD_W * 0.7}
+          shadow-camera-right={WORLD_W * 0.7}
+          shadow-camera-top={WORLD_H * 0.7}
+          shadow-camera-bottom={-WORLD_H * 0.7}
+        />
+        <directionalLight
+          position={[-6, 7, -5]}
+          intensity={0.25}
+          color="#cbd5e1"
+        />
+      </>
+    );
+  }
+
+  // Midnight Slate (Default balanced dark studio)
   return (
     <>
-      <ambientLight intensity={ambientIntensity} color={ambientColor} />
+      <ambientLight intensity={0.74} color="#ccd4e2" />
       <directionalLight
         position={[8, 14, 6]}
-        intensity={sunIntensity}
-        color={sunColor}
+        intensity={1.15}
+        color="#eaf0ff"
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0002}
@@ -452,7 +539,7 @@ export function OfficeLighting({ theme }: { theme?: "light" | "dark" } = {}) {
       />
       <directionalLight
         position={[-5, 8, -4]}
-        intensity={fillIntensity}
+        intensity={0.45}
         color="#7090ff"
       />
     </>
