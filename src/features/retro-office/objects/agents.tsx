@@ -74,6 +74,7 @@ export const AgentModel = memo(function AgentModel({
   suppressSpeechBubble = false,
 }: AgentModelProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const headRef = useRef<THREE.Group>(null);
   const leftArmRef = useRef<THREE.Group>(null);
   const rightArmRef = useRef<THREE.Group>(null);
   const leftLegRef = useRef<THREE.Group>(null);
@@ -189,6 +190,21 @@ export const AgentModel = memo(function AgentModel({
         : 0;
     groupRef.current.position.y = bounce + breathe;
 
+    const isSitting = agent.state === "sitting";
+    const isTyping =
+      isSitting && (agent.status === "working" || status === "working");
+    const typingPhase = Math.sin(agent.frame * 0.45);
+
+    if (headRef.current) {
+      headRef.current.rotation.x = 0;
+      headRef.current.rotation.y = 0;
+      headRef.current.rotation.z = 0;
+      if (isTyping) {
+        headRef.current.rotation.x =
+          0.08 + Math.sin(agent.frame * 0.18) * 0.03;
+      }
+    }
+
     if (leftArmRef.current) {
       leftArmRef.current.rotation.x = 0;
       leftArmRef.current.rotation.y = 0;
@@ -243,8 +259,13 @@ export const AgentModel = memo(function AgentModel({
       } else if (agent.pingPongUntil) {
         leftArmRef.current.rotation.x =
           0.2 + Math.sin(agent.frame * 0.08) * 0.28;
-      } else if (agent.state === "sitting") {
-        leftArmRef.current.rotation.x = 0.3;
+      } else if (isSitting) {
+        if (isTyping) {
+          leftArmRef.current.rotation.x = -0.55 + typingPhase * 0.12;
+          leftArmRef.current.rotation.y = 0.15;
+        } else {
+          leftArmRef.current.rotation.x = 0.3;
+        }
       }
     }
     if (rightArmRef.current) {
@@ -302,8 +323,13 @@ export const AgentModel = memo(function AgentModel({
       } else if (agent.pingPongUntil) {
         rightArmRef.current.rotation.x =
           0.08 - Math.sin(agent.frame * 0.08) * 0.16;
-      } else if (agent.state === "sitting") {
-        rightArmRef.current.rotation.x = 0.3;
+      } else if (isSitting) {
+        if (isTyping) {
+          rightArmRef.current.rotation.x = -0.55 - typingPhase * 0.12;
+          rightArmRef.current.rotation.y = -0.15;
+        } else {
+          rightArmRef.current.rotation.x = 0.3;
+        }
       }
     }
     if (leftLegRef.current) {
@@ -934,7 +960,8 @@ export const AgentModel = memo(function AgentModel({
         <boxGeometry args={[0.07, 0.05, 0.07]} />
         <meshLambertMaterial color={skin} />
       </mesh>
-      <mesh position={[0, 0.47, 0]}>
+      <group ref={headRef}>
+        <mesh position={[0, 0.47, 0]}>
         <boxGeometry args={[0.16, 0.16, 0.14]} />
         <meshLambertMaterial attach="material-0" color={skin} />
         <meshLambertMaterial attach="material-1" color={skin} />
@@ -1093,6 +1120,7 @@ export const AgentModel = memo(function AgentModel({
         <boxGeometry args={[0.014, 0.014, 0.01]} />
         <meshBasicMaterial color={shape.mouthColor} />
       </mesh>
+      </group>
       <mesh
         ref={pulseRingRef}
         position={[0, 0.005, 0]}
