@@ -31,7 +31,7 @@ export const AgentAvatarCreatorModal = ({
       onClick={onClose}
     >
       <div
-        className="ui-panel grid w-full max-w-6xl gap-0 overflow-hidden shadow-xs xl:grid-cols-[360px_minmax(0,1fr)]"
+        className="ui-panel w-full max-w-6xl overflow-hidden shadow-xs"
         onClick={(event) => event.stopPropagation()}
       >
         <AgentAvatarEditorPanel

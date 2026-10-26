@@ -27,9 +27,6 @@ const PreviewFigure = ({
   const groupRef = useRef<THREE.Group>(null);
 
   useFrame((state) => {
-    if (typeof window !== "undefined") {
-      (window as any).__previewState = { scene: state.scene, camera: state.camera };
-    }
     if (!groupRef.current) return;
     groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.45) * 0.35 + 0.25;
   });
@@ -314,10 +311,9 @@ export const AgentAvatarPreview3D = ({
   return (
     <div className={`relative ${className}`}>
       <Canvas
-        gl={{ preserveDrawingBuffer: true }}
+        gl={{ preserveDrawingBuffer: true, alpha: true }}
         camera={{ position: [0, 0.6, 3.2], fov: 34 }}
       >
-        <color attach="background" args={["#070b16"]} />
         <ambientLight intensity={1.4} />
         <directionalLight position={[3, 4, 5]} intensity={2.4} />
         <directionalLight position={[-4, 2, 3]} intensity={0.9} color="#89a6ff" />

@@ -106,7 +106,7 @@ export const AgentAvatarEditorPanel = forwardRef<
         <div className="mt-1 text-xs text-muted-foreground">
           Personalize this office avatar locally on this machine.
         </div>
-        <div className="mt-4 overflow-hidden rounded-xl border border-border/45 bg-[#070b16]">
+        <div className="mt-4 overflow-hidden rounded-xl border border-border/45 bg-muted/30">
           <AgentAvatarPreview3D profile={draft} className="h-[360px] w-full" />
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -236,7 +236,11 @@ export const AgentAvatarEditorPanel = forwardRef<
                     key={option.id}
                     type="button"
                     aria-label={option.label}
-                    className={`${colorSwatchClassName} ${selected ? "border-white" : "border-white/15"}`}
+                    className={`${colorSwatchClassName} ${
+                      selected
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                        : "border-border/60 hover:scale-105"
+                    }`}
                     style={{ backgroundColor: option.color }}
                     onClick={() =>
                       setDraft((current) => ({
@@ -247,20 +251,43 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
-              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
-                <input
-                  type="color"
-                  value={draft.body.skinTone.startsWith("#") ? draft.body.skinTone : "#f7d7c2"}
-                  onChange={(e) =>
-                    setDraft((current) => ({
-                      ...current,
-                      body: { ...current.body, skinTone: e.target.value },
-                    }))
-                  }
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-                <span className="text-[10px] font-bold text-muted-foreground">+</span>
-              </label>
+              {(() => {
+                const isCustom = !AGENT_AVATAR_SKIN_TONE_OPTIONS.some(
+                  (option) => option.color.toLowerCase() === draft.body.skinTone.toLowerCase()
+                );
+                return (
+                  <label
+                    aria-label="Choose custom skin tone"
+                    title="Choose custom skin tone"
+                    className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-transform ${
+                      isCustom
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 border-border/60"
+                        : "border-border/60 hover:scale-105 bg-muted/50"
+                    }`}
+                    style={isCustom ? { backgroundColor: draft.body.skinTone } : undefined}
+                  >
+                    <input
+                      type="color"
+                      aria-label="Choose custom skin tone"
+                      value={draft.body.skinTone.startsWith("#") ? draft.body.skinTone : "#f7d7c2"}
+                      onChange={(e) =>
+                        setDraft((current) => ({
+                          ...current,
+                          body: { ...current.body, skinTone: e.target.value },
+                        }))
+                      }
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className={`text-[10px] font-bold ${
+                        isCustom ? "mix-blend-difference text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </label>
+                );
+              })()}
             </div>
           </section>
 
@@ -307,7 +334,11 @@ export const AgentAvatarEditorPanel = forwardRef<
                     key={option.id}
                     type="button"
                     aria-label={option.label}
-                    className={`${colorSwatchClassName} ${selected ? "border-white" : "border-white/15"}`}
+                    className={`${colorSwatchClassName} ${
+                      selected
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                        : "border-border/60 hover:scale-105"
+                    }`}
                     style={{ backgroundColor: option.color }}
                     onClick={() =>
                       setDraft((current) => ({
@@ -318,20 +349,43 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
-              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
-                <input
-                  type="color"
-                  value={draft.hair.color.startsWith("#") ? draft.hair.color : "#151515"}
-                  onChange={(e) =>
-                    setDraft((current) => ({
-                      ...current,
-                      hair: { ...current.hair, color: e.target.value },
-                    }))
-                  }
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-                <span className="text-[10px] font-bold text-muted-foreground">+</span>
-              </label>
+              {(() => {
+                const isCustom = !AGENT_AVATAR_HAIR_COLOR_OPTIONS.some(
+                  (option) => option.color.toLowerCase() === draft.hair.color.toLowerCase()
+                );
+                return (
+                  <label
+                    aria-label="Choose custom hair color"
+                    title="Choose custom hair color"
+                    className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-transform ${
+                      isCustom
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 border-border/60"
+                        : "border-border/60 hover:scale-105 bg-muted/50"
+                    }`}
+                    style={isCustom ? { backgroundColor: draft.hair.color } : undefined}
+                  >
+                    <input
+                      type="color"
+                      aria-label="Choose custom hair color"
+                      value={draft.hair.color.startsWith("#") ? draft.hair.color : "#151515"}
+                      onChange={(e) =>
+                        setDraft((current) => ({
+                          ...current,
+                          hair: { ...current.hair, color: e.target.value },
+                        }))
+                      }
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className={`text-[10px] font-bold ${
+                        isCustom ? "mix-blend-difference text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </label>
+                );
+              })()}
             </div>
           </section>
 
@@ -378,7 +432,11 @@ export const AgentAvatarEditorPanel = forwardRef<
                     key={`top-${option.id}`}
                     type="button"
                     aria-label={option.label}
-                    className={`${colorSwatchClassName} ${selected ? "border-white" : "border-white/15"}`}
+                    className={`${colorSwatchClassName} ${
+                      selected
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                        : "border-border/60 hover:scale-105"
+                    }`}
                     style={{ backgroundColor: option.color }}
                     onClick={() =>
                       setDraft((current) => ({
@@ -389,20 +447,43 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
-              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
-                <input
-                  type="color"
-                  value={draft.clothing.topColor.startsWith("#") ? draft.clothing.topColor : "#2d3748"}
-                  onChange={(e) =>
-                    setDraft((current) => ({
-                      ...current,
-                      clothing: { ...current.clothing, topColor: e.target.value },
-                    }))
-                  }
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-                <span className="text-[10px] font-bold text-muted-foreground">+</span>
-              </label>
+              {(() => {
+                const isCustom = !AGENT_AVATAR_CLOTHING_COLOR_OPTIONS.some(
+                  (option) => option.color.toLowerCase() === draft.clothing.topColor.toLowerCase()
+                );
+                return (
+                  <label
+                    aria-label="Choose custom top color"
+                    title="Choose custom top color"
+                    className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-transform ${
+                      isCustom
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 border-border/60"
+                        : "border-border/60 hover:scale-105 bg-muted/50"
+                    }`}
+                    style={isCustom ? { backgroundColor: draft.clothing.topColor } : undefined}
+                  >
+                    <input
+                      type="color"
+                      aria-label="Choose custom top color"
+                      value={draft.clothing.topColor.startsWith("#") ? draft.clothing.topColor : "#2d3748"}
+                      onChange={(e) =>
+                        setDraft((current) => ({
+                          ...current,
+                          clothing: { ...current.clothing, topColor: e.target.value },
+                        }))
+                      }
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className={`text-[10px] font-bold ${
+                        isCustom ? "mix-blend-difference text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </label>
+                );
+              })()}
             </div>
           </section>
 
@@ -449,7 +530,11 @@ export const AgentAvatarEditorPanel = forwardRef<
                     key={`bottom-${option.id}`}
                     type="button"
                     aria-label={option.label}
-                    className={`${colorSwatchClassName} ${selected ? "border-white" : "border-white/15"}`}
+                    className={`${colorSwatchClassName} ${
+                      selected
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                        : "border-border/60 hover:scale-105"
+                    }`}
                     style={{ backgroundColor: option.color }}
                     onClick={() =>
                       setDraft((current) => ({
@@ -460,20 +545,43 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
-              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
-                <input
-                  type="color"
-                  value={draft.clothing.bottomColor.startsWith("#") ? draft.clothing.bottomColor : "#2d3748"}
-                  onChange={(e) =>
-                    setDraft((current) => ({
-                      ...current,
-                      clothing: { ...current.clothing, bottomColor: e.target.value },
-                    }))
-                  }
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-                <span className="text-[10px] font-bold text-muted-foreground">+</span>
-              </label>
+              {(() => {
+                const isCustom = !AGENT_AVATAR_CLOTHING_COLOR_OPTIONS.some(
+                  (option) => option.color.toLowerCase() === draft.clothing.bottomColor.toLowerCase()
+                );
+                return (
+                  <label
+                    aria-label="Choose custom bottom color"
+                    title="Choose custom bottom color"
+                    className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-transform ${
+                      isCustom
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 border-border/60"
+                        : "border-border/60 hover:scale-105 bg-muted/50"
+                    }`}
+                    style={isCustom ? { backgroundColor: draft.clothing.bottomColor } : undefined}
+                  >
+                    <input
+                      type="color"
+                      aria-label="Choose custom bottom color"
+                      value={draft.clothing.bottomColor.startsWith("#") ? draft.clothing.bottomColor : "#2d3748"}
+                      onChange={(e) =>
+                        setDraft((current) => ({
+                          ...current,
+                          clothing: { ...current.clothing, bottomColor: e.target.value },
+                        }))
+                      }
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className={`text-[10px] font-bold ${
+                        isCustom ? "mix-blend-difference text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </label>
+                );
+              })()}
             </div>
           </section>
 
@@ -489,7 +597,11 @@ export const AgentAvatarEditorPanel = forwardRef<
                     key={`shoes-${option.id}`}
                     type="button"
                     aria-label={option.label}
-                    className={`${colorSwatchClassName} ${selected ? "border-white" : "border-white/15"}`}
+                    className={`${colorSwatchClassName} ${
+                      selected
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110"
+                        : "border-border/60 hover:scale-105"
+                    }`}
                     style={{ backgroundColor: option.color }}
                     onClick={() =>
                       setDraft((current) => ({
@@ -500,20 +612,43 @@ export const AgentAvatarEditorPanel = forwardRef<
                   />
                 );
               })}
-              <label className="relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white/15 bg-muted/50 transition-transform hover:scale-105" title="Custom color">
-                <input
-                  type="color"
-                  value={draft.clothing.shoesColor.startsWith("#") ? draft.clothing.shoesColor : "#1a1a1a"}
-                  onChange={(e) =>
-                    setDraft((current) => ({
-                      ...current,
-                      clothing: { ...current.clothing, shoesColor: e.target.value },
-                    }))
-                  }
-                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                />
-                <span className="text-[10px] font-bold text-muted-foreground">+</span>
-              </label>
+              {(() => {
+                const isCustom = !AGENT_AVATAR_SHOE_COLOR_OPTIONS.some(
+                  (option) => option.color.toLowerCase() === draft.clothing.shoesColor.toLowerCase()
+                );
+                return (
+                  <label
+                    aria-label="Choose custom shoe color"
+                    title="Choose custom shoe color"
+                    className={`relative flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 transition-transform ${
+                      isCustom
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-background scale-110 border-border/60"
+                        : "border-border/60 hover:scale-105 bg-muted/50"
+                    }`}
+                    style={isCustom ? { backgroundColor: draft.clothing.shoesColor } : undefined}
+                  >
+                    <input
+                      type="color"
+                      aria-label="Choose custom shoe color"
+                      value={draft.clothing.shoesColor.startsWith("#") ? draft.clothing.shoesColor : "#1a1a1a"}
+                      onChange={(e) =>
+                        setDraft((current) => ({
+                          ...current,
+                          clothing: { ...current.clothing, shoesColor: e.target.value },
+                        }))
+                      }
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span
+                      className={`text-[10px] font-bold ${
+                        isCustom ? "mix-blend-difference text-white" : "text-muted-foreground"
+                      }`}
+                    >
+                      +
+                    </span>
+                  </label>
+                );
+              })()}
             </div>
           </section>
 

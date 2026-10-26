@@ -1137,8 +1137,8 @@ const AgentChatComposer = memo(function AgentChatComposer({
             aria-checked={showThinkingTraces}
             className={`inline-flex h-5 items-center rounded-sm border px-1.5 font-mono text-[10px] tracking-[0.01em] transition ${
               showThinkingTraces
-                ? "border-primary/45 bg-primary/14 text-white"
-                : "border-border/70 bg-surface-2/40 text-muted-foreground hover:text-white"
+                ? "border-primary/45 bg-primary/14 text-primary font-medium"
+                : "border-border/70 bg-surface-2/40 text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => onThinkingTracesToggle(!showThinkingTraces)}
           >

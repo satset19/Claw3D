@@ -11,7 +11,7 @@ type Props = {
 export const AnimePresetPicker = ({ selectedUrl, onSelect }: Props) => {
   const normalized = selectedUrl?.trim() ?? null;
   return (
-    <div className="grid grid-cols-5 gap-3">
+    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
       <button
         type="button"
         aria-pressed={normalized === null}

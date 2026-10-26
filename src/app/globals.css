@@ -1316,18 +1316,11 @@ textarea:focus::-webkit-scrollbar {
 }
 
 .chat-composer-input {
-  color: #ffffff;
+  color: var(--foreground);
 }
 
 .type-agent-name {
-  color: #ffffff;
-}
-
-.chat-composer-input:focus,
-.chat-composer-input:focus-visible {
-  outline: none !important;
-  outline-offset: 0 !important;
-  box-shadow: none !important;
+  color: var(--foreground);
 }
 
 @keyframes fadeUp {
