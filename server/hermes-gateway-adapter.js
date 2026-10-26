@@ -790,6 +790,10 @@ function buildAgentSystemMessages(agentId, agent) {
   if (agentsMd && agentsMd.trim()) {
     parts.push(agentsMd.trim());
   }
+  const toolsMd = agentFiles.get(`${agentId}/TOOLS.md`);
+  if (toolsMd && toolsMd.trim()) {
+    parts.push(toolsMd.trim());
+  }
   const memory = agentFiles.get(`${agentId}/MEMORY.md`);
   if (memory && memory.trim()) {
     parts.push(`# Durable Memory\n${memory.trim()}`);

@@ -1,7 +1,9 @@
 import WebSocket from 'ws';
-const content = `# Agent Memory
+const content = `# MEMORY.md - Agent Memory
 
-- Sudah terhubung ke Google Workspace (Gmail, Drive, Calendar, Docs, Sheets) via skill google-workspace. OAuth token lokal di /home/harnet/.hermes/google_token.json. Gunakan gws CLI atau skill untuk operasi Drive/Gmail/Calendar.
+- Agent ini bertindak sebagai decision maker dan orchestrator utama.
+- Agent ini dapat melakukan spawn hingga 10 sub-agent untuk keperluan research dan analisis sebelum mengambil keputusan final.
+- Terhubung ke Google Workspace (Gmail, Drive, Calendar, Docs, Sheets) via skill google-workspace. OAuth token lokal di /home/harnet/.hermes/google_token.json.
 `;
 const ws = new WebSocket('ws://localhost:18789');
 ws.on('open', () => {

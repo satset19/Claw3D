@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "server/hermes-gateway-adapter.js": {
-    "mtime": 1792980543.0202281,
-    "seen": 1792980671.8875282,
-    "ast_hash": "4ea3490e5f787f3449815dbb6494978d",
+    "mtime": 1792981100.3616116,
+    "seen": 1792982951.6887255,
+    "ast_hash": "5c604f928933000495463cea060d93a1",
     "semantic_hash": ""
   },
   "server/index.js": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792980842.3038776,
-    "seen": 1792980842.884793,
-    "ast_hash": "9498d33477475f876907323c69559ac3",
+    "mtime": 1792982537.5275471,
+    "seen": 1792982951.691642,
+    "ast_hash": "c1cf0c4ad5e33d52cd11be26008bcea4",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -1266,9 +1266,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/core/furnitureDefaults.ts": {
-    "mtime": 1792980831.2656324,
-    "seen": 1792980842.8848195,
-    "ast_hash": "b5f47ffdf48df8c4097850f8272fcc29",
+    "mtime": 1792982434.1332495,
+    "seen": 1792982951.6916866,
+    "ast_hash": "bccc2c49be452fd4d69622f19c7b40d4",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/geometry.ts": {
@@ -1392,9 +1392,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/scene/environment.tsx": {
-    "mtime": 1792980596.4614155,
-    "seen": 1792980671.8956044,
-    "ast_hash": "8b09a6d0226399f5c6d0e908600aeb60",
+    "mtime": 1792982549.408811,
+    "seen": 1792982951.6919148,
+    "ast_hash": "cf1f8cd4631da15eecf47b3399fe41ff",
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/NavigationSystem.tsx": {
@@ -3825,6 +3825,12 @@
     "mtime": 1792980749.5708172,
     "seen": 1792980842.888755,
     "ast_hash": "bb90922ddc0e3ba11809bc01bd58a092",
+    "semantic_hash": ""
+  },
+  "tests/unit/bedroom.test.ts": {
+    "mtime": 1792981162.8259995,
+    "seen": 1792982951.6939788,
+    "ast_hash": "8ba1f37e230febc68ff8dec0849b9853",
     "semantic_hash": ""
   }
 }
