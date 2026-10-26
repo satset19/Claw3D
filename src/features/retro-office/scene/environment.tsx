@@ -60,52 +60,169 @@ function FramedPicture({
   );
 }
 
-function UsaFlagArt() {
+function JollyRogerEmblem() {
+  const shaftLength = 0.3;
+  const shaftThickness = 0.022;
+  const knobRadius = 0.018;
+  const knobOffset = shaftLength / 2;
+  const knobSpread = 0.013;
+  const boneAngles = [0.68, -0.68];
+  const teethColumns = [-0.018, -0.006, 0.006, 0.018];
+
+  return (
+    <group position={[0, -0.008, 0]}>
+      {/* 2 Crossed Bones behind skull */}
+      {boneAngles.map((angle, bIdx) => (
+        <group key={`bone-${bIdx}`} rotation={[0, 0, angle]} position={[0, 0, 0.001]}>
+          <mesh>
+            <planeGeometry args={[shaftLength, shaftThickness]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+          <mesh position={[knobOffset, knobSpread, 0]}>
+            <circleGeometry args={[knobRadius, 16]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+          <mesh position={[knobOffset, -knobSpread, 0]}>
+            <circleGeometry args={[knobRadius, 16]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+          <mesh position={[-knobOffset, knobSpread, 0]}>
+            <circleGeometry args={[knobRadius, 16]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+          <mesh position={[-knobOffset, -knobSpread, 0]}>
+            <circleGeometry args={[knobRadius, 16]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Skull Base */}
+      <group position={[0, 0, 0.002]}>
+        {/* Cranium */}
+        <mesh position={[0, 0.006, 0]}>
+          <circleGeometry args={[0.056, 32]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+        {/* Jaw Base */}
+        <mesh position={[0, -0.032, 0]}>
+          <planeGeometry args={[0.066, 0.04]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+        <mesh position={[-0.021, -0.044, 0]}>
+          <circleGeometry args={[0.012, 16]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+        <mesh position={[0.021, -0.044, 0]}>
+          <circleGeometry args={[0.012, 16]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+        <mesh position={[0, -0.046, 0]}>
+          <circleGeometry args={[0.015, 16]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+      </group>
+
+      {/* Face Features */}
+      <group position={[0, 0, 0.003]}>
+        {/* Eye sockets */}
+        <mesh position={[-0.023, 0.006, 0]}>
+          <circleGeometry args={[0.015, 24]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+        <mesh position={[0.023, 0.006, 0]}>
+          <circleGeometry args={[0.015, 24]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+
+        {/* Nasal cavity */}
+        <mesh position={[0, -0.015, 0]} rotation={[0, 0, Math.PI]}>
+          <circleGeometry args={[0.0055, 3]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+
+        {/* Smiling mouth cutout */}
+        <mesh position={[0, -0.038, 0]}>
+          <planeGeometry args={[0.054, 0.022]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+        <mesh position={[-0.024, -0.036, 0]}>
+          <circleGeometry args={[0.009, 16]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+        <mesh position={[0.024, -0.036, 0]}>
+          <circleGeometry args={[0.009, 16]} />
+          <meshBasicMaterial color="#111111" side={2} />
+        </mesh>
+
+        {/* Smiling Teeth */}
+        {teethColumns.map((x, i) => (
+          <mesh key={`tooth-top-${i}`} position={[x, -0.0335, 0.001]}>
+            <planeGeometry args={[0.0095, 0.007]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+        ))}
+        {teethColumns.map((x, i) => (
+          <mesh key={`tooth-bot-${i}`} position={[x, -0.0425, 0.001]}>
+            <planeGeometry args={[0.0095, 0.007]} />
+            <meshBasicMaterial color="#ffffff" side={2} />
+          </mesh>
+        ))}
+        <mesh position={[-0.024, -0.0365, 0.001]}>
+          <planeGeometry args={[0.0055, 0.0065]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+        <mesh position={[0.024, -0.0365, 0.001]}>
+          <planeGeometry args={[0.0055, 0.0065]} />
+          <meshBasicMaterial color="#ffffff" side={2} />
+        </mesh>
+      </group>
+
+      {/* Straw Hat */}
+      <group position={[0, 0, 0.005]}>
+        {/* Crown dome */}
+        <mesh position={[0, 0.048, 0]}>
+          <circleGeometry args={[0.048, 32, 0, Math.PI]} />
+          <meshBasicMaterial color="#eab308" side={2} />
+        </mesh>
+        {/* Red ribbon band */}
+        <mesh position={[0, 0.053, 0.001]}>
+          <planeGeometry args={[0.092, 0.013]} />
+          <meshBasicMaterial color="#dc2626" side={2} />
+        </mesh>
+        {/* Brim - golden outer & accent */}
+        <mesh position={[0, 0.042, 0.002]} scale={[1.05, 0.12, 1]}>
+          <circleGeometry args={[0.098, 32]} />
+          <meshBasicMaterial color="#d97706" side={2} />
+        </mesh>
+        <mesh position={[0, 0.042, 0.0025]} scale={[1.05, 0.1, 1]}>
+          <circleGeometry args={[0.095, 32]} />
+          <meshBasicMaterial color="#eab308" side={2} />
+        </mesh>
+      </group>
+    </group>
+  );
+}
+
+function OnePieceFlagArt() {
   const flagWidth = 0.52;
   const flagHeight = 0.3;
-  const stripeHeight = flagHeight / 13;
-  const cantonWidth = flagWidth * 0.4;
-  const cantonHeight = stripeHeight * 7;
 
   return (
     <>
-      {Array.from({ length: 13 }).map((_, index) => (
-        <mesh
-          key={`usa-stripe-${index}`}
-          position={[0, flagHeight / 2 - stripeHeight / 2 - index * stripeHeight, 0]}
-        >
-          <planeGeometry args={[flagWidth, stripeHeight]} />
-          <meshBasicMaterial
-            color={index % 2 === 0 ? "#b22234" : "#ffffff"}
-            side={2}
-          />
-        </mesh>
-      ))}
-      <mesh
-        position={[
-          -flagWidth / 2 + cantonWidth / 2,
-          flagHeight / 2 - cantonHeight / 2,
-          0.001,
-        ]}
-      >
-        <planeGeometry args={[cantonWidth, cantonHeight]} />
-        <meshBasicMaterial color="#3c3b6e" side={2} />
+      {/* Background black canvas */}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[flagWidth, flagHeight]} />
+        <meshBasicMaterial color="#111111" side={2} />
       </mesh>
-      {Array.from({ length: 5 }).map((_, row) =>
-        Array.from({ length: 6 }).map((__, column) => (
-          <mesh
-            key={`usa-star-${row}-${column}`}
-            position={[
-              -flagWidth / 2 + 0.04 + column * 0.025,
-              flagHeight / 2 - 0.03 - row * 0.035,
-              0.002,
-            ]}
-          >
-            <circleGeometry args={[0.0045, 6]} />
-            <meshBasicMaterial color="#ffffff" side={2} />
-          </mesh>
-        )),
-      )}
+      {/* Front emblem */}
+      <group position={[0, 0, 0.001]}>
+        <JollyRogerEmblem />
+      </group>
+      {/* Back emblem (facing backwards) */}
+      <group position={[0, 0, -0.001]} rotation={[0, Math.PI, 0]}>
+        <JollyRogerEmblem />
+      </group>
     </>
   );
 }
@@ -714,7 +831,7 @@ export const WallPictures = memo(function WallPictures({
       <OfficeFlagPole
         position={localFlagPolePosition}
         rotY={0.32}
-        art={<UsaFlagArt />}
+        art={<OnePieceFlagArt />}
       />
       {showRemoteOffice ? (
         <OfficeFlagPole
