@@ -328,10 +328,15 @@ export const FloorAndWalls = memo(function FloorAndWalls({
   const localSouthWallZ = localOfficeCenterZ + localOfficeHeight / 2;
   const localWestWallX = localOfficeCenterX - localOfficeWidth / 2;
   const localEastWallX = localOfficeCenterX + localOfficeWidth / 2;
+  const [, , gardenZoneCenterZ] = toWorld(
+    LOCAL_OFFICE_CANVAS_WIDTH / 2,
+    (LOCAL_OFFICE_CANVAS_HEIGHT + CITY_PATH_ZONE.maxY) / 2,
+  );
+  const gardenTotalHeight = (CITY_PATH_ZONE.maxY + 40) * SCALE;
   const groundCenterX = showRemoteOffice ? districtCenterX : localOfficeCenterX;
-  const groundCenterZ = showRemoteOffice ? districtCenterZ : localOfficeCenterZ;
+  const groundCenterZ = showRemoteOffice ? districtCenterZ : gardenZoneCenterZ;
   const groundWidth = showRemoteOffice ? districtWidth : localOfficeWidth;
-  const groundHeight = showRemoteOffice ? districtHeight : localOfficeHeight;
+  const groundHeight = showRemoteOffice ? districtHeight : gardenTotalHeight;
 
   return (
     <group>
@@ -362,6 +367,35 @@ export const FloorAndWalls = memo(function FloorAndWalls({
         <meshLambertMaterial color="#c8a97e" />
       </mesh>
 
+      {/* Always render outdoor garden lawn in the south zone outside HQ */}
+      <mesh
+        position={[pathCenterX, 0.002, pathCenterZ]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        receiveShadow
+      >
+        <planeGeometry
+          args={[
+            (CITY_PATH_ZONE.maxX - CITY_PATH_ZONE.minX) * SCALE,
+            (CITY_PATH_ZONE.maxY - CITY_PATH_ZONE.minY) * SCALE,
+          ]}
+        />
+        <meshStandardMaterial color="#6d8b5a" roughness={0.96} metalness={0.02} />
+      </mesh>
+
+      <mesh
+        position={[pathCenterX, 0.004, pathCenterZ]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        receiveShadow
+      >
+        <planeGeometry
+          args={[
+            (CITY_PATH_ZONE.maxX - CITY_PATH_ZONE.minX) * SCALE * 0.72,
+            (CITY_PATH_ZONE.maxY - CITY_PATH_ZONE.minY) * SCALE * 0.26,
+          ]}
+        />
+        <meshStandardMaterial color="#c9ae8d" roughness={0.94} metalness={0.02} />
+      </mesh>
+
       {showRemoteOffice ? (
         <>
           <mesh
@@ -371,34 +405,6 @@ export const FloorAndWalls = memo(function FloorAndWalls({
           >
             <planeGeometry args={[localOfficeWidth, localOfficeHeight, 22, 14]} />
             <meshLambertMaterial color="#c8a97e" />
-          </mesh>
-
-          <mesh
-            position={[pathCenterX, 0.002, pathCenterZ]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            receiveShadow
-          >
-            <planeGeometry
-              args={[
-                (CITY_PATH_ZONE.maxX - CITY_PATH_ZONE.minX) * SCALE,
-                (CITY_PATH_ZONE.maxY - CITY_PATH_ZONE.minY) * SCALE,
-              ]}
-            />
-            <meshStandardMaterial color="#6d8b5a" roughness={0.96} metalness={0.02} />
-          </mesh>
-
-          <mesh
-            position={[pathCenterX, 0.004, pathCenterZ]}
-            rotation={[-Math.PI / 2, 0, 0]}
-            receiveShadow
-          >
-            <planeGeometry
-              args={[
-                (CITY_PATH_ZONE.maxX - CITY_PATH_ZONE.minX) * SCALE * 0.72,
-                (CITY_PATH_ZONE.maxY - CITY_PATH_ZONE.minY) * SCALE * 0.26,
-              ]}
-            />
-            <meshStandardMaterial color="#c9ae8d" roughness={0.94} metalness={0.02} />
           </mesh>
 
           {Array.from({ length: 8 })
@@ -687,8 +693,29 @@ export const FloorAndWalls = memo(function FloorAndWalls({
                 />
               </mesh>
             ) : null}
-            <mesh position={[localOfficeCenterX, 0.5, localSouthWallZ]} receiveShadow>
-              <boxGeometry args={[localOfficeWidth, 1, 0.12]} />
+            {/* South wall split with a garden doorway opening between x: 600 and 700 */}
+            <mesh
+              position={[localOfficeCenterX - localOfficeWidth * 0.28, 0.5, localSouthWallZ]}
+              receiveShadow
+            >
+              <boxGeometry args={[localOfficeWidth * 0.44, 1, 0.12]} />
+              <meshStandardMaterial
+                color={wallColor}
+                emissive={wallEmissive}
+                emissiveIntensity={0.4}
+                roughness={0.9}
+              />
+            </mesh>
+            {/* Elegant stone threshold connecting headquarter into outdoor garden */}
+            <mesh position={[toWorld(650, 720)[0], 0.02, localSouthWallZ]}>
+              <boxGeometry args={[0.9, 0.04, 0.16]} />
+              <meshStandardMaterial color="#475569" roughness={0.7} metalness={0.2} />
+            </mesh>
+            <mesh
+              position={[localOfficeCenterX + localOfficeWidth * 0.28, 0.5, localSouthWallZ]}
+              receiveShadow
+            >
+              <boxGeometry args={[localOfficeWidth * 0.44, 1, 0.12]} />
               <meshStandardMaterial
                 color={wallColor}
                 emissive={wallEmissive}

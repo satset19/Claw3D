@@ -81,6 +81,7 @@ import {
 import {
   ensureOfficeAtm,
   ensureOfficeBedroom,
+  ensureGardenDoor,
   ensureOfficeGymRoom,
   ensureOfficeKanbanBoard,
   ensureOfficePhoneBooth,
@@ -2284,8 +2285,9 @@ const buildInitialFurnitureLayout = (
   storageNamespace: string,
   layoutPreset: OfficeLayoutPreset,
 ): FurnitureItem[] =>
-  ensureOfficeBedroom(
-    ensureOfficeKanbanBoard(
+  ensureGardenDoor(
+    ensureOfficeBedroom(
+      ensureOfficeKanbanBoard(
       ensureOfficeJukebox(
         ensureOfficeQaLab(
           ensureOfficeGymRoom(
@@ -2304,7 +2306,7 @@ const buildInitialFurnitureLayout = (
         ),
       ),
     ),
-  );
+  ));
 
 export function RetroOffice3D({
   agents,
@@ -2713,7 +2715,7 @@ export function RetroOffice3D({
   } | null>(null);
   const LOCAL_CAMERA_TARGET = useMemo(
     () =>
-      toWorld(LOCAL_OFFICE_CANVAS_WIDTH / 2, LOCAL_OFFICE_CANVAS_HEIGHT / 2),
+      toWorld(LOCAL_OFFICE_CANVAS_WIDTH / 2, (LOCAL_OFFICE_CANVAS_HEIGHT + 140) / 2),
     [],
   );
   const CAM_POS = useMemo<[number, number, number]>(() => {
@@ -2730,7 +2732,7 @@ export function RetroOffice3D({
   const cameraTarget = remoteOfficeEnabled
     ? DISTRICT_CAMERA_TARGET
     : LOCAL_CAMERA_TARGET;
-  const cameraZoom = remoteOfficeEnabled ? DISTRICT_CAMERA_ZOOM : 56;
+  const cameraZoom = remoteOfficeEnabled ? DISTRICT_CAMERA_ZOOM : 48;
   const overviewPreset = useMemo(
     () => ({ pos: CAM_POS, target: cameraTarget, zoom: cameraZoom }),
     [CAM_POS, cameraTarget, cameraZoom]

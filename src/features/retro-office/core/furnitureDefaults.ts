@@ -570,6 +570,7 @@ const DEFAULT_FURNITURE: FurnitureSeed[] = [
   ...DEFAULT_ART_ROOM_ITEMS,
   DEFAULT_SMS_BOOTH,
   { type: "chair", x: 100, y: 200, facing: 180 },
+  { type: "door", x: 630, y: 710, w: 60, h: 8, facing: 0 },
 ];
 
 export const materializeDefaults = (
@@ -816,8 +817,19 @@ export const ensureOfficeQaLab = (items: FurnitureItem[]): FurnitureItem[] => {
 
 export const ensureOfficeBedroom = (items: FurnitureItem[]): FurnitureItem[] => {
   if (items.some((item) => item.type === "bed")) return items;
+  const filtered = items.filter(
+    (item) => !(item.x >= 475 && item.x <= 785 && item.y >= 25 && item.y <= 255),
+  );
+  return [
+    ...filtered,
+    ...DEFAULT_BEDROOM_ITEMS.map((item) => ({ ...item, _uid: nextUid() })),
+  ];
+};
+
+export const ensureGardenDoor = (items: FurnitureItem[]): FurnitureItem[] => {
+  if (items.some((item) => item.type === "door" && item.y > 680)) return items;
   return [
     ...items,
-    ...DEFAULT_BEDROOM_ITEMS.map((item) => ({ ...item, _uid: nextUid() })),
+    { _uid: nextUid(), type: "door", x: 630, y: 710, w: 60, h: 8, facing: 0 },
   ];
 };
