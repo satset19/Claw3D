@@ -648,16 +648,16 @@ export const AgentModel = memo(function AgentModel({
   const speechBubbleWasTruncated = speechBubblePreview.truncated;
   const speechBubbleTextLength = speechBubbleDisplayText.length;
   const speechBubbleWidth = activeSpeechBubble
-    ? Math.min(4.6, Math.max(1.8, 1.55 + speechBubbleTextLength * 0.018))
+    ? Math.min(2.7, Math.max(1.15, 0.95 + speechBubbleTextLength * 0.011))
     : 0.36;
-  const speechBubblePaddingX = activeSpeechBubble ? 0.34 : 0.06;
-  const speechBubblePaddingY = activeSpeechBubble ? 0.3 : 0.06;
+  const speechBubblePaddingX = activeSpeechBubble ? 0.18 : 0.05;
+  const speechBubblePaddingY = activeSpeechBubble ? 0.14 : 0.05;
   const speechBubbleMaxWidth = Math.max(
-    0.24,
+    0.2,
     speechBubbleWidth - speechBubblePaddingX,
   );
   const estimatedSpeechCharsPerLine = activeSpeechBubble
-    ? Math.max(10, Math.floor(speechBubbleMaxWidth * 7))
+    ? Math.max(12, Math.floor(speechBubbleMaxWidth * 9))
     : 8;
   const estimatedSpeechLines = activeSpeechBubble
     ? Math.max(
@@ -669,15 +669,15 @@ export const AgentModel = memo(function AgentModel({
       )
     : 1;
   const speechBubbleHeight = activeSpeechBubble
-    ? Math.max(0.72, estimatedSpeechLines * 0.26 + speechBubblePaddingY)
+    ? Math.max(0.38, estimatedSpeechLines * 0.16 + speechBubblePaddingY)
     : 0.2;
   const speechBubbleFontSize = activeSpeechBubble
     ? speechBubbleTextLength > 110
-      ? 0.188
+      ? 0.112
       : speechBubbleTextLength > 70
-        ? 0.2
-        : 0.216
-    : 0.13;
+        ? 0.122
+        : 0.134
+    : 0.1;
   const speechBubbleTextColor = activeSpeechBubble
     ? "#f8fafc"
     : status === "error"
@@ -1168,14 +1168,14 @@ export const AgentModel = memo(function AgentModel({
         </Billboard>
       </group>
       <group ref={speechBubbleRef} visible={false}>
-        <Billboard position={[0, 1.45, 0]}>
+        <Billboard position={[0, 1.18, 0]}>
           {activeSpeechBubble ? (
             <mesh
               position={[-speechBubbleWidth * 0.18, -speechBubbleHeight * 0.53, -0.0005]}
               rotation={[0, 0, Math.PI / 4]}
               renderOrder={99997}
             >
-              <planeGeometry args={[0.22, 0.22]} />
+              <planeGeometry args={[0.13, 0.13]} />
               <meshBasicMaterial
                 color="#1a2030"
                 transparent

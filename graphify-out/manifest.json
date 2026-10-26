@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "server/hermes-gateway-adapter.js": {
-    "mtime": 1792973209.6163838,
-    "seen": 1792973356.0621998,
-    "ast_hash": "5af9c0993b57030e0a7ea3a264acb92a",
+    "mtime": 1792976767.2575781,
+    "seen": 1792978728.0275395,
+    "ast_hash": "02b51fcc639eb9fac5e935523b2ab425",
     "semantic_hash": ""
   },
   "server/index.js": {
@@ -468,9 +468,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
-    "mtime": 1792973160.7952828,
-    "seen": 1792973356.0638585,
-    "ast_hash": "0e44cb88e466a052b4aabd62e2ae3662",
+    "mtime": 1792976420.9279063,
+    "seen": 1792978728.0287228,
+    "ast_hash": "48fef2cc74593305f1b2980f2407b703",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentCreateModal.tsx": {
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "src/features/office/components/RemoteAgentChatPanel.tsx": {
-    "mtime": 1792856529.0548227,
-    "seen": 1792862681.5881145,
-    "ast_hash": "1fd1c69fc574b32b7ddab613d46c92f4",
+    "mtime": 1792976290.2390263,
+    "seen": 1792978728.0292933,
+    "ast_hash": "95b2a5c9536b4ce4a40a202f9f8b5420",
     "semantic_hash": ""
   },
   "src/features/office/components/panels/AnalyticsPanel.tsx": {
@@ -1110,9 +1110,9 @@
     "semantic_hash": ""
   },
   "src/features/office/screens/OfficeScreen.tsx": {
-    "mtime": 1792973940.2569385,
-    "seen": 1792974086.681631,
-    "ast_hash": "1a80f71753ecd77c980acbc138445ccd",
+    "mtime": 1792977026.451343,
+    "seen": 1792978728.029741,
+    "ast_hash": "f9d833624981483266216f13783e7288",
     "semantic_hash": ""
   },
   "src/features/office/screens/PhoneBoothImmersiveScreen.tsx": {
@@ -1344,9 +1344,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/agents.tsx": {
-    "mtime": 1792947700.8209682,
-    "seen": 1792948294.381341,
-    "ast_hash": "5033ed9d1b3198200f39f246894db83b",
+    "mtime": 1792976292.2060695,
+    "seen": 1792978728.0300283,
+    "ast_hash": "b61319ed3bdfa3ff480fe73957dbfc02",
     "semantic_hash": ""
   },
   "src/features/retro-office/objects/furniture.tsx": {
@@ -3807,6 +3807,12 @@
     "mtime": 1792973733.4642491,
     "seen": 1792973840.398529,
     "ast_hash": "97e239ed990fd45552157a43daa640d8",
+    "semantic_hash": ""
+  },
+  ".hermes/plans/2026-10-26_005436-claw3d-chat-bubbles-sessions-history.md": {
+    "mtime": 1792976158.772141,
+    "seen": 1792978728.0329714,
+    "ast_hash": "f0c9c0e655b78ce88f2f16250519b2c7",
     "semantic_hash": ""
   }
 }

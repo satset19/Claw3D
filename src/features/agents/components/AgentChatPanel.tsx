@@ -51,7 +51,7 @@ const formatDurationLabel = (durationMs: number): string => {
 
 const SPINE_LEFT = "left-[15px]";
 const ASSISTANT_GUTTER_CLASS = "pl-[44px]";
-const ASSISTANT_MAX_WIDTH_DEFAULT_CLASS = "max-w-[68ch]";
+const ASSISTANT_MAX_WIDTH_DEFAULT_CLASS = "max-w-[62ch]";
 const ASSISTANT_MAX_WIDTH_EXPANDED_CLASS = "max-w-[1120px]";
 const CHAT_TOP_THRESHOLD_PX = 8;
 const CHAT_SELECT_STYLE = {
@@ -199,6 +199,9 @@ type AgentChatPanelProps = {
   onOpenSettings?: () => void;
   onRename?: (name: string) => Promise<boolean>;
   onNewSession?: () => Promise<void> | void;
+  sessions?: Array<{ key: string; displayName?: string; updatedAt?: number | null }>;
+  onSelectSession?: (sessionKey: string) => void;
+  onDeleteSession?: (sessionKey: string) => Promise<void> | void;
   onModelChange: (value: string | null) => void;
   onThinkingChange: (value: string | null) => void;
   onToolCallingToggle?: (enabled: boolean) => void;
@@ -417,8 +420,8 @@ const UserMessageCard = memo(function UserMessageCard({
   timestampMs?: number;
 }) {
   return (
-    <div className="ui-chat-user-card w-full max-w-[70ch] self-end overflow-hidden rounded-[var(--radius-small)] bg-[color:var(--chat-user-bg)]">
-      <div className="flex items-center justify-between gap-3 bg-[color:var(--chat-user-header-bg)] px-3 py-2 dark:px-3.5 dark:py-2.5">
+    <div className="ui-chat-user-card w-full max-w-[62ch] self-end overflow-hidden rounded-[var(--radius-small)] bg-[color:var(--chat-user-bg)]">
+      <div className="flex items-center justify-between gap-3 bg-[color:var(--chat-user-header-bg)] px-2.5 py-1.5 dark:px-3 dark:py-1.5">
         <div className="type-meta min-w-0 truncate font-mono text-foreground/90">
           You
         </div>
@@ -428,7 +431,7 @@ const UserMessageCard = memo(function UserMessageCard({
           </time>
         ) : null}
       </div>
-      <div className="agent-markdown type-body px-3 py-3 text-foreground dark:px-3.5 dark:py-3.5">
+      <div className="agent-markdown px-3 py-2 text-[12px] leading-normal text-foreground dark:px-3 dark:py-2">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
       </div>
     </div>
@@ -1343,6 +1346,9 @@ export const AgentChatPanel = ({
   onOpenSettings,
   onRename,
   onNewSession,
+  sessions,
+  onSelectSession,
+  onDeleteSession,
   onModelChange,
   onThinkingChange,
   onToolCallingToggle = noopToggle,
@@ -1806,6 +1812,35 @@ export const AgentChatPanel = ({
                 onClick={onOpenSettings}
               >
                 <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            ) : null}
+            {sessions && sessions.length > 0 ? (
+              <select
+                aria-label="Select session"
+                value={agent.sessionKey}
+                onChange={(e) => onSelectSession?.(e.target.value)}
+                className="nodrag font-mono text-[10px] rounded border border-border/70 bg-surface-2 px-2 py-0.5 text-foreground"
+              >
+                {sessions.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.displayName || s.key}
+                  </option>
+                ))}
+              </select>
+            ) : null}
+            {onDeleteSession && sessions && sessions.length > 1 ? (
+              <button
+                type="button"
+                className="nodrag inline-flex items-center rounded border border-red-500/30 bg-red-500/10 px-2 py-0.5 font-mono text-[9px] font-medium text-red-300 transition hover:bg-red-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+                title="Delete active session"
+                aria-label="Delete active session"
+                onClick={() => {
+                  if (window.confirm("Hapus sesi ini beserta riwayatnya?")) {
+                    void onDeleteSession(agent.sessionKey);
+                  }
+                }}
+              >
+                Delete
               </button>
             ) : null}
             <button

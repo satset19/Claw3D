@@ -612,13 +612,19 @@ type ChatHistoryResult = {
 };
 
 type SessionsListEntry = {
-  key?: string;
+  key: string;
   updatedAt?: number | null;
   origin?: { label?: string | null } | null;
+  displayName?: string;
 };
 
 type SessionsListResult = {
-  sessions?: SessionsListEntry[];
+  sessions?: Array<{
+    key?: string;
+    updatedAt?: number | null;
+    origin?: { label?: string | null } | null;
+    displayName?: string;
+  }>;
 };
 
 type SessionsPreviewItem = {
@@ -1068,6 +1074,11 @@ export function OfficeScreen({
   const historyInFlightRef = useRef<Set<string>>(new Set());
   const lastTransportHistoryRefreshKeyRef = useRef<Record<string, string>>({});
   const [chatOpen, setChatOpen] = useState(false);
+  const chatModalContainerRef = useRef<HTMLDivElement>(null);
+  const chatToggleButtonRef = useRef<HTMLButtonElement>(null);
+  const [sessionsByAgentId, setSessionsByAgentId] = useState<
+    Record<string, SessionsListEntry[]>
+  >({});
   const [chatRosterCollapsed, setChatRosterCollapsed] = useState(false);
   const [selectedChatAgentId, setSelectedChatAgentId] = useState<string | null>(
     null,
@@ -1173,6 +1184,32 @@ export function OfficeScreen({
   useEffect(() => {
     floorRosterCacheRef.current = floorRosterCache;
   }, [floorRosterCache]);
+
+  useEffect(() => {
+    if (!chatOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (
+        chatModalContainerRef.current &&
+        !chatModalContainerRef.current.contains(target) &&
+        !chatToggleButtonRef.current?.contains(target)
+      ) {
+        setChatOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setChatOpen(false);
+      }
+    };
+    window.addEventListener("pointerdown", handlePointerDown, true);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown, true);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [chatOpen]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1528,16 +1565,6 @@ export function OfficeScreen({
       settingsCoordinator,
       token,
     ],
-  );
-  const focusChatTarget = useCallback(
-    (agentId: string) => {
-      setSelectedChatAgentId(agentId);
-      setChatOpen(true);
-      if (!isRemoteOfficeAgentId(agentId)) {
-        dispatch({ type: "selectAgent", agentId });
-      }
-    },
-    [dispatch],
   );
   const openAgentEditor = useCallback(
     (agentId: string, initialSection: AgentEditorSection = "avatar") => {
@@ -2524,8 +2551,15 @@ export function OfficeScreen({
   const requestAgentHistoryRefresh = useCallback(
     async (params: {
       agentId: string;
-      reason: "chat-final-no-trace" | "run-start-no-chat";
+      reason:
+        | "chat-final-no-trace"
+        | "run-start-no-chat"
+        | "focus-agent"
+        | "chat-opened"
+        | "load-more"
+        | "session-switch";
       sessionKey?: string;
+      limit?: number;
     }) => {
       if (status !== "connected") return;
       const requestedSessionKey = params.sessionKey?.trim() ?? "";
@@ -2641,6 +2675,7 @@ export function OfficeScreen({
       const commands = await runHistorySyncOperation({
         client: provider,
         agentId: params.agentId,
+        requestedLimit: params.limit,
         getAgent: (agentId) =>
           stateRef.current.agents.find((entry) => entry.agentId === agentId) ??
           null,
@@ -2666,6 +2701,18 @@ export function OfficeScreen({
       }
     },
     [debugEnabled, dispatch, provider, status],
+  );
+
+  const focusChatTarget = useCallback(
+    (agentId: string) => {
+      setSelectedChatAgentId(agentId);
+      setChatOpen(true);
+      if (!isRemoteOfficeAgentId(agentId)) {
+        dispatch({ type: "selectAgent", agentId });
+        void requestAgentHistoryRefresh({ agentId, reason: "focus-agent" });
+      }
+    },
+    [dispatch, requestAgentHistoryRefresh],
   );
 
   const refreshRecentTransportSessionHistory = useCallback(
@@ -3118,6 +3165,181 @@ export function OfficeScreen({
     if (state.agents.some((agent) => agent.agentId === agentEditorAgentId)) return;
     setAgentEditorAgentId(null);
   }, [agentEditorAgentId, state.agents]);
+
+  const lastChatOpenedHydrateRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!chatOpen || !focusedChatAgent) {
+      lastChatOpenedHydrateRef.current = null;
+      return;
+    }
+    const hydrateKey = `${focusedChatAgent.agentId}:${focusedChatAgent.sessionKey}`;
+    if (
+      focusedChatAgent.outputLines.length === 0 &&
+      lastChatOpenedHydrateRef.current !== hydrateKey
+    ) {
+      lastChatOpenedHydrateRef.current = hydrateKey;
+      void requestAgentHistoryRefresh({
+        agentId: focusedChatAgent.agentId,
+        reason: "chat-opened",
+      });
+    }
+  }, [chatOpen, focusedChatAgent, requestAgentHistoryRefresh]);
+
+  const refreshSessions = useCallback(
+    async (agentId: string) => {
+      if (status !== "connected" || !agentId) return [];
+      try {
+        const result = await provider.call<SessionsListResult>("sessions.list", {
+          agentId,
+        });
+        const entries = (
+          Array.isArray(result?.sessions) ? result.sessions : []
+        )
+          .filter(
+            (entry): entry is { key: string; updatedAt?: number | null; origin?: { label?: string | null } | null; displayName?: string } =>
+              typeof entry?.key === "string" && entry.key.trim().length > 0,
+          )
+          .map((entry) => ({
+            key: entry.key.trim(),
+            displayName: entry.displayName || entry.origin?.label || entry.key.trim(),
+            updatedAt: entry.updatedAt ?? null,
+            origin: entry.origin ?? null,
+          }));
+        setSessionsByAgentId((prev) => ({
+          ...prev,
+          [agentId]: entries,
+        }));
+        return entries;
+      } catch (err) {
+        if (!isGatewayDisconnectLikeError(err)) {
+          console.error("Failed to list sessions:", err);
+        }
+        return [];
+      }
+    },
+    [provider, status],
+  );
+
+  useEffect(() => {
+    if (!chatOpen || !focusedChatAgent) return;
+    void refreshSessions(focusedChatAgent.agentId);
+  }, [chatOpen, focusedChatAgent?.agentId, refreshSessions]);
+
+  const handleSelectSession = useCallback(
+    (sessionKey: string) => {
+      if (!focusedChatAgent) return;
+      const targetAgentId = focusedChatAgent.agentId;
+      dispatch({
+        type: "updateAgent",
+        agentId: targetAgentId,
+        patch: { sessionKey },
+      });
+      stateRef.current = {
+        ...stateRef.current,
+        agents: stateRef.current.agents.map((entry) =>
+          entry.agentId === targetAgentId ? { ...entry, sessionKey } : entry,
+        ),
+      };
+      void requestAgentHistoryRefresh({
+        agentId: targetAgentId,
+        reason: "session-switch",
+      });
+    },
+    [dispatch, focusedChatAgent, requestAgentHistoryRefresh],
+  );
+
+  const handleDeleteSession = useCallback(
+    async (sessionKey: string) => {
+      if (!focusedChatAgent) return;
+      const targetAgentId = focusedChatAgent.agentId;
+      try {
+        await provider.call("sessions.delete", { key: sessionKey });
+        await refreshSessions(targetAgentId);
+        if (focusedChatAgent.sessionKey === sessionKey) {
+          const mainSessionKey = `agent:${targetAgentId}:main`;
+          dispatch({
+            type: "updateAgent",
+            agentId: targetAgentId,
+            patch: { sessionKey: mainSessionKey },
+          });
+          stateRef.current = {
+            ...stateRef.current,
+            agents: stateRef.current.agents.map((entry) =>
+              entry.agentId === targetAgentId
+                ? { ...entry, sessionKey: mainSessionKey }
+                : entry,
+            ),
+          };
+          void requestAgentHistoryRefresh({
+            agentId: targetAgentId,
+            reason: "session-switch",
+          });
+        }
+      } catch (err) {
+        if (!isGatewayDisconnectLikeError(err)) {
+          console.error("Failed to delete session:", err);
+        }
+      }
+    },
+    [
+      dispatch,
+      focusedChatAgent,
+      provider,
+      refreshSessions,
+      requestAgentHistoryRefresh,
+    ],
+  );
+
+  const handleNewSession = useCallback(
+    async (explicitAgentId?: string) => {
+      const targetAgentId = explicitAgentId || focusedChatAgent?.agentId;
+      if (!targetAgentId) return;
+      try {
+        const result = await provider.call<{
+          ok?: boolean;
+          sessionKey?: string;
+          key?: string;
+        }>("sessions.create", { agentId: targetAgentId });
+        const nextSessionKey =
+          result?.sessionKey?.trim() ||
+          result?.key?.trim() ||
+          `agent:${targetAgentId}:session_${Date.now()}`;
+        dispatch({
+          type: "updateAgent",
+          agentId: targetAgentId,
+          patch: {
+            sessionKey: nextSessionKey,
+            outputLines: [],
+            transcriptEntries: [],
+            historyMaybeTruncated: false,
+            historyFetchedCount: 0,
+          },
+        });
+        stateRef.current = {
+          ...stateRef.current,
+          agents: stateRef.current.agents.map((entry) =>
+            entry.agentId === targetAgentId
+              ? {
+                  ...entry,
+                  sessionKey: nextSessionKey,
+                  outputLines: [],
+                  transcriptEntries: [],
+                  historyMaybeTruncated: false,
+                  historyFetchedCount: 0,
+                }
+              : entry,
+          ),
+        };
+        await refreshSessions(targetAgentId);
+      } catch (err) {
+        if (!isGatewayDisconnectLikeError(err)) {
+          console.error("Failed to create new session:", err);
+        }
+      }
+    },
+    [dispatch, focusedChatAgent?.agentId, provider, refreshSessions],
+  );
 
   const runLog = useRunLog({
     client,
@@ -5400,6 +5622,7 @@ export function OfficeScreen({
       >
         {chatOpen && (
           <div
+            ref={chatModalContainerRef}
             className="flex overflow-hidden rounded border border-white/10 bg-[#0e0a04] shadow-2xl"
             style={{
               width: chatRosterCollapsed
@@ -5514,12 +5737,20 @@ export function OfficeScreen({
                   stopBusy={
                     chatController.stopBusyAgentId === focusedChatAgent.agentId
                   }
-                  onLoadMoreHistory={() => {}}
+                  sessions={sessionsByAgentId[focusedChatAgent.agentId] ?? []}
+                  onSelectSession={handleSelectSession}
+                  onDeleteSession={handleDeleteSession}
+                  onLoadMoreHistory={() => {
+                    void requestAgentHistoryRefresh({
+                      agentId: focusedChatAgent.agentId,
+                      reason: "load-more",
+                    });
+                  }}
                   onOpenSettings={() =>
                     openAgentEditor(focusedChatAgent.agentId, "IDENTITY.md")
                   }
                   onNewSession={() =>
-                    chatController.handleNewSession(focusedChatAgent.agentId)
+                    handleNewSession(focusedChatAgent.agentId)
                   }
                   onModelChange={(value) =>
                     dispatch({
@@ -5628,6 +5859,7 @@ export function OfficeScreen({
         )}
 
         <button
+          ref={chatToggleButtonRef}
           type="button"
           onClick={() => setChatOpen((prev) => !prev)}
           className="flex items-center gap-1.5 rounded border border-amber-700/50 bg-[#0e0a04]/90 px-3 py-1.5 font-mono text-[11px] font-medium tracking-wider text-amber-500/80 shadow-lg backdrop-blur transition-colors hover:border-amber-600/70 hover:text-amber-400"

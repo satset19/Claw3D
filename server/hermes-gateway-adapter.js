@@ -209,6 +209,9 @@ const conversationHistory = new Map();
 /** @type {Map<string, {model?: string, thinkingLevel?: string}>} */
 const sessionSettings = new Map();
 
+/** @type {Map<string, {key: string, agentId: string, displayName: string, createdAt: number, updatedAt: number}>} */
+const sessionMetadataMap = new Map();
+
 /** @type {Map<string, string>} agentId/filename → content */
 const agentFiles = new Map();
 
@@ -241,17 +244,102 @@ const agentRegistry = new Map([
 const activeSendEventFns = new Set();
 
 // ---------------------------------------------------------------------------
-// Disk persistence for conversation history, agent registry, and agent files
+// Disk persistence for conversation history, session metadata, agent registry, and files
 // ---------------------------------------------------------------------------
 
 const HISTORY_FILE = path.join(HOME, ".hermes", "clawd3d-history.json");
 const AGENTS_REGISTRY_FILE = path.join(HOME, ".hermes", "claw3d-agents.json");
 const AGENT_FILES_STORE = path.join(HOME, ".hermes", "claw3d-agent-files.json");
+const SESSION_META_FILE = path.join(HOME, ".hermes", "claw3d-sessions.json");
 let persistDebounceTimer = null;
 let persistAgentsDebounceTimer = null;
 let persistAgentFilesDebounceTimer = null;
+let persistSessionMetaDebounceTimer = null;
+
+function formatSessionDisplayName(sessionName) {
+  if (!sessionName || sessionName === MAIN_KEY) return "Main";
+  if (sessionName.startsWith("session_")) {
+    const raw = sessionName.slice("session_".length);
+    const num = Number(raw);
+    if (!Number.isNaN(num) && raw.length >= 10) {
+      try {
+        const d = new Date(num);
+        if (!Number.isNaN(d.getTime())) {
+          return `Session ${d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+        }
+      } catch {
+        return `Session ${raw}`;
+      }
+    }
+    return `Session ${raw}`;
+  }
+  return sessionName.charAt(0).toUpperCase() + sessionName.slice(1);
+}
+
+function ensureAgentHasSession(agentId) {
+  const existing = [...sessionMetadataMap.values()].filter((s) => s.agentId === agentId);
+  if (existing.length === 0) {
+    const mainKey = `agent:${agentId}:${MAIN_KEY}`;
+    const entry = {
+      key: mainKey,
+      agentId,
+      displayName: "Main",
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    sessionMetadataMap.set(mainKey, entry);
+    saveSessionMetadataToDisk();
+    return entry;
+  }
+  return null;
+}
+
+function touchSession(sessionKey) {
+  const meta = sessionMetadataMap.get(sessionKey);
+  if (meta) {
+    meta.updatedAt = Date.now();
+    saveSessionMetadataToDisk();
+  } else {
+    const match = sessionKey.match(/^agent:([^:]+):(.+)$/);
+    if (match) {
+      const [, agentId, sessionName] = match;
+      sessionMetadataMap.set(sessionKey, {
+        key: sessionKey,
+        agentId,
+        displayName: sessionName === MAIN_KEY ? "Main" : formatSessionDisplayName(sessionName),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      });
+      saveSessionMetadataToDisk();
+    }
+  }
+}
 
 function loadHistoryFromDisk() {
+  try {
+    if (fs.existsSync(SESSION_META_FILE)) {
+      const rawMeta = fs.readFileSync(SESSION_META_FILE, "utf8");
+      const metaData = JSON.parse(rawMeta);
+      if (Array.isArray(metaData)) {
+        for (const item of metaData) {
+          if (item && typeof item.key === "string") {
+            sessionMetadataMap.set(item.key, item);
+          }
+        }
+        console.log(`[hermes-adapter] Loaded metadata for ${sessionMetadataMap.size} session(s).`);
+      } else if (metaData && typeof metaData === "object") {
+        for (const [key, item] of Object.entries(metaData)) {
+          if (item && typeof item === "object") {
+            sessionMetadataMap.set(key, { key, ...item });
+          }
+        }
+        console.log(`[hermes-adapter] Loaded metadata for ${sessionMetadataMap.size} session(s).`);
+      }
+    }
+  } catch (err) {
+    console.warn("[hermes-adapter] Could not load session metadata:", sanitizeErrorMessage(err));
+  }
+
   try {
     if (fs.existsSync(HISTORY_FILE)) {
       const raw = fs.readFileSync(HISTORY_FILE, "utf8");
@@ -266,6 +354,44 @@ function loadHistoryFromDisk() {
   } catch (err) {
     console.warn("[hermes-adapter] Could not load history:", sanitizeErrorMessage(err));
   }
+
+  let newMetadataCount = 0;
+  for (const key of conversationHistory.keys()) {
+    const match = key.match(/^agent:([^:]+):(.+)$/);
+    if (match) {
+      const [, agentId, sessionName] = match;
+      if (!sessionMetadataMap.has(key)) {
+        const displayName = sessionName === MAIN_KEY ? "Main" : formatSessionDisplayName(sessionName);
+        sessionMetadataMap.set(key, {
+          key,
+          agentId,
+          displayName,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        });
+        newMetadataCount++;
+      }
+    }
+  }
+
+  ensureAgentHasSession(AGENT_ID);
+
+  if (newMetadataCount > 0) {
+    saveSessionMetadataToDisk();
+  }
+}
+
+function saveSessionMetadataToDisk() {
+  if (persistSessionMetaDebounceTimer) clearTimeout(persistSessionMetaDebounceTimer);
+  persistSessionMetaDebounceTimer = setTimeout(() => {
+    try {
+      const data = [...sessionMetadataMap.values()];
+      fs.mkdirSync(path.dirname(SESSION_META_FILE), { recursive: true });
+      fs.writeFileSync(SESSION_META_FILE, JSON.stringify(data, null, 2), "utf8");
+    } catch (err) {
+      console.warn("[hermes-adapter] Could not save session metadata:", sanitizeErrorMessage(err));
+    }
+  }, 300);
 }
 
 function saveHistoryToDisk() {
@@ -293,6 +419,7 @@ function loadAgentsFromDisk() {
         for (const agent of data) {
           if (agent && typeof agent.id === "string") {
             agentRegistry.set(agent.id, agent);
+            ensureAgentHasSession(agent.id);
           }
         }
         console.log(`[hermes-adapter] Loaded registry for ${data.length} agent(s).`);
@@ -657,6 +784,7 @@ async function execSpawnAgent(args) {
     id: newId, name, workspace: `${HOME}/.hermes/workspace-${slug}`,
     role, systemPrompt, settings: { wipe, continuity, model, boundaries },
   });
+  ensureAgentHasSession(newId);
   saveAgentsToDisk();
 
   console.log(`[hermes-adapter] Spawned agent: ${name} (${newId})`);
@@ -721,6 +849,7 @@ async function execDelegateTask(args) {
       history.push({ role: "user", content: message });
       history.push({ role: "assistant", content: responseText });
       saveHistoryToDisk();
+      touchSession(sessionKey);
     }
 
     emitSub("final", { stopReason: "end_turn", message: { role: "assistant", content: responseText } });
@@ -788,7 +917,15 @@ function execDismissAgent(args) {
   if (!agent) return JSON.stringify({ ok: false, error: `Agent ${targetId} not found` });
   agentRegistry.delete(targetId);
   saveAgentsToDisk();
-  clearHistory(`agent:${targetId}:${MAIN_KEY}`);
+  for (const [key, meta] of sessionMetadataMap.entries()) {
+    if (meta.agentId === targetId) {
+      sessionMetadataMap.delete(key);
+      conversationHistory.delete(key);
+      sessionSettings.delete(key);
+    }
+  }
+  saveSessionMetadataToDisk();
+  saveHistoryToDisk();
   console.log(`[hermes-adapter] Dismissed agent: ${agent.name} (${targetId})`);
   return JSON.stringify({ ok: true, dismissed: targetId });
 }
@@ -893,6 +1030,7 @@ async function runAgenticLoop({ sessionKey, agentId, userMessage, model, tools, 
     history.push({ role: "user", content: userMessage });
     history.push({ role: "assistant", content: finalText });
     saveHistoryToDisk();
+    touchSession(sessionKey);
   }
 
   return finalText;
@@ -935,6 +1073,7 @@ async function handleMethod(method, params, id, sendEvent) {
         role: "", systemPrompt: `You are ${agentName}.`,
         settings: { wipe: false, continuity: true, model: HERMES_MODEL },
       });
+      ensureAgentHasSession(newId);
       saveAgentsToDisk();
       return resOk(id, { agentId: newId, name: agentName, workspace });
     }
@@ -944,7 +1083,15 @@ async function handleMethod(method, params, id, sendEvent) {
       if (delId && delId !== AGENT_ID) {
         agentRegistry.delete(delId);
         saveAgentsToDisk();
-        clearHistory(`agent:${delId}:${MAIN_KEY}`);
+        for (const [key, meta] of sessionMetadataMap.entries()) {
+          if (meta.agentId === delId) {
+            sessionMetadataMap.delete(key);
+            conversationHistory.delete(key);
+            sessionSettings.delete(key);
+          }
+        }
+        saveSessionMetadataToDisk();
+        saveHistoryToDisk();
       }
       return resOk(id, { ok: true, removedBindings: 0 });
     }
@@ -987,20 +1134,91 @@ async function handleMethod(method, params, id, sendEvent) {
     // --- Sessions -----------------------------------------------------------
 
     case "sessions.list": {
-      const sessions = [...agentRegistry.values()].map((agent) => {
-        const sessionKey = `agent:${agent.id}:${MAIN_KEY}`;
-        const history = getHistory(sessionKey);
-        const settings = sessionSettings.get(sessionKey) || {};
-        return {
-          key: sessionKey, agentId: agent.id,
-          updatedAt: history.length > 0 ? Date.now() : null,
-          displayName: "Main",
-          origin: { label: agent.name, provider: "hermes" },
-          model: settings.model || agent.settings?.model || HERMES_MODEL,
+      const filterAgentId = typeof p.agentId === "string" && p.agentId.trim() ? p.agentId.trim() : null;
+
+      if (filterAgentId) {
+        ensureAgentHasSession(filterAgentId);
+      } else {
+        for (const agent of agentRegistry.values()) {
+          ensureAgentHasSession(agent.id);
+        }
+      }
+
+      const sessions = [];
+      for (const meta of sessionMetadataMap.values()) {
+        if (filterAgentId && meta.agentId !== filterAgentId) continue;
+        const agent = agentRegistry.get(meta.agentId);
+        const settings = sessionSettings.get(meta.key) || {};
+        const agentName = agent ? agent.name : (meta.agentId === AGENT_ID ? HERMES_AGENT_NAME : meta.agentId);
+        sessions.push({
+          key: meta.key,
+          agentId: meta.agentId,
+          updatedAt: meta.updatedAt || null,
+          displayName: meta.displayName || "Session",
+          origin: { label: agentName, provider: "hermes" },
+          model: settings.model || agent?.settings?.model || HERMES_MODEL,
           modelProvider: "hermes",
-        };
-      });
+        });
+      }
       return resOk(id, { sessions });
+    }
+
+    case "sessions.create": {
+      const agentId = typeof p.agentId === "string" && p.agentId.trim() ? p.agentId.trim() : AGENT_ID;
+      const now = Date.now();
+      const sessionKey = `agent:${agentId}:session_${now}`;
+      const displayName = typeof p.displayName === "string" && p.displayName.trim()
+        ? p.displayName.trim()
+        : formatSessionDisplayName(`session_${now}`);
+      const entry = {
+        key: sessionKey,
+        agentId,
+        displayName,
+        createdAt: now,
+        updatedAt: now,
+      };
+      sessionMetadataMap.set(sessionKey, entry);
+      saveSessionMetadataToDisk();
+      return resOk(id, { ok: true, sessionKey });
+    }
+
+    case "sessions.delete": {
+      const key = typeof p.key === "string" ? p.key.trim() : "";
+      if (!key) {
+        return resErr(id, "invalid_params", "Missing session key");
+      }
+
+      for (const [activeRunId, handle] of activeRuns.entries()) {
+        if (handle.sessionKey === key) {
+          handle.abort();
+          activeRuns.delete(activeRunId);
+        }
+      }
+
+      const match = key.match(/^agent:([^:]+):(.+)$/);
+      const meta = sessionMetadataMap.get(key);
+      const agentId = match ? match[1] : (meta?.agentId || AGENT_ID);
+
+      conversationHistory.delete(key);
+      saveHistoryToDisk();
+
+      sessionMetadataMap.delete(key);
+      sessionSettings.delete(key);
+
+      const remaining = [...sessionMetadataMap.values()].filter((s) => s.agentId === agentId);
+      if (remaining.length === 0) {
+        const defaultKey = `agent:${agentId}:${MAIN_KEY}`;
+        sessionMetadataMap.set(defaultKey, {
+          key: defaultKey,
+          agentId,
+          displayName: "Main",
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        });
+      }
+      saveSessionMetadataToDisk();
+
+      return resOk(id, { ok: true, deletedKey: key });
     }
 
     case "sessions.preview": {
@@ -1036,8 +1254,15 @@ async function handleMethod(method, params, id, sendEvent) {
     }
 
     case "sessions.reset": {
-      const key = typeof p.key === "string" ? p.key : MAIN_SESSION_KEY;
+      const key = typeof p.key === "string" && p.key.trim()
+        ? p.key.trim()
+        : (typeof p.sessionKey === "string" && p.sessionKey.trim() ? p.sessionKey.trim() : MAIN_SESSION_KEY);
       clearHistory(key);
+      const meta = sessionMetadataMap.get(key);
+      if (meta) {
+        meta.updatedAt = Date.now();
+        saveSessionMetadataToDisk();
+      }
       return resOk(id, { ok: true });
     }
 
@@ -1130,7 +1355,9 @@ async function handleMethod(method, params, id, sendEvent) {
     }
 
     case "chat.history": {
-      const histKey = typeof p.sessionKey === "string" ? p.sessionKey : MAIN_SESSION_KEY;
+      const histKey = typeof p.sessionKey === "string" && p.sessionKey.trim()
+        ? p.sessionKey.trim()
+        : (typeof p.key === "string" && p.key.trim() ? p.key.trim() : MAIN_SESSION_KEY);
       return resOk(id, { sessionKey: histKey, messages: getHistory(histKey) });
     }
 
@@ -1158,14 +1385,16 @@ async function handleMethod(method, params, id, sendEvent) {
     // --- Status & heartbeat -------------------------------------------------
 
     case "status": {
-      const recent = [...agentRegistry.keys()].flatMap((aid) => {
-        const h = getHistory(`agent:${aid}:${MAIN_KEY}`);
-        return h.length > 0 ? [{ key: `agent:${aid}:${MAIN_KEY}`, updatedAt: Date.now() }] : [];
-      });
+      const recent = [...sessionMetadataMap.values()]
+        .map((meta) => ({
+          key: meta.key,
+          updatedAt: meta.updatedAt || Date.now(),
+        }))
+        .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
       return resOk(id, { sessions: { recent,
         byAgent: [...agentRegistry.keys()].map((aid) => ({
           agentId: aid,
-          recent: recent.filter((r) => r.key.includes(`:${aid}:`)),
+          recent: recent.filter((r) => r.key.startsWith(`agent:${aid}:`)),
         })) } });
     }
 
@@ -1308,7 +1537,7 @@ function startAdapter() {
             type: "hello-ok", protocol: 3,
             adapterType: "hermes",
             features: { methods: ["agents.list","agents.create","agents.delete","agents.update",
-              "sessions.list","sessions.preview","sessions.patch","sessions.reset",
+              "sessions.list","sessions.create","sessions.delete","sessions.preview","sessions.patch","sessions.reset",
               "chat.send","chat.abort","chat.history","agent.wait",
               "status","config.get","config.set","config.patch",
               "agents.files.get","agents.files.set",
@@ -1366,4 +1595,22 @@ function startAdapter() {
 loadHistoryFromDisk();
 loadAgentsFromDisk();
 loadAgentFilesFromDisk();
-startAdapter();
+
+if (require.main === module) {
+  startAdapter();
+}
+
+module.exports = {
+  SESSION_META_FILE,
+  sessionMetadataMap,
+  conversationHistory,
+  sessionSettings,
+  agentRegistry,
+  handleMethod,
+  loadHistoryFromDisk,
+  saveHistoryToDisk,
+  saveSessionMetadataToDisk,
+  ensureAgentHasSession,
+  formatSessionDisplayName,
+  startAdapter,
+};

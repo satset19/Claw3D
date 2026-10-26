@@ -124,7 +124,7 @@ export const RemoteAgentChatPanel = memo(function RemoteAgentChatPanel({
           messages.map((message) => (
             <div
               key={message.id}
-              className={`max-w-[85%] rounded px-3 py-2 ${
+              className={`max-w-[78%] rounded px-2.5 py-1.5 text-xs ${
                 message.role === "user"
                   ? "ml-auto bg-cyan-500/15 text-cyan-50"
                   : message.role === "assistant"
