@@ -6,7 +6,7 @@ import type { FloorRosterState } from "@/lib/office/floorRoster";
 import type { FloorId } from "@/lib/office/floors";
 
 const baseProps = {
-  activeFloorId: "lobby" as FloorId,
+  activeFloorId: "hermes-first" as FloorId,
   floorRosterCache: {} as Record<FloorId, FloorRosterState>,
   onSelectFloor: () => {},
   activeAdapterType: null,

@@ -106,9 +106,9 @@ export function OfficeFloorNav({
   const buildingFloors = availableFloors.filter((f) => f.zone === "building");
   const outsideFloors = availableFloors.filter((f) => f.zone === "outside");
 
-  // Active floor — fall back to lobby if current floor is no longer available
+  // Active floor — fall back to hermes-first if current floor is no longer available
   const activeIsAvailable = availableFloors.some((f) => f.id === activeFloorId);
-  const displayActiveFloorId = activeIsAvailable ? activeFloorId : "lobby";
+  const displayActiveFloorId = activeIsAvailable ? activeFloorId : "hermes-first";
 
   const activeFloor =
     OFFICE_FLOORS.find((floor) => floor.id === displayActiveFloorId) ?? OFFICE_FLOORS[0];

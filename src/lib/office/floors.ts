@@ -9,11 +9,7 @@ export type FloorProvider =
 export type FloorZone = "building" | "outside";
 
 export type FloorId =
-  | "lobby"
-  | "openclaw-ground"
   | "hermes-first"
-  | "local-runtime"
-  | "claw3d-runtime"
   | "custom-second"
   | "training"
   | "traders-floor"
@@ -35,28 +31,6 @@ export type FloorDefinition = {
 
 export const OFFICE_FLOORS: readonly FloorDefinition[] = [
   {
-    id: "lobby",
-    label: "Lobby",
-    shortLabel: "Lobby",
-    provider: "demo",
-    kind: "lobby",
-    zone: "building",
-    enabled: true,
-    sortOrder: 0,
-    runtimeProfileId: null,
-  },
-  {
-    id: "openclaw-ground",
-    label: "OpenClaw Floor",
-    shortLabel: "OpenClaw",
-    provider: "openclaw",
-    kind: "runtime",
-    zone: "building",
-    enabled: true,
-    sortOrder: 10,
-    runtimeProfileId: "openclaw-default",
-  },
-  {
     id: "hermes-first",
     label: "Hermes Floor",
     shortLabel: "Hermes",
@@ -68,35 +42,13 @@ export const OFFICE_FLOORS: readonly FloorDefinition[] = [
     runtimeProfileId: "hermes-default",
   },
   {
-    id: "local-runtime",
-    label: "Local Runtime Floor",
-    shortLabel: "Local",
-    provider: "local",
-    kind: "runtime",
-    zone: "building",
-    enabled: true,
-    sortOrder: 25,
-    runtimeProfileId: "local-default",
-  },
-  {
-    id: "claw3d-runtime",
-    label: "Claw3D Runtime Floor",
-    shortLabel: "Claw3D",
-    provider: "claw3d",
-    kind: "runtime",
-    zone: "building",
-    enabled: true,
-    sortOrder: 28,
-    runtimeProfileId: "claw3d-default",
-  },
-  {
     id: "custom-second",
     label: "Custom Floor",
     shortLabel: "Custom",
     provider: "custom",
     kind: "runtime",
     zone: "building",
-    enabled: true,
+    enabled: false,
     sortOrder: 30,
     runtimeProfileId: "custom-default",
   },
@@ -135,7 +87,7 @@ export const OFFICE_FLOORS: readonly FloorDefinition[] = [
   },
 ] as const;
 
-export const DEFAULT_ACTIVE_FLOOR_ID: FloorId = "lobby";
+export const DEFAULT_ACTIVE_FLOOR_ID: FloorId = "hermes-first";
 
 const FLOOR_BY_ID: Readonly<Record<FloorId, FloorDefinition>> = OFFICE_FLOORS.reduce(
   (acc, floor) => {
@@ -145,7 +97,8 @@ const FLOOR_BY_ID: Readonly<Record<FloorId, FloorDefinition>> = OFFICE_FLOORS.re
   {} as Record<FloorId, FloorDefinition>,
 );
 
-export const getOfficeFloor = (floorId: FloorId): FloorDefinition => FLOOR_BY_ID[floorId];
+export const getOfficeFloor = (floorId: FloorId): FloorDefinition =>
+  FLOOR_BY_ID[floorId] ?? OFFICE_FLOORS[0];
 
 export const listEnabledOfficeFloors = (): FloorDefinition[] =>
   OFFICE_FLOORS.filter((floor) => floor.enabled);
@@ -178,6 +131,7 @@ export const listAvailableFloorsForAdapter = (
     if (!floor.enabled) return false;
     if (floor.kind === "lobby") return true;
     if (floor.kind === "runtime") {
+      if (floor.id === DEFAULT_ACTIVE_FLOOR_ID) return true;
       return (
         Boolean(activeAdapterType) &&
         activeAdapterType !== "demo" &&

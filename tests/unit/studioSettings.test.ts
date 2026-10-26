@@ -17,7 +17,7 @@ describe("studio settings normalization", () => {
     const normalized = normalizeStudioSettings(null);
     expect(normalized.version).toBe(1);
     expect(normalized.gateway).toBeNull();
-    expect(normalized.activeFloorId).toBe("lobby");
+    expect(normalized.activeFloorId).toBe("hermes-first");
     expect(normalized.focused).toEqual({});
     expect(normalized.avatars).toEqual({});
     expect(normalized.office).toEqual({});
@@ -202,11 +202,11 @@ describe("studio settings normalization", () => {
   it("creates default per-floor runtime state", () => {
     const normalized = normalizeStudioSettings(null);
 
-    expect(normalized.officeFloors["openclaw-ground"]).toEqual(
+    expect(normalized.officeFloors["hermes-first"]).toEqual(
       expect.objectContaining({
-        floorId: "openclaw-ground",
-        provider: "openclaw",
-        runtimeProfileId: "openclaw-default",
+        floorId: "hermes-first",
+        provider: "hermes",
+        runtimeProfileId: "hermes-default",
         gatewayUrl: null,
         status: "disconnected",
       }),
@@ -278,7 +278,7 @@ describe("studio settings normalization", () => {
     const merged = mergeStudioSettings(normalized, {
       activeFloorId: "training",
     });
-    expect(resolveStudioActiveFloorId(merged)).toBe("lobby");
+    expect(resolveStudioActiveFloorId(merged)).toBe("hermes-first");
   });
 
   it("normalizes task board cards per gateway", () => {

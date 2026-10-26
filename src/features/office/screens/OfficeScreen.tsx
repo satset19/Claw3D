@@ -260,8 +260,8 @@ const createDemoMainAgentSeed = (): {
   avatarProfile: createDefaultAgentAvatarProfile(MAIN_AGENT_ID),
   model: "demo/main",
   thinkingLevel: "medium",
-  toolCallingEnabled: false,
-  showThinkingTraces: false,
+  toolCallingEnabled: true,
+  showThinkingTraces: true,
 });
 const MAX_OPENCLAW_LOG_ENTRIES = 200;
 const MAX_OPENCLAW_AGENT_OUTPUT_LINES = 12;
@@ -1126,7 +1126,7 @@ export function OfficeScreen({
   const [deskAssignmentByDeskUid, setDeskAssignmentByDeskUid] = useState<
     Record<string, string>
   >({});
-  const [activeFloorId, setActiveFloorId] = useState<FloorId>("lobby");
+  const [activeFloorId, setActiveFloorId] = useState<FloorId>("hermes-first");
   const [pendingFloorRuntimeSwitch, setPendingFloorRuntimeSwitch] =
     useState<PendingFloorRuntimeSwitch | null>(null);
   const previousGatewayStatusRef = useRef<"disconnected" | "connecting" | "connected">(
@@ -1136,7 +1136,7 @@ export function OfficeScreen({
   const [floorRosterCache, setFloorRosterCache] = useState(() =>
     createFloorRosterCache(),
   );
-  const activeFloorIdRef = useRef<FloorId>("lobby");
+  const activeFloorIdRef = useRef<FloorId>("hermes-first");
   const floorRosterCacheRef = useRef(floorRosterCache);
   const [gatewayModels, setGatewayModels] = useState<GatewayModelChoice[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -1524,10 +1524,10 @@ export function OfficeScreen({
       }
 
       // Guard: if this is a runtime floor and there's no gateway URL to connect to,
-      // bail back to lobby rather than entering a connect-hang limbo state.
+      // bail back to default floor rather than entering a connect-hang limbo state.
       if (floor.kind === "runtime" && !nextGatewayUrl.trim()) {
-        setActiveFloorId("lobby");
-        settingsCoordinator.schedulePatch({ activeFloorId: "lobby" }, 0);
+        setActiveFloorId("hermes-first");
+        settingsCoordinator.schedulePatch({ activeFloorId: "hermes-first" }, 0);
         setAgentsLoaded(true);
         return;
       }
@@ -4529,6 +4529,10 @@ export function OfficeScreen({
     for (const agent of state.agents) {
       if (agent.streamText?.trim()) {
         map[agent.agentId] = agent.streamText.trim();
+      } else if (agent.thinkingTrace?.trim()) {
+        map[agent.agentId] = agent.thinkingTrace.trim();
+      } else if (agent.status === "running") {
+        map[agent.agentId] = "...";
       }
     }
     return map;
@@ -5740,6 +5744,20 @@ export function OfficeScreen({
                   sessions={sessionsByAgentId[focusedChatAgent.agentId] ?? []}
                   onSelectSession={handleSelectSession}
                   onDeleteSession={handleDeleteSession}
+                  onToolCallingToggle={(enabled) =>
+                    dispatch({
+                      type: "updateAgent",
+                      agentId: focusedChatAgent.agentId,
+                      patch: { toolCallingEnabled: enabled },
+                    })
+                  }
+                  onThinkingTracesToggle={(enabled) =>
+                    dispatch({
+                      type: "updateAgent",
+                      agentId: focusedChatAgent.agentId,
+                      patch: { showThinkingTraces: enabled },
+                    })
+                  }
                   onLoadMoreHistory={() => {
                     void requestAgentHistoryRefresh({
                       agentId: focusedChatAgent.agentId,
