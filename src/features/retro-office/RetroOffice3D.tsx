@@ -212,6 +212,7 @@ import {
   CAMERA_PRESETS as CAMERA_PRESET_MAP,
   CameraAnimator as CameraPresetAnimator,
   FollowCamController as FollowCamSystem,
+  OfficeLighting,
 } from "@/features/retro-office/systems/cameraLighting";
 import {
   FloorRaycaster as SceneFloorRaycaster,
@@ -5023,6 +5024,16 @@ export function RetroOffice3D({
           setActiveAtmUid(null);
           return;
         }
+        if (phoneBoothImmersive) {
+          e.preventDefault();
+          closeManualPhoneBoothView();
+          return;
+        }
+        if (smsBoothImmersive) {
+          e.preventDefault();
+          closeManualSmsBoothView();
+          return;
+        }
       }
       if (!editMode) return;
       if (e.key === "Escape") {
@@ -5081,6 +5092,8 @@ export function RetroOffice3D({
     activeQaTerminalUid,
     activeGithubTerminalUid,
     atmImmersive,
+    closeManualPhoneBoothView,
+    closeManualSmsBoothView,
     editMode,
     drag,
     githubImmersive,
@@ -5090,9 +5103,11 @@ export function RetroOffice3D({
     onGithubReviewDismiss,
     onMonitorSelect,
     onQaLabDismiss,
+    phoneBoothImmersive,
     qaImmersive,
     rotateSelectedItem,
     selectedUid,
+    smsBoothImmersive,
   ]);
 
   useEffect(() => {
@@ -5344,22 +5359,8 @@ export function RetroOffice3D({
               agentLookupRef={renderAgentLookupRef}
             />
 
-            {/* Keep office lighting static to avoid extra scene churn from ambience effects. */}
-            <ambientLight intensity={0.72} color="#d8d4c8" />
-            <directionalLight
-              position={[8, 14, 6]}
-              intensity={1.1}
-              color="#f6f1e6"
-              castShadow
-              shadow-mapSize={[1024, 1024]}
-              shadow-bias={-0.0002}
-              shadow-normalBias={0.02}
-            />
-            <directionalLight
-              position={[-5, 8, -4]}
-              intensity={0.4}
-              color="#7090ff"
-            />
+            {/* Office lighting supporting clean visibility in both light and dark themes. */}
+            <OfficeLighting />
 
             {/* Floor + walls — always visible, no async loading. */}
             <SceneFloorAndWalls showRemoteOffice={remoteOfficeEnabled} />

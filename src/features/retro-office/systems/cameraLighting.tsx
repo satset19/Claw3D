@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef, type MutableRefObject, type RefObject } from "react";
+import { useEffect, useRef, useState, type MutableRefObject, type RefObject } from "react";
 import * as THREE from "three";
 import { WORLD_H, WORLD_W } from "@/features/retro-office/core/constants";
 import {
@@ -241,8 +241,8 @@ const DAY_NIGHT_KEYFRAMES = [
   {
     ambient: "#c8a870",
     sun: "#ffe8b0",
-    sunIntensity: 0.8,
-    ambientIntensity: 0.55,
+    sunIntensity: 0.95,
+    ambientIntensity: 0.65,
   },
   {
     ambient: "#c8d0e0",
@@ -259,20 +259,20 @@ const DAY_NIGHT_KEYFRAMES = [
   {
     ambient: "#c87840",
     sun: "#ff9050",
-    sunIntensity: 0.9,
-    ambientIntensity: 0.5,
+    sunIntensity: 1.0,
+    ambientIntensity: 0.6,
   },
   {
-    ambient: "#1a2040",
-    sun: "#2040a0",
-    sunIntensity: 0.3,
-    ambientIntensity: 0.25,
+    ambient: "#2a3654",
+    sun: "#3d5898",
+    sunIntensity: 0.65,
+    ambientIntensity: 0.52,
   },
   {
-    ambient: "#101828",
-    sun: "#182038",
-    sunIntensity: 0.2,
-    ambientIntensity: 0.2,
+    ambient: "#222c44",
+    sun: "#32487a",
+    sunIntensity: 0.55,
+    ambientIntensity: 0.48,
   },
 ];
 
@@ -295,12 +295,35 @@ const lerpColor = (fromColor: string, toColor: string, t: number) => {
 
 export function DayNightCycle({
   externalTimeRef,
+  theme,
 }: {
   externalTimeRef?: MutableRefObject<number>;
+  theme?: "light" | "dark";
 }) {
   const ambientRef = useRef<THREE.AmbientLight>(null);
   const sunRef = useRef<THREE.DirectionalLight>(null);
   const timeRef = useRef(0.25);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    if (theme) return theme === "dark";
+    if (typeof document === "undefined") return false;
+    return document.documentElement.classList.contains("dark");
+  });
+
+  useEffect(() => {
+    if (theme) {
+      setIsDarkTheme(theme === "dark");
+      return;
+    }
+    if (typeof document === "undefined") return;
+    const observer = new MutationObserver(() => {
+      setIsDarkTheme(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, [theme]);
 
   useFrame((_, delta) => {
     timeRef.current = (timeRef.current + delta / DAY_NIGHT_PERIOD) % 1;
@@ -326,23 +349,36 @@ export function DayNightCycle({
     const keyframeA = DAY_NIGHT_KEYFRAMES[indexA];
     const keyframeB = DAY_NIGHT_KEYFRAMES[indexB];
 
+    // Smoothly adapt intensities for both light and dark themes with minimum visibility floors
+    const ambientMultiplier = isDarkTheme ? 0.95 : 1.0;
+    const sunMultiplier = isDarkTheme ? 0.95 : 1.0;
+
+    const targetAmbient = Math.max(
+      0.45,
+      lerp(keyframeA.ambientIntensity, keyframeB.ambientIntensity, localT) * ambientMultiplier,
+    );
+    const targetSun = Math.max(
+      0.5,
+      lerp(keyframeA.sunIntensity, keyframeB.sunIntensity, localT) * sunMultiplier,
+    );
+
     if (ambientRef.current) {
       ambientRef.current.color.set(
         lerpColor(keyframeA.ambient, keyframeB.ambient, localT),
       );
-      ambientRef.current.intensity = lerp(
-        keyframeA.ambientIntensity,
-        keyframeB.ambientIntensity,
-        localT,
+      ambientRef.current.intensity = THREE.MathUtils.lerp(
+        ambientRef.current.intensity,
+        targetAmbient,
+        0.05,
       );
     }
 
     if (sunRef.current) {
       sunRef.current.color.set(lerpColor(keyframeA.sun, keyframeB.sun, localT));
-      sunRef.current.intensity = lerp(
-        keyframeA.sunIntensity,
-        keyframeB.sunIntensity,
-        localT,
+      sunRef.current.intensity = THREE.MathUtils.lerp(
+        sunRef.current.intensity,
+        targetSun,
+        0.05,
       );
     }
   });
@@ -363,6 +399,61 @@ export function DayNightCycle({
         shadow-camera-right={WORLD_W * 0.7}
         shadow-camera-top={WORLD_H * 0.7}
         shadow-camera-bottom={-WORLD_H * 0.7}
+      />
+    </>
+  );
+}
+
+export function OfficeLighting({ theme }: { theme?: "light" | "dark" } = {}) {
+  const [isDark, setIsDark] = useState(() => {
+    if (theme) return theme === "dark";
+    if (typeof document === "undefined") return false;
+    return document.documentElement.classList.contains("dark");
+  });
+
+  useEffect(() => {
+    if (theme) {
+      setIsDark(theme === "dark");
+      return;
+    }
+    if (typeof document === "undefined") return;
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, [theme]);
+
+  // Clean visibility in both light and dark themes
+  const ambientIntensity = isDark ? 0.74 : 0.72;
+  const ambientColor = isDark ? "#ccd4e2" : "#d8d4c8";
+  const sunIntensity = isDark ? 1.15 : 1.1;
+  const sunColor = isDark ? "#eaf0ff" : "#f6f1e6";
+  const fillIntensity = isDark ? 0.45 : 0.4;
+
+  return (
+    <>
+      <ambientLight intensity={ambientIntensity} color={ambientColor} />
+      <directionalLight
+        position={[8, 14, 6]}
+        intensity={sunIntensity}
+        color={sunColor}
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+        shadow-bias={-0.0002}
+        shadow-normalBias={0.02}
+        shadow-camera-left={-WORLD_W * 0.7}
+        shadow-camera-right={WORLD_W * 0.7}
+        shadow-camera-top={WORLD_H * 0.7}
+        shadow-camera-bottom={-WORLD_H * 0.7}
+      />
+      <directionalLight
+        position={[-5, 8, -4]}
+        intensity={fillIntensity}
+        color="#7090ff"
       />
     </>
   );

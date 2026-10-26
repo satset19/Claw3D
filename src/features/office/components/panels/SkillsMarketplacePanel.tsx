@@ -322,15 +322,20 @@ export function SkillsMarketplacePanel({
             </div>
             <div className="grid gap-2">
               {featuredEntries.map((entry) => (
-                <button
+                <div
                   key={`featured:${entry.skill.skillKey}`}
-                  type="button"
-                  onClick={() => setDetailSkillKey(entry.skill.skillKey)}
+                  role="article"
                   className="rounded border border-cyan-500/15 bg-gradient-to-br from-cyan-500/10 to-transparent px-3 py-3 text-left transition-colors hover:border-cyan-400/30"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <div className="font-mono text-[11px] font-semibold text-white/90">{entry.skill.name}</div>
+                      <button
+                        type="button"
+                        onClick={() => setDetailSkillKey(entry.skill.skillKey)}
+                        className="text-left font-mono text-[11px] font-semibold text-white/90 transition-colors hover:text-cyan-100"
+                      >
+                        {entry.skill.name}
+                      </button>
                       <div className="mt-1 font-mono text-[10px] text-cyan-100/75">{entry.metadata.tagline}</div>
                     </div>
                     <div className="rounded border border-cyan-500/20 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-cyan-100/85">
@@ -357,13 +362,12 @@ export function SkillsMarketplacePanel({
                         target="_blank"
                         rel="noreferrer"
                         className="text-cyan-200 underline decoration-cyan-500/40 underline-offset-2 transition-colors hover:text-cyan-100"
-                        onClick={(event) => event.stopPropagation()}
                       >
                         {entry.metadata.poweredByName}
                       </a>
                     </div>
                   ) : null}
-                </button>
+                </div>
               ))}
             </div>
           </div>

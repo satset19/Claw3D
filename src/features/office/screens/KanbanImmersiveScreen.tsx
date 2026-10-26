@@ -89,7 +89,11 @@ export function KanbanImmersiveScreen({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="relative">
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        className="relative outline-none"
+      >
         <button
           type="button"
           onClick={onClose}
@@ -100,9 +104,7 @@ export function KanbanImmersiveScreen({
         </button>
 
         <div
-          ref={dialogRef}
-          tabIndex={-1}
-          className="flex h-[min(75vh,800px)] w-[min(80vw,1280px)] flex-col overflow-hidden rounded-2xl border border-amber-500/20 bg-[#0e0b07]/85 shadow-2xl outline-none backdrop-blur-md"
+          className="flex h-[min(75vh,800px)] w-[min(80vw,1280px)] flex-col overflow-hidden rounded-2xl border border-amber-500/20 bg-[#0e0b07]/85 shadow-2xl backdrop-blur-md"
         >
           <div className="min-h-0 flex-1">
           <TaskBoardView

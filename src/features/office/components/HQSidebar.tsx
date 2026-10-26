@@ -70,7 +70,7 @@ export function HQSidebar({
         <button
           type="button"
           onClick={onToggle}
-          className="rounded-l-md border border-r-0 border-cyan-500/30 bg-[#06090d]/90 px-1.5 py-2.5 font-mono text-[10px] font-semibold tracking-[0.2em] text-cyan-300 shadow-xl backdrop-blur transition-colors hover:border-cyan-400/50 hover:text-cyan-100"
+          className="rounded-l-md border border-r-0 border-cyan-500/30 bg-background/90 px-1.5 py-2.5 font-mono text-[10px] font-semibold tracking-[0.2em] text-cyan-300 shadow-xl backdrop-blur transition-colors hover:border-cyan-400/50 hover:text-cyan-100"
           aria-expanded={open}
           aria-label={open ? "Collapse headquarters sidebar" : "Open headquarters sidebar"}
         >
@@ -117,7 +117,7 @@ export function HQSidebar({
       {open ? (
         <div
           className={`pointer-events-auto flex h-full flex-col border-l border-cyan-500/20 bg-black/85 shadow-2xl backdrop-blur ${
-            boardLikeWidth ? "w-[min(94vw,1180px)]" : "w-56"
+            boardLikeWidth ? "w-[min(94vw,1180px)]" : "w-72"
           }`}
         >
           <div className="border-b border-cyan-500/15 px-4 py-3">
