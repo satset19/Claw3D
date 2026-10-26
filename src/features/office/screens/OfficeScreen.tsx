@@ -10,6 +10,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { MessageSquare, ChevronDown, ChevronLeft, ChevronRight, Mic } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { RetroOffice3D } from "@/features/retro-office/RetroOffice3D";
 import type { OfficeAgent } from "@/features/retro-office/core/types";
 import { RunningAvatarLoader } from "@/features/agents/components/RunningAvatarLoader";
@@ -4711,7 +4712,10 @@ export function OfficeScreen({
     "Connected to the gateway, but no agents were loaded into the office.";
 
   return (
-    <main className="relative h-full w-full overflow-hidden bg-black">
+    <main className="relative h-full w-full overflow-hidden bg-background">
+      <div className="fixed top-3 right-3 z-30 flex items-center gap-2 rounded-lg border border-border/40 bg-card/80 p-1 shadow-lg backdrop-blur">
+        <ThemeToggle />
+      </div>
       {showGatewayLoadingOverlay ? (
         <div
           className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center bg-[#120a05]/76"
@@ -5386,9 +5390,13 @@ export function OfficeScreen({
       ) : null}
 
       <div
-        className={`fixed bottom-3 z-30 flex flex-col items-end gap-2 ${sidebarOpen ? "right-84" : "right-3"} ${
-          debugEnabled ? "hidden" : ""
-        }`}
+        className={`fixed bottom-3 z-30 flex flex-col items-end gap-2 ${
+          !sidebarOpen
+            ? "right-3"
+            : activeSidebarTab === "kanban"
+              ? "right-3 z-40 max-xl:hidden"
+              : "right-[19rem]"
+        } ${debugEnabled ? "hidden" : ""}`}
       >
         {chatOpen && (
           <div

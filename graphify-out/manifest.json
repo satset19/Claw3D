@@ -156,9 +156,9 @@
     "semantic_hash": ""
   },
   "server/hermes-gateway-adapter.js": {
-    "mtime": 1792865864.7266297,
-    "seen": 1792866754.4707322,
-    "ast_hash": "024d5b0dfe2940d1d47f1a206d64daca",
+    "mtime": 1792973209.6163838,
+    "seen": 1792973356.0621998,
+    "ast_hash": "5af9c0993b57030e0a7ea3a264acb92a",
     "semantic_hash": ""
   },
   "server/index.js": {
@@ -450,27 +450,27 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarCreatorModal.tsx": {
-    "mtime": 1792856529.0418224,
-    "seen": 1792862681.587867,
-    "ast_hash": "ab2b7d6c7797217b5c0b954f655043ae",
+    "mtime": 1792973245.7731998,
+    "seen": 1792973356.0638187,
+    "ast_hash": "a346b29b5177c68edb21a6e397fca8dd",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarEditorPanel.tsx": {
-    "mtime": 1792929578.836054,
-    "seen": 1792929876.7331264,
-    "ast_hash": "343af5d12fbcff6521eb17cf017b34c9",
+    "mtime": 1792973237.7890196,
+    "seen": 1792973356.0638278,
+    "ast_hash": "859c2ed67cceec0b072daae384cb3c5a",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentAvatarPreview3D.tsx": {
-    "mtime": 1792969489.3963053,
-    "seen": 1792969779.123918,
-    "ast_hash": "7a98c5ceac6739ce2b36c370d3a176b7",
+    "mtime": 1792973278.2349331,
+    "seen": 1792973356.06385,
+    "ast_hash": "cc8cac7456d83f304fa699c7d5550f3f",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentChatPanel.tsx": {
-    "mtime": 1792856529.0418224,
-    "seen": 1792862681.5878763,
-    "ast_hash": "3b96ecff6ab2e6995008794cda9d5955",
+    "mtime": 1792973160.7952828,
+    "seen": 1792973356.0638585,
+    "ast_hash": "0e44cb88e466a052b4aabd62e2ae3662",
     "semantic_hash": ""
   },
   "src/features/agents/components/AgentCreateModal.tsx": {
@@ -906,9 +906,9 @@
     "semantic_hash": ""
   },
   "src/features/office/components/HQSidebar.tsx": {
-    "mtime": 1792856529.0548227,
-    "seen": 1792862681.5881028,
-    "ast_hash": "528b042c5ab6498dbcd841d117cf85b4",
+    "mtime": 1792973409.0538917,
+    "seen": 1792973523.6151128,
+    "ast_hash": "15b871f631c97a75ed02cb03df2974ac",
     "semantic_hash": ""
   },
   "src/features/office/components/OfficeBuilderPanel.tsx": {
@@ -978,9 +978,9 @@
     "semantic_hash": ""
   },
   "src/features/office/components/panels/SkillsMarketplacePanel.tsx": {
-    "mtime": 1792856529.0568228,
-    "seen": 1792862681.588137,
-    "ast_hash": "468d7e9aafd65f921c35259e57d494a0",
+    "mtime": 1792973436.4295115,
+    "seen": 1792973523.6152084,
+    "ast_hash": "8b7f6628299ac95244f73408b18af4dd",
     "semantic_hash": ""
   },
   "src/features/office/components/panels/TaskBoardPanel.tsx": {
@@ -1104,15 +1104,15 @@
     "semantic_hash": ""
   },
   "src/features/office/screens/KanbanImmersiveScreen.tsx": {
-    "mtime": 1792856529.0608227,
-    "seen": 1792862681.5882475,
-    "ast_hash": "43e8934d4750f2c8188650c186be1e9f",
+    "mtime": 1792973419.355125,
+    "seen": 1792973523.6154172,
+    "ast_hash": "9f36531f73c22cc6d59e92947bc0b944",
     "semantic_hash": ""
   },
   "src/features/office/screens/OfficeScreen.tsx": {
-    "mtime": 1792970650.6950786,
-    "seen": 1792970975.6777933,
-    "ast_hash": "29f012f34e3c284349edcca7c7215bf1",
+    "mtime": 1792973940.2569385,
+    "seen": 1792974086.681631,
+    "ast_hash": "1a80f71753ecd77c980acbc138445ccd",
     "semantic_hash": ""
   },
   "src/features/office/screens/PhoneBoothImmersiveScreen.tsx": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/RetroOffice3D.tsx": {
-    "mtime": 1792970643.3579092,
-    "seen": 1792970975.6778858,
-    "ast_hash": "166887ab001b7f72fb91b89f2d0290bf",
+    "mtime": 1792973564.6614177,
+    "seen": 1792973840.3957798,
+    "ast_hash": "ef4f521e3c39344c73a386ae8bc9459a",
     "semantic_hash": ""
   },
   "src/features/retro-office/core/constants.ts": {
@@ -1404,9 +1404,9 @@
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/cameraLighting.tsx": {
-    "mtime": 1792856529.073823,
-    "seen": 1792862681.588457,
-    "ast_hash": "838d390d762ebccf7af6130db7d59382",
+    "mtime": 1792973547.5040286,
+    "seen": 1792973840.3965657,
+    "ast_hash": "31f97ad07d1cd7ac399f0f9fd90d6188",
     "semantic_hash": ""
   },
   "src/features/retro-office/systems/sceneRuntime.tsx": {
@@ -3582,9 +3582,9 @@
     "semantic_hash": ""
   },
   "src/features/agents/components/AnimePresetPicker.tsx": {
-    "mtime": 1792878539.8638916,
-    "seen": 1792878778.5704386,
-    "ast_hash": "261e42c778628bf8ae542f2b945e2cca",
+    "mtime": 1792973256.4614413,
+    "seen": 1792973356.0639317,
+    "ast_hash": "6ce74c3b51c67898f03bb18744f7d4c5",
     "semantic_hash": ""
   },
   "src/lib/avatars/animePresets.ts": {
@@ -3801,6 +3801,12 @@
     "mtime": 1792970622.562429,
     "seen": 1792970975.678722,
     "ast_hash": "fdc41ac46b04b81114ba3b7c35c4ea4b",
+    "semantic_hash": ""
+  },
+  "tests/unit/officeStream2Fixes.test.tsx": {
+    "mtime": 1792973733.4642491,
+    "seen": 1792973840.398529,
+    "ast_hash": "97e239ed990fd45552157a43daa640d8",
     "semantic_hash": ""
   }
 }
