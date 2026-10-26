@@ -401,41 +401,50 @@ export const FloorAndWalls = memo(function FloorAndWalls({
             <meshStandardMaterial color="#c9ae8d" roughness={0.94} metalness={0.02} />
           </mesh>
 
-          {Array.from({ length: 8 }).map((_, index) => {
-            const [wx, , wz] = toWorld(330 + index * 170, 820 + (index % 2 === 0 ? -44 : 44));
-            return (
-              <mesh key={`garden-bed-${index}`} position={[wx, 0.03, wz]} castShadow receiveShadow>
-                <boxGeometry args={[0.58, 0.06, 0.18]} />
-                <meshStandardMaterial color="#5d4037" roughness={0.84} metalness={0.06} />
-              </mesh>
-            );
-          })}
-
-          {Array.from({ length: 8 }).map((_, index) => {
-            const [wx, , wz] = toWorld(330 + index * 170, 820 + (index % 2 === 0 ? -44 : 44));
-            return (
-              <mesh key={`garden-bed-top-${index}`} position={[wx, 0.09, wz]}>
-                <boxGeometry args={[0.48, 0.05, 0.12]} />
-                <meshStandardMaterial color="#7cb342" roughness={0.98} metalness={0} />
-              </mesh>
-            );
-          })}
-
-          {Array.from({ length: 6 }).map((_, index) => {
-            const [wx, , wz] = toWorld(420 + index * 190, 900);
-            return (
-              <group key={`garden-light-${index}`} position={[wx, 0, wz]}>
-                <mesh position={[0, 0.2, 0]} castShadow>
-                  <cylinderGeometry args={[0.025, 0.025, 0.4, 10]} />
-                  <meshStandardMaterial color="#d7ccc8" roughness={0.62} metalness={0.24} />
+          {Array.from({ length: 8 })
+            .map((_, index) => ({ index, posX: 330 + index * 170 }))
+            .filter(({ posX }) => posX < 390 || posX > 910)
+            .map(({ index, posX }) => {
+              const [wx, , wz] = toWorld(posX, 820 + (index % 2 === 0 ? -44 : 44));
+              return (
+                <mesh key={`garden-bed-${index}`} position={[wx, 0.03, wz]} castShadow receiveShadow>
+                  <boxGeometry args={[0.58, 0.06, 0.18]} />
+                  <meshStandardMaterial color="#5d4037" roughness={0.84} metalness={0.06} />
                 </mesh>
-                <mesh position={[0, 0.43, 0]}>
-                  <sphereGeometry args={[0.05, 12, 12]} />
-                  <meshStandardMaterial color="#fff3cd" emissive="#fff3cd" emissiveIntensity={0.55} />
+              );
+            })}
+
+          {Array.from({ length: 8 })
+            .map((_, index) => ({ index, posX: 330 + index * 170 }))
+            .filter(({ posX }) => posX < 390 || posX > 910)
+            .map(({ index, posX }) => {
+              const [wx, , wz] = toWorld(posX, 820 + (index % 2 === 0 ? -44 : 44));
+              return (
+                <mesh key={`garden-bed-top-${index}`} position={[wx, 0.09, wz]}>
+                  <boxGeometry args={[0.48, 0.05, 0.12]} />
+                  <meshStandardMaterial color="#7cb342" roughness={0.98} metalness={0} />
                 </mesh>
-              </group>
-            );
-          })}
+              );
+            })}
+
+          {Array.from({ length: 6 })
+            .map((_, index) => ({ index, posX: 420 + index * 190 }))
+            .filter(({ posX }) => posX < 390 || posX > 910)
+            .map(({ index, posX }) => {
+              const [wx, , wz] = toWorld(posX, 900);
+              return (
+                <group key={`garden-light-${index}`} position={[wx, 0, wz]}>
+                  <mesh position={[0, 0.2, 0]} castShadow>
+                    <cylinderGeometry args={[0.025, 0.025, 0.4, 10]} />
+                    <meshStandardMaterial color="#d7ccc8" roughness={0.62} metalness={0.24} />
+                  </mesh>
+                  <mesh position={[0, 0.43, 0]}>
+                    <sphereGeometry args={[0.05, 12, 12]} />
+                    <meshStandardMaterial color="#fff3cd" emissive="#fff3cd" emissiveIntensity={0.55} />
+                  </mesh>
+                </group>
+              );
+            })}
 
           {Array.from({ length: 8 }).map((_, index) => {
             const [wx, , wz] = toWorld(220 + index * 190, 1005);
